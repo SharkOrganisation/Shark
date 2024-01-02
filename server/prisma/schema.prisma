@@ -52,8 +52,8 @@ model Coach {
   posts       Post[]
   Gym         Gym?             @relation(fields: [gymId], references: [id])
   gymId       Int?
-  Plan        Plan?            @relation(fields: [planId], references: [id])
-  planId      Int?
+  plan        Plan[]
+  
   basket      Basket[]
 }
 
@@ -180,10 +180,12 @@ model Plan {
   price     Int
   status    Boolean
   diet      Diet[]
-  coach     Coach[]
   program   Program? @relation(fields: [programId], references: [id])
   programId Int?     @unique
+  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  coachId   Int?
 }
+
 
 model Product {
   id          Int      @id @default(autoincrement())
