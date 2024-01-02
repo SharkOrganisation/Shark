@@ -14,6 +14,9 @@ import routePost from "./routes/posts.route"
 app.use('/posts',routePost)
 
 
+//review
+import routeReview from "./routes/review.route"
+app.use('/review',routeReview)
 
 
 app.listen(PORT,()=>{

@@ -36,6 +36,8 @@ interface Post {
       res.status(500).json({ error });
     }
   }
+
+
   export const getCoachpost = async (req: Request, res: Response) => {
     const id = +req.params.coachId;
     try {
@@ -46,42 +48,17 @@ interface Post {
     }
   }
 
+  export const deletepost =async (req:Request, res:Response)=>{
+    try{
+      const query = await prisma.post.delete({
+          where: {
+            id: parseInt(req.params.id)
+          }
+      })
+      res.send(query)
+  } catch(error){
+      res.send(error)
+  }
+  }
 
 
-
-
-
-  // export const getAllPosts = async (req: Request, res: Response) => {
-  //   const { artistId } = req.params;
-  //   try {
-  //     const allPosts = await prisma.post.findMany({
-  //       where:{
-  //         artistId: Number(artistId)
-  //       }
-  //     });
-  //     res.status(200).json(allPosts);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     res.status(500).send("Internal Server Error");
-  //   }
-  // };
-  
-
-//   export const updatePostPic = async (req:Request, res: Response) =>{
-//     const {picture} = req.body;
-//     const {artistId}=req.params
-//     try {
-//       const updatedPostPic = await prisma.post.update({
-//         where:{
-//           id: Number(artistId)
-//         },
-//         data:{
-//           picture:picture
-//         }
-//       })
-//       res.status(201).json(updatedPostPic)
-//     } catch (error:any) {
-//       console.log(error);
-//       res.status(404).send(error);
-//     }
-//     }
