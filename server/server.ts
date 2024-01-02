@@ -18,6 +18,9 @@ app.use('/posts',routePost)
 import routeReview from "./routes/review.route"
 app.use('/review',routeReview)
 
+//programExercice
+import routeprgEx from "./routes/ProgramExercice.route"
+app.use('/programEx',routeprgEx)
 
 app.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`)
