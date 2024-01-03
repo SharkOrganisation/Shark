@@ -25,10 +25,6 @@ model User {
   email         String
   datebirth     String
   bmi           Float?
-<<<<<<< HEAD
-
-=======
->>>>>>> ac584a358ae3db19e4b1adeb86654eea4f8cf179
   followedCoach FollowingCoach[]
   followedGym   FollowingGym[]
   savedPosts    SavedPost[]
