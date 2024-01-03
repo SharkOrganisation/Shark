@@ -35,7 +35,7 @@ export const signUp = async (req: Request, res: Response) => {
             const newGym = await prisma.gym.create({
                 data:{
                    fullname,
-                   Email:email,   
+                   Email:email,
                    pfImage:"" ,
                    location
                 }
