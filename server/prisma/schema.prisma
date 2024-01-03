@@ -19,7 +19,7 @@ model Admin {
 }
 
 model User {
-  id            Int              @id @default(autoincrement())
+  id            String             @id 
   pfImage       String           @db.Text
   fullname      String
   email         String
@@ -35,7 +35,7 @@ model User {
 }
 
 model Coach {
-  id         Int                 @id @default(autoincrement())
+  id         String                 @id
   fullname   String
   email      String
   pfImage    String              @db.Text
@@ -47,13 +47,13 @@ model Coach {
   followGym  CoachfollowingGym[]
   posts      Post[]
   Gym        Gym?                @relation(fields: [gymId], references: [id])
-  gymId      Int?
+  gymId      String?
   plan       Plan[]
   basket     Basket[]
 }
 
 model Gym {
-  id             Int                 @id @default(autoincrement())
+  id             String                 @id
   fullname       String
   Email          String
   pfImage        String              @db.Text
@@ -76,9 +76,9 @@ model Post {
   image     String[]    @db.Text
   savePosts SavedPost[]
   Gym       Gym?        @relation(fields: [gymId], references: [id])
-  gymId     Int?
+  gymId     String?
   Coach     Coach?      @relation(fields: [coachId], references: [id])
-  coachId   Int?
+  coachId   String?
   comments  Comment[]
 }
 
@@ -89,39 +89,39 @@ model Comment {
   Post    Post?  @relation(fields: [postId], references: [id])
   postId  Int?
   User    User?  @relation(fields: [userId], references: [id])
-  userId  Int?
+  userId  String?
 }
 
 model SavedPost {
   id     Int   @id @default(autoincrement())
   User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  userId String?
   Post   Post? @relation(fields: [postId], references: [id])
   postId Int?
 }
 
 model FollowingCoach {
   id      Int    @id @default(autoincrement())
-  coachId Int?
+  coachId String?
   Coach   Coach? @relation(fields: [coachId], references: [id])
   User    User?  @relation(fields: [userId], references: [id])
-  userId  Int?
+  userId  String?
 }
 
 model FollowingGym {
   id     Int   @id @default(autoincrement())
   User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  userId String?
   Gym    Gym?  @relation(fields: [gymId], references: [id])
-  gymId  Int?
+  gymId  String?
 }
 
 model CoachfollowingGym {
   id      Int    @id @default(autoincrement())
   Coach   Coach? @relation(fields: [coachId], references: [id])
-  coachId Int?
+  coachId String?
   Gym     Gym?   @relation(fields: [gymId], references: [id])
-  gymId   Int?
+  gymId   String?
 }
 
 model Membership {
@@ -131,9 +131,9 @@ model Membership {
   establishedAt DateTime? @default(now())
   expiredAt     DateTime?
   Gym           Gym?      @relation(fields: [gymId], references: [id])
-  gymId         Int?
+  gymId         String?
   user          User      @relation(fields: [userId], references: [id])
-  userId        Int       @unique
+  userId        String       @unique
 }
 
 model Diet {
@@ -180,7 +180,7 @@ model Plan {
   program   Program? @relation(fields: [programId], references: [id])
   programId Int?     @unique
   Coach     Coach?   @relation(fields: [coachId], references: [id])
-  coachId   Int?
+  coachId   String?
   Diet      Diet?    @relation(fields: [dietId], references: [id])
   dietId    Int?
 }
@@ -203,19 +203,18 @@ model Basket {
   Product   Product? @relation(fields: [productId], references: [id])
   productId Int?
   User      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  userId    String?
   Coach     Coach?   @relation(fields: [coachId], references: [id])
-  coachId   Int?
+  coachId   String?
   Gym       Gym?     @relation(fields: [gymId], references: [id])
-  gymId     Int?
+  gymId     String?
 }
 
 model Review {
   id      Int    @id @default(autoincrement())
-  content String
   stars   Int
   Gym     Gym?   @relation(fields: [gymId], references: [id])
-  gymId   Int?
+  gymId   String?
   User    User?  @relation(fields: [userId], references: [id])
-  userId  Int?
+  userId  String?
 }

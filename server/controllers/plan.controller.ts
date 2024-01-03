@@ -54,7 +54,7 @@ export const getPlan = async (req: Request, res: Response) => {
 };
 
 export const getplanBycoach = async (req: Request, res: Response) => {
-  const coachId = +req.params.id;
+  const coachId = req.params.id;
   try {
     const plan = await prisma.plan.findMany({
       where: {

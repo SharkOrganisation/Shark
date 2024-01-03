@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export const getOneUserById = async (req: Request, res: Response)=>{
 
-    const userId = +req.params.id;
+    const userId = req.params.id;
 
     try {
         console.log(userId)

@@ -51,7 +51,7 @@ interface Comment {
   
   
   export const getOnecommnts = async (req: Request, res: Response) => {
-    const userId = +req.params.id
+    const userId = req.params.id
     try {
       const commnts = await prisma.comment.findMany({
         where: {
