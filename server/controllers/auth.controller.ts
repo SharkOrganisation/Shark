@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
+
 
 const prisma = new PrismaClient();
 
