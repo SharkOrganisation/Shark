@@ -7,6 +7,13 @@ import {dietRoute} from "./routes/diet.route"
 import {commentRoute} from "./routes/comments.route"
 import {basketRoute} from "./routes/basket.route"
 import {planRoute} from "./routes/plan.route"
+import authRoute from './routes/auth.route' //impoting auth route
+import exerciceRoute from './routes/exercice.route' //impoting exercice route
+import userRoute from './routes/user.route' //impoting user route
+import gymRoute from './routes/gym.route' //impoting gymnet route
+import coachRoute from './routes/coach.route' //impoting coach route
+
+
 const app: Application = express();
 const PORT = 3000
 
@@ -23,6 +30,21 @@ app.use("/api/basket",basketRoute)
 app.use("/api/plan",planRoute)
 
 
+//auth routes
+app.use('/api/auth',authRoute)
+
+
+//exercice route
+app.use('/api/exercice',exerciceRoute)
+
+// user route 
+app.use('/api/user',userRoute)
+
+//gym route
+app.use('/api/gym',gymRoute)
+
+//coach route
+app.use('/api/coach',coachRoute)
 
 app.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`)
