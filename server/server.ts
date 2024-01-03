@@ -29,6 +29,18 @@ app.use("/api/comments",commentRoute)
 app.use("/api/basket",basketRoute)
 app.use("/api/plan",planRoute)
 
+//post
+import routePost from "./routes/posts.route"
+app.use('/api//posts',routePost)
+
+
+//review
+import routeReview from "./routes/review.route"
+app.use('/api//review',routeReview)
+
+//programExercice
+import routeprgEx from "./routes/ProgramExercice.route"
+app.use('/api//programEx',routeprgEx)
 
 //auth routes
 app.use('/api/auth',authRoute)

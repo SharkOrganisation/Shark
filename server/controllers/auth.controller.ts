@@ -27,7 +27,7 @@ export const signUp = async (req: Request, res: Response) => {
       }
     }else if(role === "Gym"){
         const gymOwnerExisted = await prisma.gym.count({
-            where: {email: email}
+            where: {Email: email}
         })
         if(gymOwnerExisted !== 0){
             res.status(409).send("Gym owner already exists")
@@ -35,8 +35,7 @@ export const signUp = async (req: Request, res: Response) => {
             const newGym = await prisma.gym.create({
                 data:{
                    fullname,
-                   email,
-                   datebirth,
+                   Email:email,   
                    pfImage:"" ,
                    location
                 }
