@@ -40,9 +40,12 @@ interface ProgramExercice {
   }
 
   export const getProgramExByEx = async (req:Request,res:Response)=>{
-    const id=+req.params.id 
+    const id=+req.params.idEx
+     
     try {
-        await prisma.programExercice.findMany({where:{exerciceId:id}})
+        res.json (await prisma.programExercice.findMany({
+          where:{exerciceId:id}
+        }))
     }catch (error: any) {
         res.status(400).send(error);
       }
