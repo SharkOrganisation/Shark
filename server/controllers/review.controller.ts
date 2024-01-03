@@ -13,11 +13,9 @@ interface Review {
 
  
 export const addReview = async (req: Request, res: Response) => {
-    const { content,stars } = req.body;
-  
     try {
        await prisma.review.create({
-        data: {...req.body}
+        data:req.body
       });
   
       res.status(201).json("created");
@@ -27,7 +25,7 @@ export const addReview = async (req: Request, res: Response) => {
   };
 
   export const getGymReview=async(req:Request, res:Response)=>{
-    const id=+req.params.id
+    const id=req.params.id
     try {
         const response = await prisma.review.findMany({where:{gymId:id}});
         res.status(200).json(response);
