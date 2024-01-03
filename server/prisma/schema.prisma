@@ -23,10 +23,8 @@ model User {
   pfImage       String           @db.Text
   fullname      String
   email         String
-  password      String
+  datebirth     String
   bmi           Float?
-  otp           Int?             @default(0000)
-  otpExpire     DateTime?        @default(now())
   followedCoach FollowingCoach[]
   followedGym   FollowingGym[]
   savedPosts    SavedPost[]
@@ -37,43 +35,38 @@ model User {
 }
 
 model Coach {
-  id          Int              @id @default(autoincrement())
-  fullname    String
-  email       String
-  pfImage     String           @db.Text
-  password    String
-  bio         String           @db.Text
-  speciality  String
-  perSession  Float
-  followers   FollowingCoach[]
-  otp         Int?             @default(0000)
-  otpExpire   DateTime?        @default(now())
-  followedGym FollowingGym[]
-  posts       Post[]
-  Gym         Gym?             @relation(fields: [gymId], references: [id])
-  gymId       Int?
-  Plan        Plan?            @relation(fields: [planId], references: [id])
-  planId      Int?
-  basket      Basket[]
+  id         Int                 @id @default(autoincrement())
+  fullname   String
+  email      String
+  pfImage    String              @db.Text
+  datebirth  String
+  bio        String              @db.Text
+  speciality String
+  perSession Float
+  followers  FollowingCoach[]
+  followGym  CoachfollowingGym[]
+  posts      Post[]
+  Gym        Gym?                @relation(fields: [gymId], references: [id])
+  gymId      Int?
+  plan       Plan[]
+  basket     Basket[]
 }
 
 model Gym {
-  id          Int            @id @default(autoincrement())
-  fullname    String
-  Email       String
-  pfImage     String         @db.Text
-  password    String
-  type        String?
-  bio         String?
-  location    String
-  otp         Int?           @default(0000)
-  otpExpire   DateTime?      @default(now())
-  followers   FollowingGym[]
-  posts       Post[]
-  coaches     Coach[]
-  memberships Membership[]
-  basket      Basket[]
-  review      Review[]
+  id             Int                 @id @default(autoincrement())
+  fullname       String
+  Email          String
+  pfImage        String              @db.Text
+  type           String?
+  bio            String?
+  location       String
+  followers      FollowingGym[]
+  posts          Post[]
+  coaches        Coach[]
+  memberships    Membership[]
+  basket         Basket[]
+  review         Review[]
+  followersCoach CoachfollowingGym[]
 }
 
 model Post {
@@ -116,11 +109,17 @@ model FollowingCoach {
 }
 
 model FollowingGym {
+  id     Int   @id @default(autoincrement())
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+  Gym    Gym?  @relation(fields: [gymId], references: [id])
+  gymId  Int?
+}
+
+model CoachfollowingGym {
   id      Int    @id @default(autoincrement())
   Coach   Coach? @relation(fields: [coachId], references: [id])
   coachId Int?
-  User    User?  @relation(fields: [userId], references: [id])
-  userId  Int?
   Gym     Gym?   @relation(fields: [gymId], references: [id])
   gymId   Int?
 }
@@ -138,11 +137,10 @@ model Membership {
 }
 
 model Diet {
-  id     Int    @id @default(autoincrement())
-  name   String
-  meals  String @db.Text
-  Plan   Plan?  @relation(fields: [planId], references: [id])
-  planId Int?
+  id    Int    @id @default(autoincrement())
+  name  String
+  meals String @db.Text
+  plan  Plan[]
 }
 
 model Exercice {
@@ -175,14 +173,16 @@ model Program {
 }
 
 model Plan {
-  id        Int      @id @default(autoincrement())
-  name      String
-  price     Int
-  status    Boolean
-  diet      Diet[]
-  coach     Coach[]
+  id     Int     @id @default(autoincrement())
+  name   String
+  price  Int
+  status Boolean
   program   Program? @relation(fields: [programId], references: [id])
   programId Int?     @unique
+  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  coachId   Int?
+  Diet      Diet?    @relation(fields: [dietId], references: [id])
+  dietId    Int?
 }
 
 model Product {
@@ -214,8 +214,8 @@ model Review {
   id      Int    @id @default(autoincrement())
   content String
   stars   Int
-  Gym    Gym?  @relation(fields: [gymId], references: [id])
-  gymId  Int?
-  User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  Gym     Gym?   @relation(fields: [gymId], references: [id])
+  gymId   Int?
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
 }
