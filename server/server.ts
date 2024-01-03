@@ -11,16 +11,16 @@ app.use(cors());
 
 //post
 import routePost from "./routes/posts.route"
-app.use('/posts',routePost)
+app.use('/api//posts',routePost)
 
 
 //review
 import routeReview from "./routes/review.route"
-app.use('/review',routeReview)
+app.use('/api//review',routeReview)
 
 //programExercice
 import routeprgEx from "./routes/ProgramExercice.route"
-app.use('/programEx',routeprgEx)
+app.use('/api//programEx',routeprgEx)
 
 app.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`)
