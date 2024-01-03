@@ -14,7 +14,7 @@ CREATE TABLE "User" (
     "pfImage" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "datebirth" TEXT NOT NULL,
     "bmi" DOUBLE PRECISION,
     "otp" INTEGER DEFAULT 0,
     "otpExpire" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
@@ -28,14 +28,13 @@ CREATE TABLE "Coach" (
     "fullname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "pfImage" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "datebirth" TEXT NOT NULL,
     "bio" TEXT NOT NULL,
     "speciality" TEXT NOT NULL,
     "perSession" DOUBLE PRECISION NOT NULL,
     "otp" INTEGER DEFAULT 0,
     "otpExpire" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "gymId" INTEGER,
-    "planId" INTEGER,
 
     CONSTRAINT "Coach_pkey" PRIMARY KEY ("id")
 );
@@ -46,7 +45,6 @@ CREATE TABLE "Gym" (
     "fullname" TEXT NOT NULL,
     "Email" TEXT NOT NULL,
     "pfImage" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
     "type" TEXT,
     "bio" TEXT,
     "location" TEXT NOT NULL,
@@ -100,11 +98,19 @@ CREATE TABLE "FollowingCoach" (
 -- CreateTable
 CREATE TABLE "FollowingGym" (
     "id" SERIAL NOT NULL,
-    "coachId" INTEGER,
     "userId" INTEGER,
     "gymId" INTEGER,
 
     CONSTRAINT "FollowingGym_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CoachfollowingGym" (
+    "id" SERIAL NOT NULL,
+    "coachId" INTEGER,
+    "gymId" INTEGER,
+
+    CONSTRAINT "CoachfollowingGym_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -125,7 +131,6 @@ CREATE TABLE "Diet" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "meals" TEXT NOT NULL,
-    "planId" INTEGER,
 
     CONSTRAINT "Diet_pkey" PRIMARY KEY ("id")
 );
@@ -170,6 +175,8 @@ CREATE TABLE "Plan" (
     "price" INTEGER NOT NULL,
     "status" BOOLEAN NOT NULL,
     "programId" INTEGER,
+    "coachId" INTEGER,
+    "dietId" INTEGER,
 
     CONSTRAINT "Plan_pkey" PRIMARY KEY ("id")
 );
@@ -179,7 +186,8 @@ CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price" INTEGER NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "quantity" INTEGER NOT NULL,
     "catergory" TEXT NOT NULL,
     "images" TEXT[],
     "adminId" INTEGER,
@@ -198,6 +206,17 @@ CREATE TABLE "Basket" (
     CONSTRAINT "Basket_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Review" (
+    "id" SERIAL NOT NULL,
+    "content" TEXT NOT NULL,
+    "stars" INTEGER NOT NULL,
+    "gymId" INTEGER,
+    "userId" INTEGER,
+
+    CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Membership_userId_key" ON "Membership"("userId");
 
@@ -206,9 +225,6 @@ CREATE UNIQUE INDEX "Plan_programId_key" ON "Plan"("programId");
 
 -- AddForeignKey
 ALTER TABLE "Coach" ADD CONSTRAINT "Coach_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Coach" ADD CONSTRAINT "Coach_planId_fkey" FOREIGN KEY ("planId") REFERENCES "Plan"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -235,22 +251,22 @@ ALTER TABLE "FollowingCoach" ADD CONSTRAINT "FollowingCoach_coachId_fkey" FOREIG
 ALTER TABLE "FollowingCoach" ADD CONSTRAINT "FollowingCoach_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FollowingGym" ADD CONSTRAINT "FollowingGym_coachId_fkey" FOREIGN KEY ("coachId") REFERENCES "Coach"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "FollowingGym" ADD CONSTRAINT "FollowingGym_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "FollowingGym" ADD CONSTRAINT "FollowingGym_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "CoachfollowingGym" ADD CONSTRAINT "CoachfollowingGym_coachId_fkey" FOREIGN KEY ("coachId") REFERENCES "Coach"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoachfollowingGym" ADD CONSTRAINT "CoachfollowingGym_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Membership" ADD CONSTRAINT "Membership_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Membership" ADD CONSTRAINT "Membership_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Diet" ADD CONSTRAINT "Diet_planId_fkey" FOREIGN KEY ("planId") REFERENCES "Plan"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProgramExercice" ADD CONSTRAINT "ProgramExercice_exerciceId_fkey" FOREIGN KEY ("exerciceId") REFERENCES "Exercice"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -260,6 +276,12 @@ ALTER TABLE "Program" ADD CONSTRAINT "Program_programExerciceId_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "Plan" ADD CONSTRAINT "Plan_programId_fkey" FOREIGN KEY ("programId") REFERENCES "Program"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Plan" ADD CONSTRAINT "Plan_coachId_fkey" FOREIGN KEY ("coachId") REFERENCES "Coach"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Plan" ADD CONSTRAINT "Plan_dietId_fkey" FOREIGN KEY ("dietId") REFERENCES "Diet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "Admin"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -275,3 +297,9 @@ ALTER TABLE "Basket" ADD CONSTRAINT "Basket_coachId_fkey" FOREIGN KEY ("coachId"
 
 -- AddForeignKey
 ALTER TABLE "Basket" ADD CONSTRAINT "Basket_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_gymId_fkey" FOREIGN KEY ("gymId") REFERENCES "Gym"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
