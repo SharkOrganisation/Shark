@@ -22,7 +22,7 @@ export const getAllBasket = async (req: Request, res: Response) => {
 };
 
 export const getOneBasketByUserId = async (req: Request, res: Response) => {
-  const userId = +req.params.id
+  const userId = req.params.id
   try {
     const basket = await prisma.basket.findMany({
       where: {
@@ -46,7 +46,7 @@ export const getOneBasketByUserId = async (req: Request, res: Response) => {
   }
 };
 export const getOneBasketByCoachId = async (req: Request, res: Response) => {
-  const coachId = +req.params.id
+  const coachId = req.params.id
   try {
     const basket = await prisma.basket.findMany({
       where: {
@@ -70,7 +70,7 @@ export const getOneBasketByCoachId = async (req: Request, res: Response) => {
   }
 };
 export const getOneBasketByGymId = async (req: Request, res: Response) => {
-  const gymId = +req.params.id
+  const gymId = req.params.id
   try {
     const basket = await prisma.basket.findMany({
       where: {

@@ -4,6 +4,6 @@ const router=express.Router()
 
 
 router.post('/add',addProgramEx)
-router.get('/get',getProgramEx)
 router.get('/get/:idEx',getProgramExByEx)
+router.get('/getOne/:id',getProgramEx)
 export default router

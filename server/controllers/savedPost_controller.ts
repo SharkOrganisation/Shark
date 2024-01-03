@@ -7,7 +7,7 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
   const { iduser } = req.params;
   try {
     let saved = await prisma.user.findUnique({
-      where: { id: +iduser },
+      where: { id: iduser },
       include: {
         savedPosts: {
           include: {
@@ -27,7 +27,7 @@ export const addSave = async (req: Request, res: Response): Promise<void> => {
   const { userId, postId } = req.params;
   try {
     let newSave = await prisma.savedPost.create({
-      data: { userId: +userId, postId: +postId },
+      data: { userId: userId, postId: +postId },
     });
     res.status(200).send("Post Saved successfully");
   } catch (err) {
@@ -43,7 +43,7 @@ export const removeSaved = async (
     const { userId, postId } = req.params;
     try {
       let removed = await prisma.savedPost.deleteMany({
-        where: { userId: +userId, postId: +postId },
+        where: { userId: userId, postId: +postId },
       });
       res.status(200).send("Post removed from saved");
     } catch (err) {
