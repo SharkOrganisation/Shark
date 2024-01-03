@@ -6,6 +6,7 @@ import userRoute from './routes/user.route' //impoting user route
 import gymRoute from './routes/gym.route' //impoting gymnet route
 import coachRoute from './routes/coach.route' //impoting coach route
 
+
 const app: Application = express();
 const PORT = 3000
 
@@ -13,8 +14,10 @@ const PORT = 3000
 app.use(express.json());
 app.use(cors());
 
+
 //auth routes
 app.use('/api/auth',authRoute)
+
 
 //exercice route
 app.use('/api/exercice',exerciceRoute)
