@@ -31,16 +31,16 @@ app.use("/api/plan",planRoute)
 
 //post
 import routePost from "./routes/posts.route"
-app.use('/api//posts',routePost)
+app.use('/api/posts',routePost)
 
 
 //review
 import routeReview from "./routes/review.route"
-app.use('/api//review',routeReview)
+app.use('/api/review',routeReview)
 
 //programExercice
 import routeprgEx from "./routes/ProgramExercice.route"
-app.use('/api//programEx',routeprgEx)
+app.use('/api/programEx',routeprgEx)
 
 //auth routes
 app.use('/api/auth',authRoute)
