@@ -59,12 +59,12 @@ app.use("/api/coachFollowGym", coachFollowGym);
 // Saved Post :
 app.use("/api/savedPost", savedPost);
 //post
-app.use("/api//posts", routePost);
+app.use("/api/posts", routePost);
 
 //review
-app.use("/api//review", routeReview);
+app.use("/api/review", routeReview);
 //programExercice
-app.use("/api//programEx", routeprgEx);
+app.use("/api/programEx", routeprgEx);
 
 //auth routes
 app.use("/api/auth", authRoute);

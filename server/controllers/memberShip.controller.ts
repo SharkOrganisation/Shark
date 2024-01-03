@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 
 export const getoneMemberbyuserId = async (req: Request, res: Response) => {
-  const userId = +req.params.id;
+  const userId = req.params.id;
   try {
     const member = await prisma.membership.findMany({
       where: {
@@ -29,7 +29,7 @@ export const getoneMemberbyuserId = async (req: Request, res: Response) => {
   }
 };
 export const getoneMemberbyGymId = async (req: Request, res: Response) => {
-  const gymId = +req.params.id;
+  const gymId = req.params.id;
   try {
     const member = await prisma.membership.findMany({
       where: {

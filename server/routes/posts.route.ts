@@ -3,7 +3,7 @@ import { addpost,getGympost,getCoachpost,deletepost } from "../controllers/posts
 const router=express.Router()
 
 router.post("/add", addpost)
-router.get("/Gymposts" , getGympost )
-router.get("/Coachposts",getCoachpost)
-router.delete("/:id",deletepost )
+router.get("/Gymposts/:gymId" , getGympost )
+router.get("/Coachposts/:coachId",getCoachpost)
+router.delete("/removeposts/:id",deletepost )
 export default router

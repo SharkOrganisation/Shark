@@ -10,7 +10,7 @@ CREATE TABLE "Admin" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "pfImage" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Coach" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "pfImage" TEXT NOT NULL,
@@ -30,14 +30,14 @@ CREATE TABLE "Coach" (
     "bio" TEXT NOT NULL,
     "speciality" TEXT NOT NULL,
     "perSession" DOUBLE PRECISION NOT NULL,
-    "gymId" INTEGER,
+    "gymId" TEXT,
 
     CONSTRAINT "Coach_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Gym" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
     "Email" TEXT NOT NULL,
     "pfImage" TEXT NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE "Post" (
     "content" TEXT NOT NULL,
     "likes" INTEGER NOT NULL,
     "image" TEXT[],
-    "gymId" INTEGER,
-    "coachId" INTEGER,
+    "gymId" TEXT,
+    "coachId" TEXT,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
@@ -66,7 +66,7 @@ CREATE TABLE "Comment" (
     "content" TEXT NOT NULL,
     "likes" INTEGER NOT NULL,
     "postId" INTEGER,
-    "userId" INTEGER,
+    "userId" TEXT,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
@@ -74,7 +74,7 @@ CREATE TABLE "Comment" (
 -- CreateTable
 CREATE TABLE "SavedPost" (
     "id" SERIAL NOT NULL,
-    "userId" INTEGER,
+    "userId" TEXT,
     "postId" INTEGER,
 
     CONSTRAINT "SavedPost_pkey" PRIMARY KEY ("id")
@@ -83,8 +83,8 @@ CREATE TABLE "SavedPost" (
 -- CreateTable
 CREATE TABLE "FollowingCoach" (
     "id" SERIAL NOT NULL,
-    "coachId" INTEGER,
-    "userId" INTEGER,
+    "coachId" TEXT,
+    "userId" TEXT,
 
     CONSTRAINT "FollowingCoach_pkey" PRIMARY KEY ("id")
 );
@@ -92,8 +92,8 @@ CREATE TABLE "FollowingCoach" (
 -- CreateTable
 CREATE TABLE "FollowingGym" (
     "id" SERIAL NOT NULL,
-    "userId" INTEGER,
-    "gymId" INTEGER,
+    "userId" TEXT,
+    "gymId" TEXT,
 
     CONSTRAINT "FollowingGym_pkey" PRIMARY KEY ("id")
 );
@@ -101,8 +101,8 @@ CREATE TABLE "FollowingGym" (
 -- CreateTable
 CREATE TABLE "CoachfollowingGym" (
     "id" SERIAL NOT NULL,
-    "coachId" INTEGER,
-    "gymId" INTEGER,
+    "coachId" TEXT,
+    "gymId" TEXT,
 
     CONSTRAINT "CoachfollowingGym_pkey" PRIMARY KEY ("id")
 );
@@ -114,8 +114,8 @@ CREATE TABLE "Membership" (
     "price" DOUBLE PRECISION NOT NULL,
     "establishedAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "expiredAt" TIMESTAMP(3),
-    "gymId" INTEGER,
-    "userId" INTEGER NOT NULL,
+    "gymId" TEXT,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Membership_pkey" PRIMARY KEY ("id")
 );
@@ -169,7 +169,7 @@ CREATE TABLE "Plan" (
     "price" INTEGER NOT NULL,
     "status" BOOLEAN NOT NULL,
     "programId" INTEGER,
-    "coachId" INTEGER,
+    "coachId" TEXT,
     "dietId" INTEGER,
 
     CONSTRAINT "Plan_pkey" PRIMARY KEY ("id")
@@ -193,9 +193,9 @@ CREATE TABLE "Product" (
 CREATE TABLE "Basket" (
     "id" SERIAL NOT NULL,
     "productId" INTEGER,
-    "userId" INTEGER,
-    "coachId" INTEGER,
-    "gymId" INTEGER,
+    "userId" TEXT,
+    "coachId" TEXT,
+    "gymId" TEXT,
 
     CONSTRAINT "Basket_pkey" PRIMARY KEY ("id")
 );
@@ -203,10 +203,9 @@ CREATE TABLE "Basket" (
 -- CreateTable
 CREATE TABLE "Review" (
     "id" SERIAL NOT NULL,
-    "content" TEXT NOT NULL,
     "stars" INTEGER NOT NULL,
-    "gymId" INTEGER,
-    "userId" INTEGER,
+    "gymId" TEXT,
+    "userId" TEXT,
 
     CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
 );

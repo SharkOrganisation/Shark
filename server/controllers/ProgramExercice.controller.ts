@@ -14,13 +14,13 @@ interface ProgramExercice {
 
 
   export const addProgramEx = async (req: Request, res: Response) => {
-    const { reps, sets,exerciceId } = req.body;
+    // const { reps, sets,exerciceId } = req.body;
   
     try {
    
   
        await prisma.programExercice.create({
-        data: {...req.body}
+        data:req.body
       });
   
       res.status(201).json("created");
@@ -33,7 +33,22 @@ interface ProgramExercice {
   export const getProgramEx = async (req:Request,res:Response)=>{
     const id=+req.params.id 
     try {
-        await prisma.programExercice.findMany({where:{id:id}})
+      let progex= await prisma.programExercice.findMany({where:{id:id},
+      select:{
+        sets:true,
+        reps:true,
+        Exercice:{
+          select:{
+            bodyPart:true,        
+            equipment:true,       
+            gifUrl:true,                     
+            name  :true,          
+            target:true
+          }
+        }
+      }
+      })
+        res.status(200).send(progex)
     }catch (error: any) {
         res.status(400).json(error);
       }
@@ -44,7 +59,7 @@ interface ProgramExercice {
      
     try {
         res.json (await prisma.programExercice.findMany({
-          where:{exerciceId:id}
+          where:{exerciceId:id},
         }))
     }catch (error: any) {
         res.status(400).send(error);
