@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       Int       @id @default(autoincrement())
+  fullname String
+  email    String
+  password String
+  product  Product[]
+}
+
+model User {
+  id            Int              @id @default(autoincrement())
+  pfImage       String           @db.Text
+  fullname      String
+  email         String
+  datebirth     String
+  bmi           Float?
+  followedCoach FollowingCoach[]
+  followedGym   FollowingGym[]
+  savedPosts    SavedPost[]
+  comments      Comment[]
+  memberShip    Membership?
+  basket        Basket[]
+  review        Review[]
+}
+
+model Coach {
+  id         Int                 @id @default(autoincrement())
+  fullname   String
+  email      String
+  pfImage    String              @db.Text
+  datebirth  String
+  bio        String              @db.Text
+  speciality String
+  perSession Float
+  followers  FollowingCoach[]
+  followGym  CoachfollowingGym[]
+  posts      Post[]
+  Gym        Gym?                @relation(fields: [gymId], references: [id])
+  gymId      Int?
+  plan       Plan[]
+  basket     Basket[]
+}
+
+model Gym {
+  id             Int                 @id @default(autoincrement())
+  fullname       String
+  Email          String
+  pfImage        String              @db.Text
+  type           String?
+  bio            String?
+  location       String
+  followers      FollowingGym[]
+  posts          Post[]
+  coaches        Coach[]
+  memberships    Membership[]
+  basket         Basket[]
+  review         Review[]
+  followersCoach CoachfollowingGym[]
+}
+
+model Post {
+  id        Int         @id @default(autoincrement())
+  content   String
+  likes     Int
+  image     String[]    @db.Text
+  savePosts SavedPost[]
+  Gym       Gym?        @relation(fields: [gymId], references: [id])
+  gymId     Int?
+  Coach     Coach?      @relation(fields: [coachId], references: [id])
+  coachId   Int?
+  comments  Comment[]
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+  likes   Int
+  Post    Post?  @relation(fields: [postId], references: [id])
+  postId  Int?
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
+}
+
+model SavedPost {
+  id     Int   @id @default(autoincrement())
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+  Post   Post? @relation(fields: [postId], references: [id])
+  postId Int?
+}
+
+model FollowingCoach {
+  id      Int    @id @default(autoincrement())
+  coachId Int?
+  Coach   Coach? @relation(fields: [coachId], references: [id])
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
+}
+
+model FollowingGym {
+  id     Int   @id @default(autoincrement())
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+  Gym    Gym?  @relation(fields: [gymId], references: [id])
+  gymId  Int?
+}
+
+model CoachfollowingGym {
+  id      Int    @id @default(autoincrement())
+  Coach   Coach? @relation(fields: [coachId], references: [id])
+  coachId Int?
+  Gym     Gym?   @relation(fields: [gymId], references: [id])
+  gymId   Int?
+}
+
+model Membership {
+  id            Int       @id @default(autoincrement())
+  type          String
+  price         Float
+  establishedAt DateTime? @default(now())
+  expiredAt     DateTime?
+  Gym           Gym?      @relation(fields: [gymId], references: [id])
+  gymId         Int?
+  user          User      @relation(fields: [userId], references: [id])
+  userId        Int       @unique
+}
+
+model Diet {
+  id    Int    @id @default(autoincrement())
+  name  String
+  meals String @db.Text
+  plan  Plan[]
+}
+
+model Exercice {
+  id              Int               @id @default(autoincrement())
+  bodyPart        String
+  equipment       String
+  gifUrl          String            @db.Text
+  name            String
+  target          String
+  programExercice ProgramExercice[]
+}
+
+model ProgramExercice {
+  id         Int       @id @default(autoincrement())
+  reps       Int
+  sets       Int
+  Exercice   Exercice? @relation(fields: [exerciceId], references: [id])
+  exerciceId Int?
+  program    Program[]
+}
+
+model Program {
+  id                Int              @id @default(autoincrement())
+  name              String
+  duration          String
+  description       String
+  programExercice   ProgramExercice? @relation(fields: [programExerciceId], references: [id])
+  programExerciceId Int?
+  plan              Plan?
+}
+
+model Plan {
+  id     Int     @id @default(autoincrement())
+  name   String
+  price  Int
+  status Boolean
+  program   Program? @relation(fields: [programId], references: [id])
+  programId Int?     @unique
+  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  coachId   Int?
+  Diet      Diet?    @relation(fields: [dietId], references: [id])
+  dietId    Int?
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  quantity    Int
+  catergory   String
+  images      String[]
+  basket      Basket[]
+  Admin       Admin?   @relation(fields: [adminId], references: [id])
+  adminId     Int?
+}
+
+model Basket {
+  id        Int      @id @default(autoincrement())
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  coachId   Int?
+  Gym       Gym?     @relation(fields: [gymId], references: [id])
+  gymId     Int?
+}
+
+model Review {
+  id      Int    @id @default(autoincrement())
+  content String
+  stars   Int
+  Gym     Gym?   @relation(fields: [gymId], references: [id])
+  gymId   Int?
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
+}
