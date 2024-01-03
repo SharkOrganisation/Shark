@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 
 export const getOneGymById = async (req:Request, res:Response) => {
-    const gymId = +req.params.id
+    const gymId = req.params.id
     try {
         const results = await prisma.gym.findUnique({where: {id: gymId}})
         res.status(200).json(results)

@@ -10,7 +10,7 @@ export const gymFollowers = async (
   const { idgym } = req.params;
   try {
     let follower = await prisma.gym.findUnique({
-      where: { id: +idgym },
+      where: { id: idgym },
       include: {
         followersCoach: {
           include: {
@@ -33,7 +33,7 @@ export const coachGymFollowers = async (
   const { idCoach } = req.params;
   try {
     let userFollower = await prisma.coach.findUnique({
-      where: { id: +idCoach },
+      where: { id: idCoach },
       include: {
         followGym: {
           include: {
@@ -55,13 +55,13 @@ export const newFollow = async (req: Request, res: Response): Promise<void> => {
 
   try {
     let existfollow = await prisma.coachfollowingGym.findMany({
-      where: { gymId: +gymId, coachId: +idCoach },
+      where: { gymId: gymId, coachId: idCoach },
     });
     if (existfollow.length === 0) {
       let follow = await prisma.coachfollowingGym.create({
         data: {
-          gymId: +gymId,
-          coachId: +idCoach,
+          gymId: gymId,
+          coachId: idCoach,
         },
       });
       res.status(200).send("follow added successfully");
@@ -80,7 +80,7 @@ export const removeFollow = async (
   const { idgym, idCoach } = req.params;
   try {
     let removed = await prisma.coachfollowingGym.deleteMany({
-      where: { gymId: +idgym, coachId: +idCoach },
+      where: { gymId: idgym, coachId: idCoach },
     });
     res.status(200).send("Follow removed");
   } catch (err) {
