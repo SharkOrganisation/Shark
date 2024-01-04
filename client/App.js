@@ -6,6 +6,7 @@ import WelcomeScreen from './screens/welcome';
 import Login from './screens/login';
 import Paiment from './screens/paiment';
 import Allproducts from './screens/Allproducts'
+import DetailProducts from './components/DetailProducts'
 const Stack = createNativeStackNavigator();
 
 
@@ -15,7 +16,8 @@ export default function App() {
       <Stack.Navigator>
         {/* <Stack.Screen name="Home" component={WelcomeScreen} options={{ headerShown: false }}  /> */}
         {/* <Stack.Screen name="pay" component={Paiment} options={{ headerShown: false }}  /> */}
-        <Stack.Screen name="pay" component={Allproducts} options={{ headerShown: false }}  />
+        {/* <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  /> */}
+        <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }}  />
 
         <Stack.Screen name='login' component={Login} />
         
