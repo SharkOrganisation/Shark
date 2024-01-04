@@ -1,51 +1,44 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-export default function  WelcomeScreen  ()  {
+
+export default function WelcomeScreen() {
+
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to React Native</Text>
-      <Text style={styles.step}>Step One</Text>
-      <Text style={styles.description}>
-        Edit App.js to change this screen and turn it into your app.
-      </Text>
-      <Text style={styles.step}>See Your Changes</Text>
-      <Text style={styles.description}>
-        Press Cmd + R inside the simulator to reload your app’s code.
-      </Text>
-      <Text style={styles.step}>Debug</Text>
-      <Text style={styles.description}>
-        Press Cmd + M or Shake your device to open the React Native Debug Menu.
-      </Text>
-      <Text style={styles.step}>Learn</Text>
-      <Text style={styles.description}>
-        Read the docs to discover what to do next:
-      </Text>
+    <View style={{flex:1}}>
+      <StatusBar backgroundColor={'black'}/>
+      <View style={styles.container}>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>Welcome To</Text>
+          <Text style={styles.title}> GymShark</Text>
+        </View>
+      </View>
     </View>
+
+
   );
 };
 
 const styles = StyleSheet.create({
+
   container: {
+    backgroundColor: '#9AC61C',
     flex: 1,
     padding: 16,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: 'bold',
-    marginBottom: 16,
+    letterSpacing: 2,
+    worldSpacing:5
   },
-  step: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 16,
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 8,
-  },
+  textContainer:{
+    alignItems:'center',
+    justifyContent: 'center'
+  }
 });
 
