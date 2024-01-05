@@ -1,8 +1,28 @@
-import React from "react";
+import {React,useState,useEffect} from "react";
 import { View, Text, StyleSheet,Image, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useNavigation } from '@react-navigation/native';
 
 export default function Paiment() {
+
+  const navigation =useNavigation()
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://192.168.220.147/api/product/get/products');
+      const result = await response.json();
+      console.log(result);
+      setData(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.pageTitle}>
@@ -28,21 +48,26 @@ export default function Paiment() {
       <Text style={{ color: 'white' }}>clothes</Text>
     </TouchableOpacity>
       </View>
-<View>
-<TouchableOpacity style={styles.cardContainer} onPress={() => {
-      // Handle card press (e.g., navigate to product details)
-    }}>
-      <Image source={{ uri:"https://outdoor-gym.com/wp-content/uploads/street-workout-single-twister-300x300.webp" }} style={styles.cardImage} />
-    </TouchableOpacity>
-    <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>altere</Text>
-        <Text style={styles.cardPrice}>150£</Text>
-      </View>
+      <View>
+      {data.map((product) => (
+        <View key={product.id}>
+          <TouchableOpacity style={styles.cardContainer} onPress={() => {
+            navigation.navigate('DetailProducts', { productId: product.id });
+          }}>
+            <Image source={{ uri: "https://outdoor-gym.com/wp-content/uploads/street-workout-single-twister-300x300.webp" }} style={styles.cardImage} />
+          </TouchableOpacity>
+          <View style={styles.cardContent}>
+            <Text style={styles.cardTitle}>{product.id}</Text>
+            <Text style={styles.cardcategory}>gymEquipment</Text>
+            <Text style={styles.cardPrice}>150£</Text>
+          </View>
+        </View>
+      ))}
     </View>
-</View>
-     
-  );
-}
+  </View>
+);
+  }
+
 
 
 
@@ -93,11 +118,20 @@ marginLeft:15,
    marginVertical:-20
   },
   cardTitle: {
+    color:'white',
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
   },
+  cardcategory:{
+    top:-5,
+    color:'#033',
+    fontWeight: 'bold',
+    fontSize:15,
+  },
   cardPrice: {
-    color: '#333',
+    fontWeight: 'bold',
+    top:-4,
+    color: '#033',
   },
 });

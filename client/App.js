@@ -16,7 +16,7 @@ export default function App() {
   return (
   
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Checkout'>
+      <Stack.Navigator initialRouteName='Allproducts'>
         <Stack.Screen name="Home" component={CreateProgram} options={{ headerShown: false }}  />
         <Stack.Screen name="getStarted" component={GetStarted} options={{ headerShown: false }} />
         <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }}   />

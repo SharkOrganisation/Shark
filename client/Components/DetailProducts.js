@@ -3,6 +3,7 @@ import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'reac
 import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { useNavigation } from '@react-navigation/native';
 
 export default function DetailProducts() {
   const images = [
@@ -21,7 +22,9 @@ export default function DetailProducts() {
     <Image source={{ uri: item }} style={styles.carouselImage} />
   );
 
-  return (
+  const navigation =useNavigation()
+  
+return (
     <View style={styles.container}>
      <Pressable style={styles.reviewIcon } >
         <Icon name="star-rate" style={styles.icon} size={28} color="white" />
@@ -32,7 +35,7 @@ export default function DetailProducts() {
   <Pressable style={styles.like} onPress={toggleLike}>
         <Icon name={liked ? "favorite" : "favorite-border"} size={30} color="black" />
       </Pressable>
-      <Pressable  style={styles.iconContainer}>
+      <Pressable  style={styles.iconContainer}  onPress={() => navigation.navigate('Allproducts')}>
         <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="black" />
       </Pressable >
      {/* <Text>\n</Text>  */}

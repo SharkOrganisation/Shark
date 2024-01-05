@@ -125,11 +125,12 @@ marginLeft:15,
     borderRadius: 40,
     width:200,
     left:110,
-    bottom:20,
+    bottom:40,
   },
   PayText:{
     color:'black',
     textAlign: 'center',
-    fontSize:30
+    fontSize:30,
+    fontWeight:"bold"
   }
 });
