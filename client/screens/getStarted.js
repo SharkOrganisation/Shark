@@ -1,11 +1,18 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert,Vibration } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import GymLogo from 'react-native-vector-icons/FontAwesome'
 import UserLogo from 'react-native-vector-icons/Entypo'
 
 const GetStarted = () => {
+    const [role, setRole] = useState('')
+    const [disabled, setDisabled] = useState(true)
+    const [borderGym,setBorderGym] = useState(false)
+    const [borderUser,setBorderUser] = useState(false)
+    const [borderCoach,setBorderCoach] = useState(false)
+
+
     const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
@@ -23,20 +30,46 @@ const GetStarted = () => {
                 <Text style={styles.title}> Who You Are?</Text>
             </View>
             <View style={styles.titleContainer}>
-                <TouchableOpacity >
-                    <Image source={require("../assets/LogoUsers/Coach.png")} style={styles.coachImage} />
+                <TouchableOpacity
+                    onPress={() => {
+                        setRole('coach')
+                        setDisabled(false)
+                        setBorderCoach(true)
+                        setBorderGym(false)
+                        setBorderUser(false)
+                    }}
+                >
+                    <Image source={require("../assets/LogoUsers/Coach.png")} style={[styles.coachImage,{borderWidth: borderCoach ? 8 : 1}]} />
                 </TouchableOpacity>
                 <Text style={styles.textAvatar}>Coach</Text>
             </View>
             <View style={styles.allIcons}>
                 <View style={styles.avatarContainer}>
-                    <TouchableOpacity style={styles.avatar}>
+                    <TouchableOpacity
+                        style={[styles.avatar,{borderWidth: borderGym ? 8 : 1}]}
+                        onPress={() => {
+                            setRole('gym')
+                            setDisabled(false)
+                            setBorderGym(true)
+                            setBorderCoach(false)
+                            setBorderUser(false)
+                        }}
+                    >
                         <GymLogo name="building" style={styles.iconGym} />
                     </TouchableOpacity>
                     <Text style={styles.textAvatar}>Gym Owner</Text>
                 </View>
                 <View style={styles.avatarContainer}>
-                    <TouchableOpacity style={styles.avatar}>
+                    <TouchableOpacity
+                        style={[styles.avatar,{borderWidth: borderUser ? 8 : 1}]}
+                        onPress={() => {
+                            setRole('user')
+                            setDisabled(false)
+                            setBorderGym(false)
+                            setBorderCoach(false)
+                            setBorderUser(true)
+                        }}
+                    >
                         <UserLogo name="user" style={styles.iconGym} />
                     </TouchableOpacity>
                     <Text style={styles.textAvatar}>User</Text>
@@ -45,13 +78,19 @@ const GetStarted = () => {
             </View>
 
             <View style={styles.Started}>
-                <TouchableOpacity 
-                style={styles.btnStarted}
-                onPress={()=>{
-                    navigation.navigate('welcome')
-                }}
+                <TouchableOpacity
+                    style={[styles.btnStarted, { opacity: disabled ? 0.5 : 1 }]}
+                    onPress={() => {
+                        if (disabled) {
+                            Alert.alert("Please Select A Role");
+                            Vibration.vibrate()
+                        } else {
+                            navigation.navigate('welcome',{role})
+                        }
+                    }}
                 >
-                    <Text style={styles.textStarted}>Get Started</Text>
+                    <Text
+                        style={styles.textStarted}>Get Started</Text>
                 </TouchableOpacity>
             </View>
 
@@ -74,7 +113,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         alignItems: 'center',
-        marginTop:'5%',
+        marginTop: '15%',
         marginBottom: '9%',
     },
     logoText: {
@@ -90,8 +129,9 @@ const styles = StyleSheet.create({
         color: "gray",
         fontWeight: '900',
         fontSize: 50,
-        marginTop:30,
-        marginBottom:50
+        marginTop: 30,
+        marginBottom: 50,
+        textTransform: "uppercase",
     },
     allIcons: {
         flexDirection: "row",
@@ -109,6 +149,7 @@ const styles = StyleSheet.create({
     },
     textStarted: {
         fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
     btnStarted: {
         backgroundColor: "#BEFF03",
@@ -117,8 +158,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
-        marginTop: 130,
-        marginBottom:50,
+        marginTop: 100,
+        marginBottom: 50,
+
     },
     Started: {
         justifyContent: 'center',
@@ -131,7 +173,7 @@ const styles = StyleSheet.create({
         borderColor: "#BEFF03",
         borderWidth: 2,
         padding: 20,
-        borderRadius: '100%'
+        borderRadius: 100,
 
     },
     avatarContainer: {
@@ -143,7 +185,7 @@ const styles = StyleSheet.create({
         padding: 20,
         width: 120,
         height: 120,
-        borderRadius: '100%'
+        borderRadius: 100
     },
     textAvatar: {
         color: "#BEFF03",
