@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         borderColor: "#BEFF03",
         borderWidth: 2,
         padding: 20,
-        borderRadius: '100%'
+        borderRadius: 100
 
     },
     avatarContainer: {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         padding: 20,
         width: 120,
         height: 120,
-        borderRadius: '100%'
+        borderRadius: 100
     },
     textAvatar: {
         color: "#BEFF03",
