@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 50,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 50,
