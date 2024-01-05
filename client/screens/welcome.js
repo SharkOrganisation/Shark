@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#9AC61C',
     flex: 1,
-    paddingVertical: 50,
     alignItems: 'center',
   },
   title: {
