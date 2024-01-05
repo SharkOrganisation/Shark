@@ -14,9 +14,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Home" component={WelcomeScreen} options={{ headerShown: false }}  /> */}
-        {/* <Stack.Screen name="pay" component={Paiment} options={{ headerShown: false }}  /> */}
-        {/* <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  /> */}
+        <Stack.Screen name="Home" component={WelcomeScreen} options={{ headerShown: false }}  />
+        <Stack.Screen name="pay" component={Paiment} options={{ headerShown: false }}  />
+        <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }}  />
 
         <Stack.Screen name='login' component={Login} />
