@@ -21,7 +21,7 @@ import coachFollowGym from "./routes/CoachFollowGym";
 import savedPost from "./routes/savedPost_route";
 import routePost from "./routes/posts.route";
 const app: Application = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use(express.json());
 app.use(cors());

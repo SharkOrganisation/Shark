@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export const signUp = async (req: Request, res: Response) => {
   const role = req.params.role;
-  const { id, fullname, email, datebirth, location, speciality, perSession } =
+  const { id, fullname, email,age, datebirth, location, speciality, perSession } =
     req.body;
   try {
     if (role === "user") {
@@ -21,6 +21,7 @@ export const signUp = async (req: Request, res: Response) => {
             fullname,
             email,
             datebirth,
+            age,
             pfImage: "",
           },
         });

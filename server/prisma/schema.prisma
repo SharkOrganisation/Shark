@@ -19,10 +19,11 @@ model Admin {
 }
 
 model User {
-  id            String             @id 
+  id            String           @id
   pfImage       String           @db.Text
   fullname      String
   email         String
+  age           Int
   datebirth     String
   bmi           Float?
   followedCoach FollowingCoach[]
@@ -35,7 +36,7 @@ model User {
 }
 
 model Coach {
-  id         String                 @id
+  id         String              @id
   fullname   String
   email      String
   pfImage    String              @db.Text
@@ -53,7 +54,7 @@ model Coach {
 }
 
 model Gym {
-  id             String                 @id
+  id             String              @id
   fullname       String
   Email          String
   pfImage        String              @db.Text
@@ -83,44 +84,44 @@ model Post {
 }
 
 model Comment {
-  id      Int    @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   content String
   likes   Int
-  Post    Post?  @relation(fields: [postId], references: [id])
+  Post    Post?   @relation(fields: [postId], references: [id])
   postId  Int?
-  User    User?  @relation(fields: [userId], references: [id])
+  User    User?   @relation(fields: [userId], references: [id])
   userId  String?
 }
 
 model SavedPost {
-  id     Int   @id @default(autoincrement())
-  User   User? @relation(fields: [userId], references: [id])
+  id     Int     @id @default(autoincrement())
+  User   User?   @relation(fields: [userId], references: [id])
   userId String?
-  Post   Post? @relation(fields: [postId], references: [id])
+  Post   Post?   @relation(fields: [postId], references: [id])
   postId Int?
 }
 
 model FollowingCoach {
-  id      Int    @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   coachId String?
-  Coach   Coach? @relation(fields: [coachId], references: [id])
-  User    User?  @relation(fields: [userId], references: [id])
+  Coach   Coach?  @relation(fields: [coachId], references: [id])
+  User    User?   @relation(fields: [userId], references: [id])
   userId  String?
 }
 
 model FollowingGym {
-  id     Int   @id @default(autoincrement())
-  User   User? @relation(fields: [userId], references: [id])
+  id     Int     @id @default(autoincrement())
+  User   User?   @relation(fields: [userId], references: [id])
   userId String?
-  Gym    Gym?  @relation(fields: [gymId], references: [id])
+  Gym    Gym?    @relation(fields: [gymId], references: [id])
   gymId  String?
 }
 
 model CoachfollowingGym {
-  id      Int    @id @default(autoincrement())
-  Coach   Coach? @relation(fields: [coachId], references: [id])
+  id      Int     @id @default(autoincrement())
+  Coach   Coach?  @relation(fields: [coachId], references: [id])
   coachId String?
-  Gym     Gym?   @relation(fields: [gymId], references: [id])
+  Gym     Gym?    @relation(fields: [gymId], references: [id])
   gymId   String?
 }
 
@@ -133,7 +134,7 @@ model Membership {
   Gym           Gym?      @relation(fields: [gymId], references: [id])
   gymId         String?
   user          User      @relation(fields: [userId], references: [id])
-  userId        String       @unique
+  userId        String    @unique
 }
 
 model Diet {
@@ -173,10 +174,10 @@ model Program {
 }
 
 model Plan {
-  id     Int     @id @default(autoincrement())
-  name   String
-  price  Int
-  status Boolean
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Int
+  status    Boolean
   program   Program? @relation(fields: [programId], references: [id])
   programId Int?     @unique
   Coach     Coach?   @relation(fields: [coachId], references: [id])
@@ -211,10 +212,10 @@ model Basket {
 }
 
 model Review {
-  id      Int    @id @default(autoincrement())
-  stars   Int
-  Gym     Gym?   @relation(fields: [gymId], references: [id])
-  gymId   String?
-  User    User?  @relation(fields: [userId], references: [id])
-  userId  String?
+  id     Int     @id @default(autoincrement())
+  stars  Int
+  Gym    Gym?    @relation(fields: [gymId], references: [id])
+  gymId  String?
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
