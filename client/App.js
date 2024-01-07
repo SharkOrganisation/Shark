@@ -11,6 +11,8 @@ import CreateCoach from './screens/coachCreateAccount'
 import CreateGym from './screens/gymCreateAccount'
 import CreateProgram  from './screens/createProgram';
 import GetStarted from './screens/getStarted';
+import ResetPassword from './screens/resetPassword';
+
 const Stack = createNativeStackNavigator();
 
 
@@ -29,6 +31,7 @@ export default function App() {
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }}  />
+        <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }}  />
 
       </Stack.Navigator>
     </NavigationContainer>
