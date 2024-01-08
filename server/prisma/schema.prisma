@@ -33,6 +33,7 @@ model User {
   memberShip    Membership?
   basket        Basket[]
   review        Review[]
+  userPlan      UserPlan[]
 }
 
 model Coach {
@@ -174,16 +175,16 @@ model Program {
 }
 
 model Plan {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
   price     Int
-  status    Boolean
-  program   Program? @relation(fields: [programId], references: [id])
-  programId Int?     @unique
-  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  program   Program?   @relation(fields: [programId], references: [id])
+  programId Int?       @unique
+  Coach     Coach?     @relation(fields: [coachId], references: [id])
   coachId   String?
-  Diet      Diet?    @relation(fields: [dietId], references: [id])
+  Diet      Diet?      @relation(fields: [dietId], references: [id])
   dietId    Int?
+  userPlan  UserPlan[]
 }
 
 model Product {
@@ -218,4 +219,13 @@ model Review {
   gymId  String?
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
+}
+
+model UserPlan {
+  id     Int     @id @default(autoincrement())
+  status Boolean
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  Plan   Plan?   @relation(fields: [planId], references: [id])
+  planId Int?
 }

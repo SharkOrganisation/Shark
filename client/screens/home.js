@@ -74,12 +74,10 @@ const Home = () => {
                 uri: "https://webapi-prod.technogym.com/dw/image/v2/BFLQ_PRD/on/demandware.static/-/Sites-tg-catalog-master/default/dwa7cbc57d/product/PA06-ANV0GG/PA06_scottbench_element_related_01_7.jpg?sw=1100&sh=1100",
               }}
             >
-
               <View style={styles.productDetails}>
-              <Text style={styles.nameProduct}>name</Text>
-              <Text style={styles.priceProduct}> price</Text>
+                <Text style={styles.nameProduct}>name</Text>
+                <Text style={styles.priceProduct}> price</Text>
               </View>
-
             </ImageBackground>
           </View>
         </View>
@@ -192,7 +190,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-
   },
   quoteContainer: {
     flexDirection: "column",
@@ -220,14 +217,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
   },
-  productDetails:{
+  productDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 10,
-    borderColor:"black",
+    borderColor: "black",
     borderWidth: 1,
-  }
+  },
 });
 
 export default Home;
