@@ -17,8 +17,9 @@ const Login = ({ route }) => {
             console.log(response);
             alert('user logged in successfully')
         } catch (error) {
+            console.log(error.code )
             if (error.code === 'auth/invalid-credential') {
-                Alert.alert('Wrong Password', 'Please Check Your Password !');
+                Alert.alert('Wrong Credetntials', 'Please Check Your Credentials !');
             }else if(error.code === 'auth/invalid-email'){
                 Alert.alert('Invalide Email', 'Please Check your email');
             } else {

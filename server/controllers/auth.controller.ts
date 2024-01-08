@@ -5,8 +5,11 @@ const prisma = new PrismaClient();
 
 export const signUp = async (req: Request, res: Response) => {
   const role = req.params.role;
-  const { id, fullname, email,age, datebirth, location, speciality, perSession } =
+  const { id, fullname, email,age, datebirth, location,type, speciality, perSession,bmi } =
     req.body;
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
   try {
     if (role === "user") {
       const userExisted = await prisma.user.count({
@@ -22,6 +25,7 @@ export const signUp = async (req: Request, res: Response) => {
             email,
             datebirth,
             age,
+            bmi,
             pfImage: "",
           },
         });
@@ -34,10 +38,14 @@ export const signUp = async (req: Request, res: Response) => {
       if (gymOwnerExisted !== 0) {
         res.status(409).send("Gym owner already exists");
       } else if (gymOwnerExisted === 0) {
+        console.log('====================================');
+        console.log('from gym table');
+        console.log('====================================');
         const newGym = await prisma.gym.create({
           data: {
             id,
             fullname,
+            type,
             Email: email,
             pfImage: "",
             location,
@@ -70,4 +78,8 @@ export const signUp = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({ Error: err });
   }
+
+
+
+
 };

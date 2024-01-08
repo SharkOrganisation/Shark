@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { FIREBASE_AUTH } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import  axios  from 'axios';
+import axios from 'axios';
 
 const CoachCreateAccount = ({ route }) => {
   const [date, setDate] = useState(new Date())
@@ -50,18 +50,20 @@ const CoachCreateAccount = ({ route }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const { user } = userCredential;
-      await axios.post(`http://192.168.228.51:3000/api/auth/addUser/${role}`, {
+      await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/auth/addUser/${role}`, {
         id: user.uid,
         fullname,
         email,
-        datebirth:dateBirth,
+        datebirth: dateBirth,
         speciality,
         perSession: parseFloat(perSession)
       })
-
+      Alert.alert('coach added successfully')
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         Alert.alert('Email already exists', 'Please use a different email.');
+      } else if (error.code === 'auth/weak-password') {
+        Alert.alert('Weak Password', 'Password should be at least 6 characters');
       } else {
         console.log(error.message);
       }

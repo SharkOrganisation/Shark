@@ -54,7 +54,7 @@ const ResetPassword = ({route}) => {
 
             </View>
             <TouchableOpacity
-                style={styles.loginBtn}
+                style={[styles.loginBtn,{opacity: loading ? 0.5 : 1}]}
                 onPress={handlePasswordReset}
                 disabled={loading}
             >
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        marginVertical: 50
+        marginVertical: 50,
     }
 })
 
