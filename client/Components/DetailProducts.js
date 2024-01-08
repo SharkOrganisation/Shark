@@ -1,5 +1,7 @@
+import { StatusBar } from 'expo-status-bar';
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
@@ -22,6 +24,7 @@ export default function DetailProducts() {
   );
 
   return (
+
     <View style={styles.container}>
      <Pressable style={styles.reviewIcon } >
         <Icon name="star-rate" style={styles.icon} size={28} color="white" />
@@ -47,12 +50,14 @@ export default function DetailProducts() {
 </TouchableHighlight>
 
     </View>
+
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    
   },
   iconContainer: {
     position: 'absolute',
