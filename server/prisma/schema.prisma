@@ -161,17 +161,17 @@ model ProgramExercice {
   sets       Int
   Exercice   Exercice? @relation(fields: [exerciceId], references: [id])
   exerciceId Int?
-  program    Program[]
+  Program   Program? @relation(fields: [programId], references: [id])
+  programId Int?
 }
 
 model Program {
-  id                Int              @id @default(autoincrement())
-  name              String
-  duration          String
-  description       String
-  programExercice   ProgramExercice? @relation(fields: [programExerciceId], references: [id])
-  programExerciceId Int?
-  plan              Plan?
+  id              Int               @id @default(autoincrement())
+  name            String
+  duration        String
+  description     String
+  programExercice ProgramExercice[]
+  plan            Plan?
 }
 
 model Plan {

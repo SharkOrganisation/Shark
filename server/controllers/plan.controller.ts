@@ -25,7 +25,6 @@ export const getPlan = async (req: Request, res: Response) => {
       select: {
         name: true,
         price: true,
-        status: true,
         program: {
           select: {
             name: true,
@@ -63,9 +62,17 @@ export const getplanBycoach = async (req: Request, res: Response) => {
       select: {
         name: true,
         price: true,
-        status: true,
-      }
-
+        userPlan: {
+          select: {
+            status: true,
+            User: {
+              select: {
+                fullname: true,
+              },
+            },
+          },
+        },
+      },
     });
     res.json(plan);
   } catch (err) {
