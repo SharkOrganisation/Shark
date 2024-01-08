@@ -14,6 +14,7 @@ CREATE TABLE "User" (
     "pfImage" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "age" INTEGER NOT NULL,
     "datebirth" TEXT NOT NULL,
     "bmi" DOUBLE PRECISION,
 

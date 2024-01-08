@@ -48,7 +48,7 @@ const GetStarted = () => {
                     <TouchableOpacity
                         style={[styles.avatar,{borderWidth: borderGym ? 8 : 1}]}
                         onPress={() => {
-                            setRole('gym')
+                            setRole('Gym')
                             setDisabled(false)
                             setBorderGym(true)
                             setBorderCoach(false)

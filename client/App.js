@@ -13,9 +13,11 @@ import CreateProgram  from './screens/createProgram';
 import CreateDiet from './screens/CreateDiet';
 import CreatePlan from './screens/CreatePlan';
 import GetStarted from './screens/getStarted';
+import ResetPassword from './screens/resetPassword';
 import CreateAllProgram from './screens/CreateAllProgram';
 import PaymentSucces from './screens/PaymentSucces';
 import PaymentFailed from './screens/PaymentFailed';
+
 const Stack = createNativeStackNavigator();
 
 
@@ -24,13 +26,13 @@ export default function App() {
   
   
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='CreateProgram'>
+      <Stack.Navigator initialRouteName='getStarted'>
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }}  />
         <Stack.Screen name="CreateAllProgram" component={CreateAllProgram} options={{ headerShown: false }}  />
         <Stack.Screen name="CreateDiet" component={CreateDiet} options={{ headerShown: false }}  />
         <Stack.Screen name="CreatePlan" component={CreatePlan} options={{ headerShown: false }} />
         <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }}   />
-      <Stack.Screen name='login' component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="getStarted" component={GetStarted} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
         <Stack.Screen name='login' component={Login} options={{ headerShown: false }} />
@@ -39,6 +41,7 @@ export default function App() {
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }}  />
+        <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }}  />
 
       </Stack.Navigator>
     </NavigationContainer>

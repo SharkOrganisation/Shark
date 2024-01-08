@@ -11,7 +11,7 @@ export default function WelcomeScreen({route}) {
   const navigation = useNavigation()
   const {role} = route.params
 
-  console.log(role,'from welcome screen');
+ 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#9AC61C' }}>
       <StatusBar backgroundColor={'black'} />
@@ -52,7 +52,7 @@ export default function WelcomeScreen({route}) {
         onPress={()=>{
           if(role === 'user'){
             navigation.navigate('createUser',{role});
-          }else if(role === 'gym'){
+          }else if(role === 'Gym'){
             navigation.navigate('createGym',{role});
           }else if(role === 'coach'){
             navigation.navigate('createCoach',{role});
@@ -64,7 +64,7 @@ export default function WelcomeScreen({route}) {
         <TouchableOpacity
           style={{ marginTop: 25 }}
           onPress={() => {
-            navigation.navigate('login');
+            navigation.navigate('login',{role});
           }}
         >
           <Text
