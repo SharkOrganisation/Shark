@@ -1,7 +1,8 @@
 import {React,useState,useEffect} from "react";
-import { View, Text, StyleSheet,Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet,Image, TouchableOpacity , ScrollView} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default function Paiment() {
 
@@ -14,9 +15,9 @@ export default function Paiment() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://192.168.220.147/api/product/get/products');
+      const response = await fetch('http://192.168.1.14:3000/api/product/get/products');
       const result = await response.json();
-      console.log(result);
+      console.log("dataaaaaa",result);
       setData(result);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -24,7 +25,7 @@ export default function Paiment() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.pageTitle}>
        <TouchableOpacity>   
         <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="black" />
@@ -52,19 +53,22 @@ export default function Paiment() {
       {data.map((product) => (
         <View key={product.id}>
           <TouchableOpacity style={styles.cardContainer} onPress={() => {
-            navigation.navigate('DetailProducts', { productId: product.id });
+            navigation.navigate('DetailProducts', { productId: product.id, product:product });
           }}>
-            <Image source={{ uri: "https://outdoor-gym.com/wp-content/uploads/street-workout-single-twister-300x300.webp" }} style={styles.cardImage} />
+            <Image source={{ uri: product.images[0] }} style={styles.cardImage} />
           </TouchableOpacity>
           <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>{product.id}</Text>
-            <Text style={styles.cardcategory}>gymEquipment</Text>
-            <Text style={styles.cardPrice}>150£</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={styles.cardTitle}>{product.quantity}</Text>
+        <Icon name="production_quantity_limits" style={styles.icon} />
+      </View>
+            <Text style={styles.cardcategory}>{product.name}</Text>
+            <Text style={styles.cardPrice}>{product.price}</Text>
           </View>
         </View>
       ))}
     </View>
-  </View>
+    </ScrollView>
 );
   }
 
@@ -91,6 +95,7 @@ const styles = StyleSheet.create({
   },
   icon:{
 marginLeft:15,
+marginTop:-9,
   },
   cardContainer: {
     backgroundColor: '#fff',
@@ -133,5 +138,9 @@ marginLeft:15,
     fontWeight: 'bold',
     top:-4,
     color: '#033',
+  },
+  icon1: {
+    fontSize: 20, // Adjust the size as needed
+    marginRight: 5, // Adjust the spacing as needed
   },
 });
