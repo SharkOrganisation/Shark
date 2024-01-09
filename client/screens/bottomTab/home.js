@@ -13,8 +13,8 @@ import React from "react";
 import Previous from "react-native-vector-icons/AntDesign";
 import Begin from "react-native-vector-icons/AntDesign";
 import Shop from "react-native-vector-icons/Feather";
-import CardImg from "../assets/HomePicture/CoverCard.jpg";
-import QuoteImg from "../assets/HomePicture/QuoteImg.jpg";
+import CardImg from "../../assets/HomePicture/CoverCard.jpg";
+import QuoteImg from "../../assets/HomePicture/QuoteImg.jpg";
 
 const Home = () => {
   return (

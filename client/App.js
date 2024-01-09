@@ -15,9 +15,10 @@ import CreatePlan from './screens/CreatePlan';
 import GetStarted from './screens/getStarted';
 import ResetPassword from './screens/resetPassword';
 import CreateAllProgram from './screens/CreateAllProgram';
-import Home from './screens/home';
+import Home from './screens/bottomTab/home';
 import PaymentSucces from './screens/PaymentSucces';
 import PaymentFailed from './screens/PaymentFailed';
+import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,11 @@ export default function App() {
   
   
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='getStarted'>
+      <Stack.Navigator initialRouteName='tabs'>
+        <Stack.Screen name ="tabs" component={BottomTabScreens} options={{
+          // headerTitle:()=>(<Text style={{color:'blue'}}>hello </Text>),
+        }
+        }/>
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }}  />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }}/>
         <Stack.Screen name="getStarted" component={GetStarted} options={{ headerShown: false }} />
@@ -36,7 +41,6 @@ export default function App() {
         <Stack.Screen name="CreateDiet" component={CreateDiet} options={{ headerShown: false }}  />
         <Stack.Screen name="CreatePlan" component={CreatePlan} options={{ headerShown: false }} />
         <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }}   />
-        <Stack.Screen name="getStarted" component={GetStarted} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
         <Stack.Screen name='createUser' component={CreateUser} options={{ headerShown: false }} />

@@ -12,7 +12,6 @@ interface ProgramExercice {
 
 export const addProgramEx = async (req: Request, res: Response) => {
   // const { reps, sets,exerciceId } = req.body;
-
   try {
     await prisma.programExercice.create({
       data: req.body,
@@ -77,10 +76,20 @@ export const getProgramEx = async (req: Request, res: Response) => {
         },
       },
     });
-    res.json(plan);
+    res.status(200).json(plan);
   } catch (err) {
     console.error(err);
-    res.json(err);
+    res.status(400).json(err);
   }
 };
 
+
+export const removeProgramEx = async  (req: Request, res: Response) => {
+  const {programId} = req.params
+  try{
+    let removedProgram = await prisma.programExercice.delete({where:{id:+programId}})
+    res.status(200).send("Program Exercice deleted successfully")
+  }catch (err) {
+    res.status(400).send(err)
+  }
+}

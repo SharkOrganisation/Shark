@@ -4,7 +4,7 @@ const router = Router();
 
 router.get("/:userId", userPlan.getUserPlan);
 router.post("/sendPlan",userPlan.getUserPlan);
-router.put("/:id",userPlan.updatePlan);
+router.put("/:id/:userId",userPlan.updatePlan);
 
 
 
