@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: 50,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent:'center',
         backgroundColor: 'black'
     },
     image1: {
@@ -129,15 +129,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    loginBtn: {
-        backgroundColor: "#BEFF03",
-        width: 270,
-        padding: 20,
-        justifyContent: 'center',
+    loginBtn:{
+        backgroundColor:"#BEFF03",
+        width:270,
+        padding:20,
+        justifyContent:'center',
         alignItems: 'center',
-        borderRadius: 10,
-        marginVertical: 50
+        borderRadius:10,
+        marginVertical:50
     }
 })
 
-export default Login
+export default Login;

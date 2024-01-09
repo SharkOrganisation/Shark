@@ -168,7 +168,6 @@ CREATE TABLE "Plan" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
-    "status" BOOLEAN NOT NULL,
     "programId" INTEGER,
     "coachId" TEXT,
     "dietId" INTEGER,
@@ -209,6 +208,16 @@ CREATE TABLE "Review" (
     "userId" TEXT,
 
     CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserPlan" (
+    "id" SERIAL NOT NULL,
+    "status" BOOLEAN NOT NULL,
+    "userId" TEXT,
+    "planId" INTEGER,
+
+    CONSTRAINT "UserPlan_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -297,3 +306,9 @@ ALTER TABLE "Review" ADD CONSTRAINT "Review_gymId_fkey" FOREIGN KEY ("gymId") RE
 
 -- AddForeignKey
 ALTER TABLE "Review" ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserPlan" ADD CONSTRAINT "UserPlan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserPlan" ADD CONSTRAINT "UserPlan_planId_fkey" FOREIGN KEY ("planId") REFERENCES "Plan"("id") ON DELETE SET NULL ON UPDATE CASCADE;
