@@ -2,20 +2,19 @@ import {React,useState,useEffect} from "react";
 import { View, Text, StyleSheet,Image, TouchableOpacity , ScrollView} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons'
+// import Icon from 'react-native-vector-icons/MaterialIcons'
 
-export default function Paiment() {
+export default function Allproducts() {
 
   const navigation =useNavigation()
+
   const [data, setData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.1.14:3000/api/product/get/products');
+      const response = await fetch('http://192.168.160.147:3000/api/product/get/products');
       const result = await response.json();
       console.log("dataaaaaa",result);
       setData(result);
@@ -23,58 +22,173 @@ export default function Paiment() {
       console.error('Error fetching data:', error);
     }
   };
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const handleCategoryPress = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredProducts =
+    selectedCategory &&
+    data.filter(
+      (product) =>
+        product.category &&
+        product.category.toLowerCase() === selectedCategory.toLowerCase()
+    );
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.pageTitle}>
-       <TouchableOpacity>   
-        <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="black" />
-          </TouchableOpacity>
-        <Text style={styles.text}>All Products</Text>
+        <TouchableOpacity>
+          <Ionicons
+            name="arrow-back-circle-sharp"
+            style={styles.icon}
+            size={40}
+            color="black"
+          />
+        </TouchableOpacity>
+        <Text style={styles.text}>Marketplace</Text>
       </View>
-      <View style={{flexDirection:"row" , marginTop:70}}>
-      <TouchableOpacity
-      style={{ backgroundColor: 'black', padding: 8, borderRadius: 90, width:130,  alignItems: 'center' ,marginLeft:10}}
-    >
-      <Text style={{ color: 'white' }}>Gym Equipment</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={{ backgroundColor: 'black', padding: 8, borderRadius: 90, width:130,  alignItems: 'center' ,marginLeft:10}}
-    >
-      <Text style={{ color: 'white' }}>protein</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={{ backgroundColor: 'black', padding: 8, borderRadius: 90, width:130,  alignItems: 'center' ,marginLeft:10}}
-    >
-      <Text style={{ color: 'white' }}>clothes</Text>
-    </TouchableOpacity>
+      <View style={{ flexDirection: "row", marginTop: 70 }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor:
+              selectedCategory === "Gym Equipment" ? "white" : "black",
+            padding: 8,
+            borderRadius: 90,
+            width: 130,
+            alignItems: "center",
+            marginLeft: 10,
+          }}
+          onPress={() => handleCategoryPress("Gym Equipment")}
+        >
+          <Text
+            style={{
+              color: selectedCategory === "Gym Equipment" ? "black" : "white",
+            }}
+          >
+            Gym Equipment
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: selectedCategory === "protein" ? "white" : "black",
+            padding: 8,
+            borderRadius: 90,
+            width: 130,
+            alignItems: "center",
+            marginLeft: 10,
+          }}
+          onPress={() => handleCategoryPress("protein")}
+        >
+          <Text
+            style={{
+              color: selectedCategory === "protein" ? "black" : "white",
+            }}
+          >
+            Protein
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: selectedCategory === "clothes" ? "white" : "black",
+            padding: 8,
+            borderRadius: 90,
+            width: 130,
+            alignItems: "center",
+            marginLeft: 10,
+          }}
+          onPress={() => handleCategoryPress("clothes")}
+        >
+          <Text
+            style={{
+              color: selectedCategory === "clothes" ? "black" : "white",
+            }}
+          >
+            Clothes
+          </Text>
+        </TouchableOpacity>
       </View>
-      <View>
-      {data.map((product) => (
-        <View key={product.id}>
-          <TouchableOpacity style={styles.cardContainer} onPress={() => {
-            navigation.navigate('DetailProducts', { productId: product.id, product:product });
-          }}>
-            <Image source={{ uri: product.images[0] }} style={styles.cardImage} />
-          </TouchableOpacity>
-          <View style={styles.cardContent}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.cardTitle}>{product.quantity}</Text>
-        <Icon name="production_quantity_limits" style={styles.icon} />
-      </View>
-            <Text style={styles.cardcategory}>{product.name}</Text>
-            <Text style={styles.cardPrice}>{product.price}</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        {data.map((product, index) => (
+          <View
+            key={product.id}
+            style={{
+              width: "48%",
+              marginBottom: 10,
+              marginRight: index % 2 === 0 ? 10 : 0,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => {
+                navigation.navigate("DetailProducts", {
+                  productId: product.id,
+                  product,
+                });
+              }}
+            >
+              <Image
+                source={{ uri: product.images[0] }}
+                style={styles.cardImage}
+              />
+              {console.log(product.images[0])}
+            </TouchableOpacity>
+            <View style={styles.cardContent}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.cardquantity}>{product.quantity}</Text>
+                <Text>
+                  <Text>{product.icon}</Text>
+                </Text>
+              </View>
+              <Text style={styles.cardTitle}>{product.name}</Text>
+              <Text style={styles.cardPrice}>{product.price}</Text>
+            </View>
           </View>
-        </View>
-      ))}
-    </View>
+        ))}
+        {selectedCategory &&
+          filteredProducts?.map((product, index) => (
+            <View
+              key={product.id}
+              style={{
+                width: "48%",
+                marginBottom: 10,
+                marginRight: index % 2 === 0 ? 10 : 0,
+              }}
+            >
+              <TouchableOpacity
+                style={styles.cardContainer}
+                onPress={() => {
+                  navigation.navigate("DetailProducts", {
+                    productId: product.id,
+                    product,
+                  });
+                }}
+              >
+                <Image
+                  source={{ uri: product.images[0] }}
+                  style={styles.cardImage}
+                />
+                {console.log(product.images[0])}
+              </TouchableOpacity>
+              <View style={styles.cardContent}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={styles.cardquantity}>{product.quantity}</Text>
+                  <Text>
+                    <Text>{product.icon}</Text>
+                  </Text>
+                </View>
+                <Text style={styles.cardTitle}>{product.name}</Text>
+                <Text style={styles.cardPrice}>{product.price}</Text>
+              </View>
+            </View>
+          ))}
+      </View>
     </ScrollView>
-);
-  }
-
-
-
-
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -93,54 +207,52 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontWeight: "700",
   },
-  icon:{
-marginLeft:15,
-marginTop:-9,
+  icon: {
+    marginLeft: 15,
+    marginTop: -9,
   },
   cardContainer: {
-    backgroundColor: '#fff',
-    padding: 15,
+    padding: 10,
     borderRadius: 5,
     marginBottom: 15,
-    marginTop:20,
-    marginLeft:10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    marginTop: 20,
+    marginLeft: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 10, height: 20 },
+    shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 2,
-    width:"30%",
-    justifyContent: 'center',
-    
+    width: "80%",
+    justifyContent: "center",
   },
   cardImage: {
-    width:"100%",
-    height: 80,
+    width: 140,
+    height: 120,
     borderRadius: 5,
+    justifyContent: "center",
   },
   cardContent: {
     padding: 15,
-   marginVertical:-20
+    marginVertical: -20,
   },
   cardTitle: {
-    color:'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
-  cardcategory:{
-    top:-5,
-    color:'#033',
-    fontWeight: 'bold',
-    fontSize:15,
-  },
   cardPrice: {
-    fontWeight: 'bold',
-    top:-4,
-    color: '#033',
+    fontWeight: "bold",
+    top: -4,
+    color: "#033",
+  },
+  cardquantity: {
+    fontWeight: "bold",
+    top: -4,
+    color: "gray",
   },
   icon1: {
-    fontSize: 20, // Adjust the size as needed
-    marginRight: 5, // Adjust the spacing as needed
+    fontSize: 20,
+    marginRight: 5,
   },
 });

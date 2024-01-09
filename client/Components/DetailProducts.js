@@ -1,16 +1,18 @@
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-export default function DetailProducts() {
-  const images = [
-    "https://outdoor-gym.com/wp-content/uploads/street-workout-single-twister-300x300.webp",
-    "https://outdoor-gym.com/wp-content/uploads/street-workout-single-twister-300x300.webp",
-    "https://outdoor-gym.com/wp-content/uploads/street-workout-single-twister-300x300.webp",
-  ];
+export default function DetailProducts () {
+  const navigation =useNavigation()
+  const route=useRoute()
+  const rp=route.params.product
+  // console.log("bhjbvhgv",rp.images)
+
+
 
   const [liked, setLiked] = useState(false);
 
@@ -21,16 +23,14 @@ export default function DetailProducts() {
   const renderItem = ({ item }) => (
     <Image source={{ uri: item }} style={styles.carouselImage} />
   );
-
-  const navigation =useNavigation()
   
 return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
      <Pressable style={styles.reviewIcon } >
-        <Icon name="star-rate" style={styles.icon} size={28} color="white" />
-        <Icon name="star-rate" style={styles.icon} size={28} color="white" />
-        <Icon name="star-rate" style={styles.icon} size={28} color="white" />
-        <Icon name="star-border" style={styles.icon} size={28} color="white" />
+        <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
+        <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
+        <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
+        <Icon name="star-border" style={styles.icon} size={28} color="#97d91c" />
       </Pressable>
   <Pressable style={styles.like} onPress={toggleLike}>
         <Icon name={liked ? "favorite" : "favorite-border"} size={30} color="black" />
@@ -38,18 +38,18 @@ return (
       <Pressable  style={styles.iconContainer}  onPress={() => navigation.navigate('Allproducts')}>
         <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="black" />
       </Pressable >
-     {/* <Text>\n</Text>  */}
       <View style={styles.carouselContainer}>
-        <Carousel data={images} renderItem={renderItem} sliderWidth={300} itemWidth={300} />
+        <Carousel data={rp.images} renderItem={renderItem} sliderWidth={390} itemWidth={350} />
       </View>
       <View style={styles.blackBackground}>
-  <Text style={styles.whiteText}>hi you can use this product only at nights when you are within your wife</Text>
+  <Text style={styles.whiteText } marginBottom={100}>{rp.description}</Text>
+      <Text  style={{color:"#97d91c",right:150,marginBottom:480,fontSize:20,  fontWeight: 'bold',}}>_Description_</Text>
 </View>
 <TouchableHighlight style={styles.addButon}>
   <Text style={styles.buttonText}>Add To Basket</Text>
 </TouchableHighlight>
 
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     position: 'absolute',
-    top: 10,
+    top: 29,
     left: 10,
     zIndex: 1,
   },
@@ -67,51 +67,54 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   carouselContainer: {
+    height:"100%",
     flex: 1,
-    backgroundColor: "#97d91c", 
+    backgroundColor: "white", 
     justifyContent: 'center',
     alignItems: 'center',
   },
   carouselImage: {
-    width: 200,
-    height: 200,
-    resizeMode: 'cover',
-    position: 'absolute',
-    top:40,
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    // resizeMode: 'cover',
+    // position: 'absolute',
+    top:10,
   },
   blackBackground: {
+    top:40,
     flex: 2,
     backgroundColor: "black",
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative', // Add this line
+    position: 'relative', 
   },
   whiteText: {
     color: 'white',
     fontSize: 15,
-    position: 'absolute', // Use absolute positioning for the text
-    top: 40, // Adjust the top value as needed
-    left: 20, // Adjust the left value as needed
+    position: 'absolute', 
+    top: 80, 
+    left: 12, 
   },
   like:{
     position: 'absolute',
-    top: 250,
-    left: 320,
-    zIndex: 1,
+    top: 310,
+    left: 380,
   },
   addButon: {
-    backgroundColor: '#97d91c', // Set background color to make it visible
+    backgroundColor: '#97d91c',
     position: 'absolute',
-    bottom: 330, // Adjust the bottom value as needed
+    bottom: 280,
     padding: 10,
     borderRadius: 60,
     marginLeft:150
   },
   reviewIcon: {
     position: 'absolute',
-    top: 294, // Adjust the top value as needed
-    right: 10, // Adjust the right value as needed
+    top: 484, 
+    right: 10, 
     zIndex: 1,
     flexDirection:"row"
   },
+
   });
