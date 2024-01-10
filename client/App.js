@@ -31,7 +31,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName='tabs'>
         <Stack.Screen name ="tabs" component={BottomTabScreens} options={{
-          // headerTitle:()=>(<Text style={{color:'blue'}}>hello </Text>),
+          headerShown: false
         }
         }/>
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }}  />

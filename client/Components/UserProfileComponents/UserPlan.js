@@ -10,6 +10,7 @@ const UserPlan = () => {
       {view === "main" && (
         <View style={styles.stylePlanContainer}>
           <TouchableOpacity
+            style={styles.planCard}
             onPress={() => {
               setView("details");
             }}
@@ -21,8 +22,10 @@ const UserPlan = () => {
               }}
               style={styles.imgPlan}
             />
+          <Text style={styles.text}>Plan Name</Text>
           </TouchableOpacity>
-          <Text style={styles.text}>My Plan Name</Text>
+          
+          
         </View>
       )}
 
@@ -40,14 +43,19 @@ const styles = StyleSheet.create({
   },
   stylePlanContainer: {
     padding: 20,
-    flexDirection: "column",
+    flexDirection: "row",
     flex: "wrap",
-    gap: 3,
+    flexWrap:"wrap",
+    justifyContent: "space-evenly"
+  },
+  planCard:{
+    margin:10
   },
   text: {
     color: "white",
-    fontSize: 30,
-    position:"relative"
+    fontSize: 20,
+    position:"relative",
+    alignSelf: "center",
   },
   imgPlan: {
     width: 150,
