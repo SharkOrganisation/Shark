@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import Footer from "../Components/Footer";
 const CreateAllProgram = () => {
   const navigation = useNavigation();
 
@@ -66,6 +67,7 @@ const CreateAllProgram = () => {
             <TouchableOpacity style={styles.doneBtn} onPress={()=>done()}>
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
+            <Footer/>
           </View>
         </View>
       </ScrollView>
