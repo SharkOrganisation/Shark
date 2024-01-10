@@ -93,7 +93,6 @@ const GetStarted = () => {
                         style={styles.textStarted}>Get Started</Text>
                 </TouchableOpacity>
             </View>
-
         </SafeAreaView>
     )
 }

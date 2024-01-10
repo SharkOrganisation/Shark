@@ -2,9 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Carousel from 'react-native-snap-carousel';
+import Carousel from 'react-native-snap-carousel';   
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
+
+
 
 export default function DetailProducts() {
   const images = [
@@ -38,8 +40,8 @@ export default function DetailProducts() {
       <Pressable  style={styles.iconContainer}>
         <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="black" />
       </Pressable >
-     {/* <Text>\n</Text>  */}
-      <View style={styles.carouselContainer}>
+   <Text>\n</Text>  
+        <View style={styles.carouselContainer}>
         <Carousel data={images} renderItem={renderItem} sliderWidth={300} itemWidth={300} />
       </View>
       <View style={styles.blackBackground}>
@@ -47,7 +49,7 @@ export default function DetailProducts() {
 </View>
 <TouchableHighlight style={styles.addButon}>
   <Text style={styles.buttonText}>Add To Basket</Text>
-</TouchableHighlight>
+</TouchableHighlight> 
 
     </View>
 
