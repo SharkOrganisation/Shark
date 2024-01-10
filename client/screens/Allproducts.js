@@ -5,38 +5,41 @@ import { useNavigation } from '@react-navigation/native';
 // import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default function Allproducts() {
-
-  const navigation =useNavigation()
-
+  const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
 
-  
   const fetchData = async () => {
     try {
       const response = await fetch('http://192.168.160.147:3000/api/product/get/products');
       const result = await response.json();
-      console.log("dataaaaaa",result);
+      console.log("dataaaaaa", result);
       setData(result);
+      setFilteredData(result); 
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);
+
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
-  };
-
-  const filteredProducts =
-    selectedCategory &&
-    data.filter(
-      (product) =>
-        product.category &&
-        product.category.toLowerCase() === selectedCategory.toLowerCase()
-    );
+   
+    const filteredProducts = category
+     ? data.filter((product) =>
+         (product.catergory || "").replace(/['"]+/g, '') === category
+       )
+     : data;
+   
+    setFilteredData(filteredProducts);
+    console.log(filteredProducts)
+   };
+   
+   
 
   return (
     <ScrollView style={styles.container}>
@@ -54,8 +57,7 @@ export default function Allproducts() {
       <View style={{ flexDirection: "row", marginTop: 70 }}>
         <TouchableOpacity
           style={{
-            backgroundColor:
-              selectedCategory === "Gym Equipment" ? "white" : "black",
+            backgroundColor: selectedCategory === "Gym Equipment" ? "white" : "black",
             padding: 8,
             borderRadius: 90,
             width: 130,
@@ -112,7 +114,7 @@ export default function Allproducts() {
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {data.map((product, index) => (
+        {(selectedCategory ? filteredData : data).map((product, index) => (
           <View
             key={product.id}
             style={{
@@ -128,6 +130,7 @@ export default function Allproducts() {
                   productId: product.id,
                   product,
                 });
+
               }}
             >
               <Image
@@ -148,43 +151,6 @@ export default function Allproducts() {
             </View>
           </View>
         ))}
-        {selectedCategory &&
-          filteredProducts?.map((product, index) => (
-            <View
-              key={product.id}
-              style={{
-                width: "48%",
-                marginBottom: 10,
-                marginRight: index % 2 === 0 ? 10 : 0,
-              }}
-            >
-              <TouchableOpacity
-                style={styles.cardContainer}
-                onPress={() => {
-                  navigation.navigate("DetailProducts", {
-                    productId: product.id,
-                    product,
-                  });
-                }}
-              >
-                <Image
-                  source={{ uri: product.images[0] }}
-                  style={styles.cardImage}
-                />
-                {console.log(product.images[0])}
-              </TouchableOpacity>
-              <View style={styles.cardContent}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={styles.cardquantity}>{product.quantity}</Text>
-                  <Text>
-                    <Text>{product.icon}</Text>
-                  </Text>
-                </View>
-                <Text style={styles.cardTitle}>{product.name}</Text>
-                <Text style={styles.cardPrice}>{product.price}</Text>
-              </View>
-            </View>
-          ))}
       </View>
     </ScrollView>
   );

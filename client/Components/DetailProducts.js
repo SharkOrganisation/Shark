@@ -10,8 +10,8 @@ export default function DetailProducts () {
   const navigation =useNavigation()
   const route=useRoute()
   const rp=route.params.product
-  // console.log("bhjbvhgv",rp.images)
 
+  console.log(rp,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
 
 
   const [liked, setLiked] = useState(false);
@@ -25,6 +25,7 @@ export default function DetailProducts () {
   );
   
 return (
+  
     <SafeAreaView style={styles.container}>
      <Pressable style={styles.reviewIcon } >
         <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
@@ -45,11 +46,12 @@ return (
   <Text style={styles.whiteText } marginBottom={100}>{rp.description}</Text>
       <Text  style={{color:"#97d91c",right:150,marginBottom:480,fontSize:20,  fontWeight: 'bold',}}>_Description_</Text>
 </View>
-<TouchableHighlight style={styles.addButon}>
+<TouchableHighlight style={styles.addButon} onPress={() => navigation.navigate('Basket', { product: rp })}>
   <Text style={styles.buttonText}>Add To Basket</Text>
 </TouchableHighlight>
 
     </SafeAreaView>
+
   );
 }
 const styles = StyleSheet.create({

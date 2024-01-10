@@ -9,6 +9,7 @@ import Checkout from "./screens/Checkout.js";
 import Login from './screens/login';
 import CreateProgram  from './screens/createProgram';
 import GetStarted from './screens/getStarted';
+import Basket from './screens/Basket.js';
 const Stack = createNativeStackNavigator();
 
 
@@ -24,7 +25,7 @@ export default function App() {
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }}  />
         <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }}  />
-   
+        <Stack.Screen name="Basket" component={Basket} options={{ headerShown: false }}  />
       </Stack.Navigator>
     </NavigationContainer>
 
