@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Carousel from 'react-native-snap-carousel';   
+// import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
 

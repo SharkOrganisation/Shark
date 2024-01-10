@@ -99,7 +99,7 @@ const UserCreateAccount = ({ route }) => {
                     <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>USERNAME</Text>
                     <TextInput
                         placeholder='ENTER YOUR FULLNAME'
-                        placeholderTextColor={"#BEFF02"}
+                        placeholderTextColor={"gray"}
                         style={styles.Input}
                         onChangeText={(value) => setFullname(value)}
                     />
@@ -108,7 +108,7 @@ const UserCreateAccount = ({ route }) => {
                     <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>E-mail</Text>
                     <TextInput
                         placeholder='ENTER YOUR EMAIL'
-                        placeholderTextColor={"#BEFF02"}
+                        placeholderTextColor={"gray"}
                         style={styles.Input}
                         onChangeText={(value) => setEmail(value)}
                     />
@@ -117,7 +117,7 @@ const UserCreateAccount = ({ route }) => {
                     <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>PASSWORD</Text>
                     <TextInput
                         placeholder='ENTER YOUR PASSWORD'
-                        placeholderTextColor={"#BEFF02"}
+                        placeholderTextColor={"gray"}
                         style={styles.Input} secureTextEntry={true}
                         onChangeText={(value) => setPassword(value)}
                     />
@@ -139,7 +139,7 @@ const UserCreateAccount = ({ route }) => {
                         }
                         <TextInput
                             placeholder='ENTER YOUR DATE OF BIRTH'
-                            placeholderTextColor={"#BEFF02"}
+                            placeholderTextColor={"gray"}
                             style={styles.Input}
                             editable={false}
                             value={dateBirth}
