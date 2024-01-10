@@ -12,6 +12,7 @@ import CreateGym from './screens/gymCreateAccount'
 import CreateProgram  from './screens/createProgram';
 import GetStarted from './screens/getStarted';
 import ResetPassword from './screens/resetPassword';
+import ChatScreen from './screens/chatScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,22 @@ export default function App() {
   
     <NavigationContainer>
       <Stack.Navigator initialRouteName='getStarted'>
-        <Stack.Screen name="Home" component={CreateProgram} options={{ headerShown: false }}  />
+        <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }}  />
+        <Stack.Screen
+          name='ChatScreen'
+          component={ChatScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: 'black', 
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#BEFF03', 
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            title: 'CHAT COMMUNITY'
+          }}
+        />
         <Stack.Screen name="getStarted" component={GetStarted} options={{ headerShown: false }} />
         <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }}   />
         <Stack.Screen name='login' component={Login} options={{ headerShown: false }} />
@@ -32,13 +48,10 @@ export default function App() {
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }}  />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }}  />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }}  />
-
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
-
 const styles = StyleSheet.create({
   container: {
 

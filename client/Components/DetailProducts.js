@@ -1,6 +1,6 @@
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
 

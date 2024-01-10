@@ -68,7 +68,7 @@ const GymCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>USERNAME</Text>
           <TextInput
             placeholder='ENTER YOUR FULLNAME'
-            placeholderTextColor={"#BEFF03"}
+            placeholderTextColor={"gray"}
             style={styles.Input}
             onChangeText={(value) => setFullname(value)}
           />
@@ -77,7 +77,7 @@ const GymCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>E-mail</Text>
           <TextInput
             placeholder='ENTER YOUR EMAIL'
-            placeholderTextColor={"#BEFF03"}
+            placeholderTextColor={"gray"}
             style={styles.Input}
             onChangeText={(value) => setEmail(value)}
           />
@@ -86,7 +86,7 @@ const GymCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>PASSWORD</Text>
           <TextInput
             placeholder='ENTER YOUR PASSWORD'
-            placeholderTextColor={"#BEFF03"}
+            placeholderTextColor={"gray"}
             style={styles.Input} secureTextEntry={true}
             onChangeText={(value) => setPassword(value)}
           />
@@ -95,7 +95,7 @@ const GymCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>TYPE</Text>
           <TextInput
             placeholder='ENTER YOUR GYM TYPE'
-            placeholderTextColor={"#BEFF03"}
+            placeholderTextColor={"gray"}
             style={styles.Input}
             onChangeText={(value) => setType(value)}
           />
@@ -104,7 +104,7 @@ const GymCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>LOCATION</Text>
           <TextInput
             placeholder='ENTER YOUR LOCATION'
-            placeholderTextColor={"#BEFF03"}
+            placeholderTextColor={"gray"}
             style={styles.Input}
             onChangeText={(value) => setLocation(value)}
           />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,6 @@ export default function WelcomeScreen({route}) {
   const navigation = useNavigation()
   const {role} = route.params
 
- 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#9AC61C' }}>
       <StatusBar backgroundColor={'black'} />
