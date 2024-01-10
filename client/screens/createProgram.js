@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,109 +6,259 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  KeyboardAvoidingView,
+  Modal,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Dropdown from '../components/Dropdown.js';
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import Dropdown from "../components/Dropdown";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
+import Footer from "../components/Footer";
 
 const CreateProgram = () => {
-  const data = [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
-  ];
+  const [dataa, setDataa] = useState([]);
+  const navigation = useNavigation();
+  const [search, setSearch] = useState("");
+  const [test,setTest]=useState({
+    "0":'',
+    '1':'',
+    '2':'',
+    '3':'',
+    '4':''
+  })
+  const [indexSelected,setIndexSelected] = useState(0)
+  let exercices = [];
+  const handleChange=(name,val)=>{
+    setTest(prev=>({
+      ...prev,
+      [name]:val
+    }))
+  }
+  const getExercise = async () => {
+    try {
+      const response = await axios.get(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/exercice/getAll`
+      );
+      // console.log(response.data);
+      setDataa(response.data);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+    }
+  };
+
+  useEffect(() => {
+    getExercise();
+  }, []);
+
+  const handlePush = (name) => {
+    setData((prevData) => [...prevData, name]);
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [data, setData] = useState([]);
+  const [sets, setSets] = useState(0);
+  const [reps, setReps] = useState(0);
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState("");
+  const [exerciseData, setExerciseData] = useState([]);
+
 
   const handleDropdownChange = (value) => {
     console.log("Selected value:", value);
+    setSelectedDropdownValue(value);
+    
   };
 
+  const openModal = () => {
+    setSets(0);
+    setReps(0);
+    setModalVisible(true);
+  };
+
+  const handlenavigation = () => {
+    navigation.navigate("CreateAllProgram");
+  };
+
+  const done = () => {
+    handleChange(indexSelected,`${sets}/${reps}`);
+    setModalVisible(false);
+  };
+
+  const incrementSets = () => {
+    setSets(sets + 1);
+  };
+
+  const decrementSets = () => {
+    if (sets > 0) {
+      setSets(sets - 1);
+    }
+  };
+
+  const incrementReps = () => {
+    setReps(reps + 1);
+  };
+
+  const decrementReps = () => {
+    if (reps > 0) {
+      setReps(reps - 1);
+    }
+  };
+  // const filteredExercises = exercices.filter(
+  //   (exercise) =>{
+  //     exercise.toUppercase().includes(search.toUpperCase())
+  //   });
+  // const handleSearch = (query) => {
+  //   const filteredExercises = dataa.filter((exercise) => {
+  //     return exercise.name.toUpperCase().includes(query.toUpperCase());
+  //   });
+    // Assuming you have a setDataa function to update dataa state
+  //   setDataa(filteredExercises);
+  // };
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.pageTitle}>
-          <TouchableOpacity>
-            <MaterialCommunityIcons
-              name="arrow-left-box"
-              size={40}
-              color={"black"}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.pageTitle}>
+            <TouchableOpacity>
+              <MaterialCommunityIcons
+                name="arrow-left-box"
+                size={40}
+                color={"black"}
+              />
+            </TouchableOpacity>
+            <Text style={styles.title}>Create Program</Text>
+          </View>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search..."
+              onChangeText={(text) => {
+                setSearch(text)
+              }}
             />
-          </TouchableOpacity>
-          <Text style={styles.title}>Create Program</Text>
+            <TouchableOpacity
+              onPress={() => {
+              }}
+            >
+              <MaterialCommunityIcons
+                name="magnify"
+                size={30}
+                color={"black"}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.searchContainer}>
-          <TextInput style={styles.searchInput} placeholder="Search..." />
-          <TouchableOpacity>
-            <MaterialCommunityIcons name="magnify" size={30} color={"black"} />
-          </TouchableOpacity>
+        {/* {dataa.map((ele) => {
+          // exercices.push(ele.name);
+        })} */}
+        <Dropdown
+          items={dataa}
+          setData={setData}
+          onValueChange={handleDropdownChange}
+          searchQuery={search}
+        />
+        <View style={styles.inputContainer}>
+          {data?.filter((ele) => ele !== undefined && ele !== null && ele !== 'wael') 
+          .map((ele, index) => (
+            <View key={index}>
+              <TextInput
+                name={String(index)}
+                placeholder={""}
+                style={styles.input}
+                value={ele+test[String(index)]}
+                onChangeText={(text) => setSelectedDropdownValue(text)}
+              />
+              <TouchableOpacity
+                style={styles.plusBtn}
+                onPress={() => {
+                  setIndexSelected(index)
+                  openModal()}}
+              >
+                <Entypo name="squared-plus" size={30} color={"#9AC61C"} />
+              </TouchableOpacity>
+            </View>
+          ))}
+          <View
+            style={{
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={styles.doneBtn}
+              onPress={() => handlenavigation()}
+            >
+              <Text style={styles.btnText}>Done</Text>
+            </TouchableOpacity>
+
+            <Footer />
+          </View>
         </View>
-      </View>
-      <Dropdown items={data} onValueChange={handleDropdownChange} />
-      <View style={styles.inputContainer}>
-        <View>
-          <TextInput placeholder="" style={styles.input} />
-          <TouchableOpacity style={styles.plusBtn}>
-            <Entypo
-              name="squared-plus"
-              size={30}
-              color={"#9AC61C"}
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput placeholder="" style={styles.input} />
-          <TouchableOpacity style={styles.plusBtn}>
-            <Entypo
-              name="squared-plus"
-              size={30}
-              color={"#9AC61C"}
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput placeholder="" style={styles.input} />
-          <TouchableOpacity style={styles.plusBtn}>
-            <Entypo
-              name="squared-plus"
-              size={30}
-              color={"#9AC61C"}
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput placeholder="" style={styles.input} />
-          <TouchableOpacity style={styles.plusBtn}>
-            <Entypo
-              name="squared-plus"
-              size={30}
-              color={"#9AC61C"}
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput placeholder="" style={styles.input} />
-          <TouchableOpacity style={styles.plusBtn}>
-            <Entypo
-              name="squared-plus"
-              size={30}
-              color={"#9AC61C"}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
-        <TouchableOpacity style={styles.doneBtn}>
-          <Text style={styles.btnText}>Done</Text>
-        </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+
+        <Modal
+          transparent={true}
+          animationType="slide"
+          visible={modalVisible}
+          onRequestClose={() => done()}
+          onShow={() => {
+            setSets(0);
+            setReps(0);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalText}>SETS : {sets}</Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  onPress={incrementSets}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={decrementSets}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+              </View>
+
+              <Text style={styles.modalText}>REPS : {reps}</Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  onPress={incrementReps}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={decrementReps}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => done()}
+                style={styles.doneButton}
+              >
+                <Text style={styles.doneButtonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black", 
+    backgroundColor: "black",
   },
   title: {
     flex: 1,
@@ -139,7 +289,7 @@ const styles = StyleSheet.create({
   searchInput: {
     backgroundColor: "transparent",
     borderColor: "black",
-    borderWidth: 1,
+    borderWidth: 2,
     paddingHorizontal: 10,
     borderRadius: 100,
     marginRight: 10,
@@ -150,10 +300,10 @@ const styles = StyleSheet.create({
     gap: 25,
     justifyContent: "center",
     marginTop: 80,
-
   },
   input: {
     color: "white",
+
     borderWidth: 1,
     borderColor: "#BEFF03",
     width: "100%",
@@ -165,18 +315,75 @@ const styles = StyleSheet.create({
     right: 10,
     top: 10,
   },
-  doneBtn:{
-    backgroundColor:"#BEFF03",
-    width:150,
-    padding:15,
+  doneBtn: {
+    backgroundColor: "#BEFF03",
+    width: 150,
+    padding: 15,
     borderRadius: 10,
-   
   },
-  btnText:{
+  btnText: {
     textAlign: "center",
-    fontSize:21,
-    fontWeight:'bold'
-  }
+    fontSize: 21,
+    fontWeight: "bold",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#BEFF03",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    height: 300,
+    width: 250,
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
+    gap: 20,
+  },
+  modalButton: {
+    width: 50,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "900",
+    left: 9,
+  },
+  doneButton: {
+    backgroundColor: "black",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  doneButtonText: {
+    color: "#BEFF03",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  footer: {
+    backgroundColor: "#192126",
+    flexDirection: "row",
+    width: 350,
+    height: 60,
+    padding: 10,
+    borderRadius: 100,
+    marginTop: 20,
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
 });
 
 export default CreateProgram;

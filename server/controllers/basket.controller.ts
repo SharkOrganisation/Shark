@@ -69,6 +69,35 @@ export const getOneBasketByCoachId = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Server Error" });
   }
 };
+
+export const addToBasket = async (req: Request, res: Response): Promise<void> => {
+  const { userId, productId, coachId, gymId } = req.body;
+
+  try {
+    console.log(req.body);
+
+    const item = await prisma.basket.create({
+      data: {
+        productId,
+        userId: String(userId), 
+        coachId,
+        gymId,
+      },
+    });
+
+    res.status(201).send("successful");
+  } catch (error) {
+    console.error("Error creating basket item:", error);
+
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message || "Server Error" });
+    } else {
+      res.status(500).json({ error: "Unknown Server Error" });
+    }
+  }
+};
+
+
 export const getOneBasketByGymId = async (req: Request, res: Response) => {
   const gymId = req.params.id
   try {

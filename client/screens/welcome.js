@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, StatusBar, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
@@ -6,9 +6,10 @@ import Facebook from 'react-native-vector-icons/Entypo'
 import Icon from 'react-native-vector-icons/AntDesign'
 
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({route}) {
 
   const navigation = useNavigation()
+  const {role} = route.params
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#9AC61C' }}>
@@ -46,20 +47,29 @@ export default function WelcomeScreen() {
         <View style={{ marginVertical: 30 }}>
           <Text style={{ fontSize: 18 }}>Or</Text>
         </View>
-        <TouchableOpacity style={styles.btnCreate}>
+        <TouchableOpacity 
+        onPress={()=>{
+          if(role === 'user'){
+            navigation.navigate('createUser',{role});
+          }else if(role === 'Gym'){
+            navigation.navigate('createGym',{role});
+          }else if(role === 'coach'){
+            navigation.navigate('createCoach',{role});
+          }
+        }}
+        style={styles.btnCreate}>
           <Text style={styles.btnTextCreate}>Create an account</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ marginTop: 25 }}
           onPress={() => {
-            navigation.navigate('login');
-            console.log('test')
+            navigation.navigate('login',{role});
           }}
         >
           <Text
             style={{ textTransform: 'uppercase', fontWeight: 'bold', textDecorationLine: 'underline' }}>login</Text>
         </TouchableOpacity>
-        <Text style={{ marginTop: '20%' }} >© GYMSHARK COMMUNITY</Text>
+        <Text style={{ marginTop: '10%' }} >© GYMSHARK COMMUNITY</Text>
       </View>
     </SafeAreaView>
 
@@ -72,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#9AC61C',
     flex: 1,
-    paddingVertical: 50,
+    paddingVertical: '10%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -137,4 +147,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
-

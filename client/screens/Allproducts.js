@@ -12,7 +12,7 @@ export default function Allproducts() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.160.147:3000/api/product/get/products');
+      const response = await fetch('http://192.168.1.14:3000/api/product/get/products');
       const result = await response.json();
       console.log("dataaaaaa", result);
       setData(result);

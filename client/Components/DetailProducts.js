@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -48,7 +49,7 @@ return (
 </View>
 <TouchableHighlight style={styles.addButon} onPress={() => navigation.navigate('Basket', { product: rp })}>
   <Text style={styles.buttonText}>Add To Basket</Text>
-</TouchableHighlight>
+</TouchableHighlight> 
 
     </SafeAreaView>
 
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    
   },
   iconContainer: {
     position: 'absolute',

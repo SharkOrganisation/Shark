@@ -25,7 +25,6 @@ export const getPlan = async (req: Request, res: Response) => {
       select: {
         name: true,
         price: true,
-        status: true,
         program: {
           select: {
             name: true,
@@ -54,22 +53,53 @@ export const getPlan = async (req: Request, res: Response) => {
 };
 
 export const getplanBycoach = async (req: Request, res: Response) => {
-  const coachId = req.params.id;
-  try {
-    const plan = await prisma.plan.findMany({
-      where: {
-        coachId,
+  // code here
+  const exercises = await prisma.plan.findMany({
+    where: { coachId: req.params.coachId },
+    select: {
+      name: true,
+      price: true,
+      Diet: {
+        select: {
+          name: true,
+          meals: true,
+        },
       },
-      select: {
-        name: true,
-        price: true,
-        status: true,
-      }
-
-    });
-    res.json(plan);
-  } catch (err) {
-    console.error(err);
-    res.json(err);
-  }
+      userPlan: {
+        select: {
+          User: {
+            select: {
+              fullname: true,
+              pfImage: true,
+            },
+          },
+        },
+      },
+      program: {
+        select: {
+          name: true,
+          description: true,
+          duration: true,
+          id: true,
+          programExercice: {
+            select: {
+              id: true,
+              reps: true,
+              sets: true,
+              Exercice: {
+                select: {
+                  name: true,
+                  bodyPart: true,
+                  equipment: true,
+                  target: true,
+                  gifUrl: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  res.json(exercises);
 };

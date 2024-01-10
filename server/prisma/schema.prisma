@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,109 +16,111 @@ model Admin {
 }
 
 model User {
-  id            String             @id 
-  pfImage       String           @db.Text
+  id            String           @id
+  pfImage       String
   fullname      String
   email         String
+  age           Int
   datebirth     String
   bmi           Float?
+  basket        Basket[]
+  comments      Comment[]
   followedCoach FollowingCoach[]
   followedGym   FollowingGym[]
-  savedPosts    SavedPost[]
-  comments      Comment[]
   memberShip    Membership?
-  basket        Basket[]
   review        Review[]
+  savedPosts    SavedPost[]
+  userPlan      UserPlan[]
 }
 
 model Coach {
-  id         String                 @id
+  id         String              @id
   fullname   String
   email      String
-  pfImage    String              @db.Text
+  pfImage    String
   datebirth  String
-  bio        String              @db.Text
+  bio        String
   speciality String
   perSession Float
-  followers  FollowingCoach[]
-  followGym  CoachfollowingGym[]
-  posts      Post[]
-  Gym        Gym?                @relation(fields: [gymId], references: [id])
   gymId      String?
-  plan       Plan[]
   basket     Basket[]
+  Gym        Gym?                @relation(fields: [gymId], references: [id])
+  followGym  CoachfollowingGym[]
+  followers  FollowingCoach[]
+  plan       Plan[]
+  posts      Post[]
 }
 
 model Gym {
-  id             String                 @id
+  id             String              @id
   fullname       String
   Email          String
-  pfImage        String              @db.Text
+  pfImage        String
   type           String?
   bio            String?
   location       String
-  followers      FollowingGym[]
-  posts          Post[]
-  coaches        Coach[]
-  memberships    Membership[]
   basket         Basket[]
-  review         Review[]
+  coaches        Coach[]
   followersCoach CoachfollowingGym[]
+  followers      FollowingGym[]
+  memberships    Membership[]
+  posts          Post[]
+  review         Review[]
 }
 
 model Post {
   id        Int         @id @default(autoincrement())
   content   String
   likes     Int
-  image     String[]    @db.Text
-  savePosts SavedPost[]
-  Gym       Gym?        @relation(fields: [gymId], references: [id])
+  image     String[]
   gymId     String?
-  Coach     Coach?      @relation(fields: [coachId], references: [id])
   coachId   String?
   comments  Comment[]
+  Coach     Coach?      @relation(fields: [coachId], references: [id])
+  Gym       Gym?        @relation(fields: [gymId], references: [id])
+  savePosts SavedPost[]
 }
 
 model Comment {
-  id      Int    @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   content String
   likes   Int
-  Post    Post?  @relation(fields: [postId], references: [id])
   postId  Int?
-  User    User?  @relation(fields: [userId], references: [id])
   userId  String?
+  Post    Post?   @relation(fields: [postId], references: [id])
+  User    User?   @relation(fields: [userId], references: [id])
 }
 
 model SavedPost {
-  id     Int   @id @default(autoincrement())
-  User   User? @relation(fields: [userId], references: [id])
+  id     Int     @id @default(autoincrement())
   userId String?
-  Post   Post? @relation(fields: [postId], references: [id])
   postId Int?
+  Post   Post?   @relation(fields: [postId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id])
 }
 
 model FollowingCoach {
-  id      Int    @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   coachId String?
-  Coach   Coach? @relation(fields: [coachId], references: [id])
-  User    User?  @relation(fields: [userId], references: [id])
   userId  String?
+  Coach   Coach?  @relation(fields: [coachId], references: [id])
+  User    User?   @relation(fields: [userId], references: [id])
 }
 
 model FollowingGym {
-  id     Int   @id @default(autoincrement())
-  User   User? @relation(fields: [userId], references: [id])
+  id     Int     @id @default(autoincrement())
   userId String?
-  Gym    Gym?  @relation(fields: [gymId], references: [id])
   gymId  String?
+  Gym    Gym?    @relation(fields: [gymId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id])
 }
 
 model CoachfollowingGym {
-  id      Int    @id @default(autoincrement())
-  Coach   Coach? @relation(fields: [coachId], references: [id])
+  id      Int     @id @default(autoincrement())
   coachId String?
-  Gym     Gym?   @relation(fields: [gymId], references: [id])
   gymId   String?
+  Coach   Coach?  @relation(fields: [coachId], references: [id])
+  Gym     Gym?    @relation(fields: [gymId], references: [id])
 }
 
 model Membership {
@@ -130,16 +129,16 @@ model Membership {
   price         Float
   establishedAt DateTime? @default(now())
   expiredAt     DateTime?
-  Gym           Gym?      @relation(fields: [gymId], references: [id])
   gymId         String?
+  userId        String    @unique
+  Gym           Gym?      @relation(fields: [gymId], references: [id])
   user          User      @relation(fields: [userId], references: [id])
-  userId        String       @unique
 }
 
 model Diet {
   id    Int    @id @default(autoincrement())
   name  String
-  meals String @db.Text
+  meals String
   plan  Plan[]
 }
 
@@ -147,7 +146,7 @@ model Exercice {
   id              Int               @id @default(autoincrement())
   bodyPart        String
   equipment       String
-  gifUrl          String            @db.Text
+  gifUrl          String
   name            String
   target          String
   programExercice ProgramExercice[]
@@ -157,32 +156,32 @@ model ProgramExercice {
   id         Int       @id @default(autoincrement())
   reps       Int
   sets       Int
-  Exercice   Exercice? @relation(fields: [exerciceId], references: [id])
   exerciceId Int?
-  program    Program[]
+  programId  Int?
+  Exercice   Exercice? @relation(fields: [exerciceId], references: [id])
+  Program    Program?  @relation(fields: [programId], references: [id])
 }
 
 model Program {
-  id                Int              @id @default(autoincrement())
-  name              String
-  duration          String
-  description       String
-  programExercice   ProgramExercice? @relation(fields: [programExerciceId], references: [id])
-  programExerciceId Int?
-  plan              Plan?
+  id              Int               @id @default(autoincrement())
+  name            String
+  duration        String
+  description     String
+  plan            Plan?
+  programExercice ProgramExercice[]
 }
 
 model Plan {
-  id     Int     @id @default(autoincrement())
-  name   String
-  price  Int
-  status Boolean
-  program   Program? @relation(fields: [programId], references: [id])
-  programId Int?     @unique
-  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  id        Int        @id @default(autoincrement())
+  name      String
+  price     Int
+  programId Int?       @unique
   coachId   String?
-  Diet      Diet?    @relation(fields: [dietId], references: [id])
   dietId    Int?
+  Coach     Coach?     @relation(fields: [coachId], references: [id])
+  Diet      Diet?      @relation(fields: [dietId], references: [id])
+  program   Program?   @relation(fields: [programId], references: [id])
+  userPlan  UserPlan[]
 }
 
 model Product {
@@ -193,28 +192,37 @@ model Product {
   quantity    Int
   catergory   String
   images      String[]
+  adminId     Int?
   basket      Basket[]
   Admin       Admin?   @relation(fields: [adminId], references: [id])
-  adminId     Int?
 }
 
 model Basket {
   id        Int      @id @default(autoincrement())
-  Product   Product? @relation(fields: [productId], references: [id])
   productId Int?
-  User      User?    @relation(fields: [userId], references: [id])
   userId    String?
-  Coach     Coach?   @relation(fields: [coachId], references: [id])
   coachId   String?
-  Gym       Gym?     @relation(fields: [gymId], references: [id])
   gymId     String?
+  Coach     Coach?   @relation(fields: [coachId], references: [id])
+  Gym       Gym?     @relation(fields: [gymId], references: [id])
+  Product   Product? @relation(fields: [productId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
 }
 
 model Review {
-  id      Int    @id @default(autoincrement())
-  stars   Int
-  Gym     Gym?   @relation(fields: [gymId], references: [id])
-  gymId   String?
-  User    User?  @relation(fields: [userId], references: [id])
-  userId  String?
+  id     Int     @id @default(autoincrement())
+  stars  Int
+  gymId  String?
+  userId String?
+  Gym    Gym?    @relation(fields: [gymId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id])
+}
+
+model UserPlan {
+  id     Int     @id @default(autoincrement())
+  status Boolean
+  userId String?
+  planId Int?
+  Plan   Plan?   @relation(fields: [planId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id])
 }
