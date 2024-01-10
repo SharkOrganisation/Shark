@@ -21,14 +21,13 @@ import PaymentSucces from './screens/PaymentSucces';
 import PaymentFailed from './screens/PaymentFailed';
 import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 
+import Coachprofile from './screens/Coachprofile';
 const Stack = createNativeStackNavigator();
 
 
 
 export default function App() {
   return (
-
-
     <NavigationContainer>
       <Stack.Navigator initialRouteName='getStarted'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
@@ -57,15 +56,15 @@ export default function App() {
         <Stack.Screen name="CreateAllProgram" component={CreateAllProgram} options={{ headerShown: false }} />
         <Stack.Screen name="CreateDiet" component={CreateDiet} options={{ headerShown: false }} />
         <Stack.Screen name="CreatePlan" component={CreatePlan} options={{ headerShown: false }} />
-        <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
+        <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }}   />
         <Stack.Screen name='createUser' component={CreateUser} options={{ headerShown: false }} />
         <Stack.Screen name='createCoach' component={CreateCoach} options={{ headerShown: false }} />
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }} />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
+      <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
+      <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
