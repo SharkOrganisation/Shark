@@ -20,6 +20,7 @@ import followingCoach from "./routes/followingCoach_route";
 import coachFollowGym from "./routes/CoachFollowGym";
 import savedPost from "./routes/savedPost_route";
 import routePost from "./routes/posts.route";
+import userPlan from "./routes/UserPlan_route";
 const app: Application = express();
 const PORT = 3000;
 
@@ -79,7 +80,10 @@ app.use("/api/user", userRoute);
 app.use("/api/gym", gymRoute);
 
 //coach route
-app.use("/api/coach", coachRoute);
+app.use("/api/coach", coachRoute); 
+
+// UserPlan :
+app.use("/api/userPlan", userPlan);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
