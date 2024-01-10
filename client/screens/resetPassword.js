@@ -1,34 +1,33 @@
 import React, { useState } from 'react'
-import { View, Text, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity,Alert } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { FIREBASE_AUTH } from '../firebase'
-import {signInWithEmailAndPassword } from 'firebase/auth'
+import { fetchSignInMethodsForEmail, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native';
 
-const Login = ({ route }) => {
-    const { role } = route.params
-    const auth = FIREBASE_AUTH
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const navigation = useNavigation()
-    const signIn = async () => {
-        
-        try {
-            const response = await signInWithEmailAndPassword(auth,email, password)
-            console.log(response);
-            alert('user logged in successfully')
-            navigation.navigate('ChatScreen')
-        } catch (error) {
-            console.log(error.code )
-            if (error.code === 'auth/invalid-credential') {
-                Alert.alert('Wrong Credetntials', 'Please Check Your Credentials !');
-            }else if(error.code === 'auth/invalid-email'){
-                Alert.alert('Invalide Email', 'Please Check your email');
-            } else {
-                console.log(error.message);
-            }
-        }
-    }
 
+const ResetPassword = ({route}) => {
+    const [email, setEmail] = useState('')
+    const [loading, setLoading] = useState(false);
+    const auth = FIREBASE_AUTH
+    const navigation = useNavigation()
+    const {role} = route.params
+
+    const handlePasswordReset = async () => {
+        try {
+            if (!email) {
+                return;
+            }
+            setLoading(true);
+            await sendPasswordResetEmail(auth, email);
+            console.log('Password reset email sent successfully');
+            setLoading(false);
+            navigation.navigate('login',{role});
+        } catch (error) {
+            console.error('Error sending password reset email:', error.message);
+            setLoading(false);
+            Alert.alert('Invalid E-mail','Please Check Your Email Address')
+        }
+    };
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor={'black'} />
@@ -42,7 +41,7 @@ const Login = ({ route }) => {
                 />
                 <Text style={styles.logoText}>GYMSHARK</Text>
             </View>
-            <Text style={styles.title}>LOGIN</Text>
+            <Text style={styles.title}>RESET PASSWORD</Text>
             <View style={styles.inputContainer}>
                 <View>
                     <Text style={{ color: "#BEFF03" }}>E-mail</Text>
@@ -52,30 +51,14 @@ const Login = ({ route }) => {
                     />
                 </View>
 
-                <View>
-                    <View style={styles.lable}>
-                        <Text style={{ color: "#BEFF03" }}>PASSWORD</Text>
-                        <TouchableOpacity
-                        onPress={()=>{
-                            navigation.navigate('resetPassword',{role})
-                        }}
-                        >
-                            <Text style={{ color: "#BEFF03", fontSize: 8 }}>FORGOT PASSWORD ?</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TextInput
-                        style={styles.Input}
-                        secureTextEntry={true}
-                        onChangeText={(value) => setPassword(value)}
 
-                    />
-                </View>
             </View>
-            <TouchableOpacity 
-            style={styles.loginBtn}
-            onPress={signIn}
+            <TouchableOpacity
+                style={[styles.loginBtn,{opacity: loading ? 0.5 : 1}]}
+                onPress={handlePasswordReset}
+                disabled={loading}
             >
-                <Text style={{ fontWeight: 'bold' }}>LOGIN</Text>
+                <Text style={{ fontWeight: 'bold' }}>{loading ? 'LOADING ...' : 'SEND'}</Text>
             </TouchableOpacity>
             <Text style={{ marginTop: '20%', color: "#BEFF03" }} >© GYMSHARK COMMUNITY</Text>
 
@@ -88,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: 50,
         alignItems: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         backgroundColor: 'black'
     },
     image1: {
@@ -107,7 +90,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: "#BEFF03",
-        fontSize: 60,
+        fontSize: 30,
         fontWeight: "700",
         marginVertical: 50
     },
@@ -130,15 +113,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    loginBtn:{
-        backgroundColor:"#BEFF03",
-        width:270,
-        padding:20,
-        justifyContent:'center',
+    loginBtn: {
+        backgroundColor: "#BEFF03",
+        width: 270,
+        padding: 20,
+        justifyContent: 'center',
         alignItems: 'center',
-        borderRadius:10,
-        marginVertical:50
+        borderRadius: 10,
+        marginVertical: 50,
     }
 })
 
-export default Login;
+export default ResetPassword
