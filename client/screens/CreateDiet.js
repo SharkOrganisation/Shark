@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import Footer from "../Components/Footer";
 const CreateDiet = () => {
   const navigation = useNavigation();
   const done = () => {
@@ -55,10 +56,11 @@ const CreateDiet = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-          >
+            >
             <TouchableOpacity style={styles.doneBtn} onPress={() => done()}>
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
+            <Footer/>
           </View>
         </View>
       </ScrollView>
