@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,15 +12,40 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import Footer from "../Components/Footer";
+import axios from "axios";
 const CreateAllProgram = () => {
   const navigation = useNavigation();
 
+  const [program, setProgram] = useState([]);
+  const [name, setName] = useState("")
+  const [duration, setDuration] = useState("")
+  const [description, setDescription] = useState("")
+  const [programId, setProgramId] = useState("")
 
+  const postProgram = async () => {
+    try {
+      const programData = {
+        name: name,
+        duration: duration,
+        description: description,
+      };
+      const response = await axios.post(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/program/create/program`,
+        programData
+      );
+    
+      navigation.navigate("CreateDiet",{programId: response.data.id});
+      
+    } catch (error) {
+      console.error("Error posting program:", error);
+    }
+  };
+  
   const done = () => {
-    navigation.navigate("CreateDiet");
+    postProgram();
+    
   };
   const arrow = () => {
-    navigation.navigate("CreateProgram");
   };
   return (
     <KeyboardAvoidingView
@@ -34,7 +59,7 @@ const CreateAllProgram = () => {
               <MaterialCommunityIcons
                 name="arrow-left-box"
                 size={40}
-                color={"black"} 
+                color={"black"}
               />
             </TouchableOpacity>
             <Text style={styles.title}>Create All Program</Text>
@@ -43,17 +68,32 @@ const CreateAllProgram = () => {
         <View style={styles.inputContainer}>
           <View>
             <Text style={styles.label}>Name</Text>
-            <TextInput placeholder="" style={styles.input} />
+            <TextInput
+              placeholder="Enter the name of the program"
+              placeholderTextColor={"gray"}
+              style={styles.input}
+              onChangeText={(text)=>setName(text)}
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
           <View>
             <Text style={styles.label}>Duration</Text>
-            <TextInput placeholder="" style={styles.input} />
+            <TextInput
+              placeholder="Enter the duration of the program"
+              placeholderTextColor={"gray"}
+              style={styles.input}
+              onChangeText={(text)=>setDuration(text)}
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
           <View>
             <Text style={styles.label}>Description</Text>
-            <TextInput placeholder="" style={styles.input} />
+            <TextInput
+              placeholder="Enter the description of the prgram"
+              placeholderTextColor={"gray"}
+              style={styles.input}
+              onChangeText={(text)=>setDescription(text)}
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
 
@@ -64,10 +104,10 @@ const CreateAllProgram = () => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity style={styles.doneBtn} onPress={()=>done()}>
+            <TouchableOpacity style={styles.doneBtn} onPress={() => done()}>
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
-            <Footer/>
+            <Footer />
           </View>
         </View>
       </ScrollView>

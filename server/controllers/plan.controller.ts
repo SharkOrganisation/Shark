@@ -4,11 +4,18 @@ import { Request, Response } from "express";
 const prisma = new PrismaClient();
 
 export const createPlan = async (req: Request, res: Response) => {
+  const {name,price,programId,coachId,dietId} = req.body;
   try {
-    const plan = await prisma.plan.create({
-      data: req.body,
+    await prisma.plan.create({
+      data: {
+        name : name,
+        price : price,
+        programId : programId,
+        coachId :coachId,
+dietId : dietId
+      },
     });
-    res.json(plan);
+    res.json('success');
   } catch (err) {
     console.error(err);
     res.json(err);

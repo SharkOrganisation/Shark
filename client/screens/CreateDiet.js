@@ -12,10 +12,37 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import Footer from "../Components/Footer";
-const CreateDiet = () => {
+import axios from "axios";
+const CreateDiet = ({route}) => {
   const navigation = useNavigation();
+  const [diet, setDiet] = useState([]);
+  const [name, setName] = useState("");
+  const [dietId, setDietId] = useState("")
+  const [meals, setMeals] = useState("");
+  const {programId} = route.params
+  console.log(programId,"from diet");
+
+  const postDiet = async () => {
+    
+    try {
+    const dietData = {
+        name: name,
+        meals: meals,
+      };
+      const response = await axios.post(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/diet/post`,
+        dietData
+        );
+        navigation.navigate("CreateProgram",{programId,dietId:response.data.id});
+       
+      } catch (error) {
+        console.error("Error posting diet:", error);
+      }
+    };
+
+
   const done = () => {
-    navigation.navigate("CreatePlan");
+    postDiet();
   };
   const arrow = () => {
     navigation.navigate("CreateAllProgram");
@@ -41,12 +68,23 @@ const CreateDiet = () => {
         <View style={styles.inputContainer}>
           <View>
             <Text style={styles.label}>Name</Text>
-            <TextInput placeholder="" style={styles.input} />
+            <TextInput
+              placeholder="Enter the name of the diet"
+              placeholderTextColor={"gray"}
+              style={styles.input}
+              onChangeText={(text) => setName(text)}
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
           <View>
             <Text style={styles.label}>Meals</Text>
-            <TextInput placeholder="" style={styles.meals} />
+            <TextInput
+              placeholder="Enter the meals of the diet"
+              placeholderTextColor={"gray"}
+              style={styles.meals}
+              onChangeText={(text) => setMeals(text)}
+
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
 
@@ -56,11 +94,11 @@ const CreateDiet = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            >
+          >
             <TouchableOpacity style={styles.doneBtn} onPress={() => done()}>
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
-            <Footer/>
+            <Footer />
           </View>
         </View>
       </ScrollView>
