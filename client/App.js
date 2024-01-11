@@ -22,6 +22,7 @@ import PaymentFailed from './screens/PaymentFailed';
 import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 import Coachprofile from './screens/Coachprofile';
 import Basket from './screens/Basket.js';
+import EditGymProfile from './screens/bottomTab/EditGymProfile.js';
 const Stack = createNativeStackNavigator();
 
 
@@ -49,6 +50,27 @@ export default function App() {
             title: 'CHAT COMMUNITY'
           }}
         />
+        <Stack.Screen name="editGymProfile" component={EditGymProfile} options={{
+            headerStyle: {
+              backgroundColor: 'black',
+              shadowColor: "#9AC61C",
+              borderBottomColor: 'black',
+              shadowOffset: {
+                width: 0,
+                height: 6,
+              },
+              shadowOpacity: 0.39,
+              shadowRadius: 8.30,
+  
+              elevation: 13,
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#BEFF03',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            title: 'Edit Profile'
+          }}/>
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
@@ -63,7 +85,6 @@ export default function App() {
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }} />
         <Stack.Screen name="Basket" component={Basket} options={{ headerShown: false }} />
-
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />

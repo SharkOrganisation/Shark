@@ -18,6 +18,7 @@ import MembershipUser from "../../Components/UserProfileComponents/MembershipUse
 import SavedUser from "../../Components/UserProfileComponents/SavedUser";
 import { FIREBASE_AUTH } from "../../firebase";
 import axios from "axios";
+
 const UserProfile = ({ navigation }) => {
   const [myplan, setMyplan] = useState(true);
   const [membership, setMembership] = useState(false);
