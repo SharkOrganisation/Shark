@@ -11,7 +11,7 @@ import { planRoute } from "./routes/plan.route";
 import authRoute from "./routes/auth.route"; //impoting auth route
 import exerciceRoute from "./routes/exercice.route"; //impoting exercice route
 import userRoute from "./routes/user.route"; //impoting user route
-import gymRoute from "./routes/gym.route"; //impoting gymnet route
+import gymRoute from "./routes/gym.route"; //impoting gymn route
 import coachRoute from "./routes/coach.route"; //impoting coach route
 import routeReview from "./routes/review.route";
 import routeprgEx from "./routes/ProgramExercice.route";
