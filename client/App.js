@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/welcome';
 import Allproducts from './screens/Allproducts';
-import DetailProducts from './components/DetailProducts';
+import DetailProducts from './Components/DetailProducts';
 import Checkout from "./screens/Checkout.js";
 import Login from './screens/login';
 import CreateUser from './screens/userCreateAccount'
@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='CreateAllProgram'>
+      <Stack.Navigator initialRouteName='Allproducts'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
         }

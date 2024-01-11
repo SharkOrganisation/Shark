@@ -6,6 +6,8 @@ import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+
 
 export default function DetailProducts () {
   const navigation =useNavigation()
@@ -13,6 +15,20 @@ export default function DetailProducts () {
   const rp=route.params.product
 
   console.log(rp,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+
+  const addToBasket = async () => {
+
+  
+    try {
+      const response = await axios.post(`http://192.168.1.14:3000/api/basket/add`, {
+     rp
+      });
+  
+      console.log(response.data); 
+    } catch (error) {
+      console.error('Error adding to basket:', error.message || 'Network error');
+    }
+  };
 
 
   const [liked, setLiked] = useState(false);
@@ -47,7 +63,7 @@ return (
   <Text style={styles.whiteText } marginBottom={100}>{rp.description}</Text>
       <Text  style={{color:"#97d91c",right:150,marginBottom:480,fontSize:20,  fontWeight: 'bold',}}>_Description_</Text>
 </View>
-<TouchableHighlight style={styles.addButon} onPress={() => navigation.navigate('Basket', { product: rp })}>
+<TouchableHighlight style={styles.addButon} onPress={addToBasket}>
   <Text style={styles.buttonText}>Add To Basket</Text>
 </TouchableHighlight> 
 

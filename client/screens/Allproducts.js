@@ -2,7 +2,7 @@ import {React,useState,useEffect} from "react";
 import { View, Text, StyleSheet,Image, TouchableOpacity , ScrollView} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from '@react-navigation/native';
-// import Icon from 'react-native-vector-icons/MaterialIcons'
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function Allproducts() {
   const navigation = useNavigation();
@@ -53,6 +53,8 @@ export default function Allproducts() {
           />
         </TouchableOpacity>
         <Text style={styles.text}>Marketplace</Text>
+        {/* <Icon name="storefront" size={40} color="black" style={styles.marketicon} onPress={navigation.navigate('Basket')}  /> */}
+
       </View>
       <View style={{ flexDirection: "row", marginTop: 70 }}>
         <TouchableOpacity
@@ -176,6 +178,10 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 15,
     marginTop: -9,
+  },
+  marketicon:{
+    top:3,
+    right:19,
   },
   cardContainer: {
     padding: 10,
