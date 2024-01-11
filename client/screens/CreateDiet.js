@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-import Footer from "../components/Footer";
+import Footer from "../Components/Footer";
 const CreateDiet = () => {
   const navigation = useNavigation();
   const done = () => {

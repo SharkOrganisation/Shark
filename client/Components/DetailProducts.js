@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -28,7 +28,7 @@ export default function DetailProducts () {
 return (
   
     <SafeAreaView style={styles.container}>
-     <Pressable style={styles.reviewIcon } >
+     {/* <Pressable style={styles.reviewIcon } >
         <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
         <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
         <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
@@ -49,7 +49,7 @@ return (
 </View>
 <TouchableHighlight style={styles.addButon} onPress={() => navigation.navigate('Basket', { product: rp })}>
   <Text style={styles.buttonText}>Add To Basket</Text>
-</TouchableHighlight> 
+</TouchableHighlight>  */}
 
     </SafeAreaView>
 
