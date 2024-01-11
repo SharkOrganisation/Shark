@@ -14,7 +14,7 @@ import axios from "axios";
 import Dropdown from "../components/Dropdown";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import Footer from "../components/Footer";
+import Footer from "../Components/Footer";
 
 const CreateProgram = ({ route }) => {
   const [dataa, setDataa] = useState([]);

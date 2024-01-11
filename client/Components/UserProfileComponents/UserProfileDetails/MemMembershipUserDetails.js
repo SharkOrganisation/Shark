@@ -3,9 +3,11 @@ import React from 'react'
 
 const MemMembershipUserDetails = () => {
   return (
+    <ScrollView>
     <View>
       <Text>MemMembershipUserDetails</Text>
     </View>
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({
