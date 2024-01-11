@@ -12,7 +12,8 @@ const Dropdown = ({ setData, onValueChange, items,searchQuery }) => {
 
   const filteredItems = formattedItems.filter((item) =>
   item.label.toUpperCase().includes(searchQuery.toUpperCase())
-);console.log(filteredItems);
+);
+// console.log(filteredItems);
   return (
     <View style={{ width: 200 }}>
       <RNPickerSelect

@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,7 +20,6 @@ import Home from './screens/bottomTab/home';
 import PaymentSucces from './screens/PaymentSucces';
 import PaymentFailed from './screens/PaymentFailed';
 import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
-
 import Coachprofile from './screens/Coachprofile';
 import Basket from './screens/Basket.js';
 const Stack = createNativeStackNavigator();
@@ -31,7 +29,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Allproducts'>
+      <Stack.Navigator initialRouteName='CreateAllProgram'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
         }
@@ -69,6 +67,7 @@ export default function App() {
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
+      <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
