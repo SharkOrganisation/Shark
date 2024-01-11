@@ -8,3 +8,5 @@ productRoute.get('/getOne/products/:id',getOneProduct)
 productRoute.delete('/delete/product/:id',deleteProduct)
 productRoute.post('/create/product',createProduct)
 productRoute.put('/uptade/product/:id',updateProduct)
+
+

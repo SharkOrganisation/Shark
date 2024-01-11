@@ -93,7 +93,7 @@ const CoachCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>USERNAME</Text>
           <TextInput
             placeholder='ENTER YOUR FULLNAME'
-            placeholderTextColor={'#BEFF03'}
+            placeholderTextColor={'gray'}
             style={styles.Input}
             onChangeText={(value) => setFullname(value)}
           />
@@ -102,7 +102,7 @@ const CoachCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>E-mail</Text>
           <TextInput
             placeholder='ENTER YOUR EMAIL'
-            placeholderTextColor={'#BEFF03'}
+            placeholderTextColor={'gray'}
             style={styles.Input}
             onChangeText={(value) => setEmail(value)}
           />
@@ -111,7 +111,7 @@ const CoachCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>PASSWORD</Text>
           <TextInput
             placeholder='ENTER YOUR PASSWORD'
-            placeholderTextColor={'#BEFF03'}
+            placeholderTextColor={'gray'}
             style={styles.Input}
             secureTextEntry={true}
             onChangeText={(value) => setPassword(value)}
@@ -134,7 +134,7 @@ const CoachCreateAccount = ({ route }) => {
             }
             <TextInput
               placeholder='ENTER YOUR DATE OF BIRTH'
-              placeholderTextColor={"#BEFF02"}
+              placeholderTextColor={"gray"}
               style={styles.Input}
               editable={false}
               value={dateBirth}
@@ -145,7 +145,7 @@ const CoachCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>SPECIALITY</Text>
           <TextInput
             placeholder='ENTER YOUR SPECIALITY'
-            placeholderTextColor={'#BEFF03'}
+            placeholderTextColor={'gray'}
             style={styles.Input}
             onChangeText={(value) => setSpeciality(value)}
           />
@@ -154,7 +154,7 @@ const CoachCreateAccount = ({ route }) => {
           <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>PRICE PER SESSION</Text>
           <TextInput p
             laceholder='SESSION PRICE $'
-            placeholderTextColor={'#BEFF03'}
+            placeholderTextColor={'gray'}
             style={styles.Input}
             keyboardType='numeric'
             onChangeText={(value) => setPerSession(value)}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,29 +10,62 @@ import {
   Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-import Dropdown from "../Components/Dropdown";
+import axios from "axios";
+import Dropdown from "../components/Dropdown";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
+import Footer from "../components/Footer";
 
 const CreateProgram = () => {
+  const [dataa, setDataa] = useState([]);
   const navigation = useNavigation();
-  const data = [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
-    { label: "Option 4", value: "option4" },
-    { label: "Option 5", value: "option5" },
-  ];
+  const [search, setSearch] = useState("");
+  const [test,setTest]=useState({
+    "0":'',
+    '1':'',
+    '2':'',
+    '3':'',
+    '4':''
+  })
+  const [indexSelected,setIndexSelected] = useState(0)
+  let exercices = [];
+  const handleChange=(name,val)=>{
+    setTest(prev=>({
+      ...prev,
+      [name]:val
+    }))
+  }
+  const getExercise = async () => {
+    try {
+      const response = await axios.get(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/exercice/getAll`
+      );
+      // console.log(response.data);
+      setDataa(response.data);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+    }
+  };
 
+  useEffect(() => {
+    getExercise();
+  }, []);
+
+  const handlePush = (name) => {
+    setData((prevData) => [...prevData, name]);
+  };
   const [modalVisible, setModalVisible] = useState(false);
+  const [data, setData] = useState([]);
   const [sets, setSets] = useState(0);
   const [reps, setReps] = useState(0);
   const [selectedDropdownValue, setSelectedDropdownValue] = useState("");
+  const [exerciseData, setExerciseData] = useState([]);
+
 
   const handleDropdownChange = (value) => {
     console.log("Selected value:", value);
     setSelectedDropdownValue(value);
+    
   };
 
   const openModal = () => {
@@ -46,6 +79,7 @@ const CreateProgram = () => {
   };
 
   const done = () => {
+    handleChange(indexSelected,`${sets}/${reps}`);
     setModalVisible(false);
   };
 
@@ -68,7 +102,17 @@ const CreateProgram = () => {
       setReps(reps - 1);
     }
   };
-
+  // const filteredExercises = exercices.filter(
+  //   (exercise) =>{
+  //     exercise.toUppercase().includes(search.toUpperCase())
+  //   });
+  // const handleSearch = (query) => {
+  //   const filteredExercises = dataa.filter((exercise) => {
+  //     return exercise.name.toUpperCase().includes(query.toUpperCase());
+  //   });
+    // Assuming you have a setDataa function to update dataa state
+  //   setDataa(filteredExercises);
+  // };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -87,8 +131,17 @@ const CreateProgram = () => {
             <Text style={styles.title}>Create Program</Text>
           </View>
           <View style={styles.searchContainer}>
-            <TextInput style={styles.searchInput} placeholder="Search..." />
-            <TouchableOpacity>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search..."
+              onChangeText={(text) => {
+                setSearch(text)
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+              }}
+            >
               <MaterialCommunityIcons
                 name="magnify"
                 size={30}
@@ -97,19 +150,31 @@ const CreateProgram = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <Dropdown items={data} onValueChange={handleDropdownChange} />
+        {/* {dataa.map((ele) => {
+          // exercices.push(ele.name);
+        })} */}
+        <Dropdown
+          items={dataa}
+          setData={setData}
+          onValueChange={handleDropdownChange}
+          searchQuery={search}
+        />
         <View style={styles.inputContainer}>
-          {[1, 2, 3, 4, 5].map((index) => (
+          {data?.filter((ele) => ele !== undefined && ele !== null && ele !== 'wael') 
+          .map((ele, index) => (
             <View key={index}>
               <TextInput
-                placeholder=""
+                name={String(index)}
+                placeholder={""}
                 style={styles.input}
-                value={selectedDropdownValue} 
-                onChangeText={(text) => setSelectedDropdownValue(text)} 
+                value={ele+test[String(index)]}
+                onChangeText={(text) => setSelectedDropdownValue(text)}
               />
               <TouchableOpacity
                 style={styles.plusBtn}
-                onPress={() => openModal()}
+                onPress={() => {
+                  setIndexSelected(index)
+                  openModal()}}
               >
                 <Entypo name="squared-plus" size={30} color={"#9AC61C"} />
               </TouchableOpacity>
@@ -128,6 +193,8 @@ const CreateProgram = () => {
             >
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
+
+            <Footer />
           </View>
         </View>
 
@@ -305,6 +372,17 @@ const styles = StyleSheet.create({
     color: "#BEFF03",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  footer: {
+    backgroundColor: "#192126",
+    flexDirection: "row",
+    width: 350,
+    height: 60,
+    padding: 10,
+    borderRadius: 100,
+    marginTop: 20,
+    justifyContent: "space-around",
+    alignItems: "center",
   },
 });
 
