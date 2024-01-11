@@ -18,7 +18,7 @@ export const addProgramEx = async (req: Request, res: Response) => {
     });
 
     res.status(201).json("created");
-  } catch (error: any) {
+  } catch (error) {
     res.status(400).json(error);
   }
 };

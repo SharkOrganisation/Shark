@@ -16,31 +16,32 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Entypo from "react-native-vector-icons/Entypo";
 import Footer from "../Components/Footer";
 
-const CreateProgram = () => {
+const CreateProgram = ({ route }) => {
   const [dataa, setDataa] = useState([]);
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
-  const [test,setTest]=useState({
-    "0":'',
-    '1':'',
-    '2':'',
-    '3':'',
-    '4':''
-  })
-  const [indexSelected,setIndexSelected] = useState(0)
+  const [test, setTest] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+  });
+  const { programId, dietId } = route.params;
+  console.log(programId, dietId, "from  create program");
+  const [indexSelected, setIndexSelected] = useState(0);
   let exercices = [];
-  const handleChange=(name,val)=>{
-    setTest(prev=>({
+  const handleChange = (name, val) => {
+    setTest((prev) => ({
       ...prev,
-      [name]:val
-    }))
-  }
+      [name]: val,
+    }));
+  };
   const getExercise = async () => {
     try {
       const response = await axios.get(
         `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/exercice/getAll`
       );
-      // console.log(response.data);
       setDataa(response.data);
     } catch (error) {
       console.error("Error fetching exercises:", error);
@@ -50,6 +51,27 @@ const CreateProgram = () => {
   useEffect(() => {
     getExercise();
   }, []);
+
+  const postExercise = async () => {
+    try {
+      const exerciceData = {
+        reps: reps,
+        sets: sets,
+      };
+      await axios.post(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/programEx/add`,
+        {
+          reps,
+          sets,
+          programId,
+          exerciceId: 1,
+        }
+      );
+      console.log("Success");
+    } catch (error) {
+      console.error(error, "Error posting exercise");
+    }
+  };
 
   const handlePush = (name) => {
     setData((prevData) => [...prevData, name]);
@@ -61,11 +83,9 @@ const CreateProgram = () => {
   const [selectedDropdownValue, setSelectedDropdownValue] = useState("");
   const [exerciseData, setExerciseData] = useState([]);
 
-
   const handleDropdownChange = (value) => {
-    console.log("Selected value:", value);
+    // console.log("Selected value:", value);
     setSelectedDropdownValue(value);
-    
   };
 
   const openModal = () => {
@@ -75,12 +95,16 @@ const CreateProgram = () => {
   };
 
   const handlenavigation = () => {
-    navigation.navigate("CreateAllProgram");
+    navigation.navigate("CreatePlan");
+  };
+  const arrow = () => {
+    navigation.navigate("CreateDiet");
   };
 
-  const done = () => {
-    handleChange(indexSelected,`${sets}/${reps}`);
-    setModalVisible(false);
+  const done = async () => {
+    await postExercise();
+    await handleChange(indexSelected, `${sets}/${reps}`);
+    await setModalVisible(false);
   };
 
   const incrementSets = () => {
@@ -110,7 +134,7 @@ const CreateProgram = () => {
   //   const filteredExercises = dataa.filter((exercise) => {
   //     return exercise.name.toUpperCase().includes(query.toUpperCase());
   //   });
-    // Assuming you have a setDataa function to update dataa state
+  // Assuming you have a setDataa function to update dataa state
   //   setDataa(filteredExercises);
   // };
   return (
@@ -121,7 +145,7 @@ const CreateProgram = () => {
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.pageTitle}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => arrow()}>
               <MaterialCommunityIcons
                 name="arrow-left-box"
                 size={40}
@@ -135,13 +159,10 @@ const CreateProgram = () => {
               style={styles.searchInput}
               placeholder="Search..."
               onChangeText={(text) => {
-                setSearch(text)
+                setSearch(text);
               }}
             />
-            <TouchableOpacity
-              onPress={() => {
-              }}
-            >
+            <TouchableOpacity onPress={() => {}}>
               <MaterialCommunityIcons
                 name="magnify"
                 size={30}
@@ -160,26 +181,30 @@ const CreateProgram = () => {
           searchQuery={search}
         />
         <View style={styles.inputContainer}>
-          {data?.filter((ele) => ele !== undefined && ele !== null && ele !== 'wael') 
-          .map((ele, index) => (
-            <View key={index}>
-              <TextInput
-                name={String(index)}
-                placeholder={""}
-                style={styles.input}
-                value={ele+test[String(index)]}
-                onChangeText={(text) => setSelectedDropdownValue(text)}
-              />
-              <TouchableOpacity
-                style={styles.plusBtn}
-                onPress={() => {
-                  setIndexSelected(index)
-                  openModal()}}
-              >
-                <Entypo name="squared-plus" size={30} color={"#9AC61C"} />
-              </TouchableOpacity>
-            </View>
-          ))}
+          {data
+            ?.filter(
+              (ele) => ele !== undefined && ele !== null && ele !== "wael"
+            )
+            .map((ele, index) => (
+              <View key={index}>
+                <TextInput
+                  name={String(index)}
+                  placeholder={""}
+                  style={styles.input}
+                  value={ele + test[String(index)]}
+                  onChangeText={(text) => setSelectedDropdownValue(text)}
+                />
+                <TouchableOpacity
+                  style={styles.plusBtn}
+                  onPress={() => {
+                    setIndexSelected(index);
+                    openModal();
+                  }}
+                >
+                  <Entypo name="squared-plus" size={30} color={"#9AC61C"} />
+                </TouchableOpacity>
+              </View>
+            ))}
           <View
             style={{
               width: "100%",
@@ -189,7 +214,14 @@ const CreateProgram = () => {
           >
             <TouchableOpacity
               style={styles.doneBtn}
-              onPress={() => handlenavigation()}
+              // onPress={() => handlenavigation()}
+              onPress={() =>
+                navigation.navigate("CreatePlan", {
+                  programId,
+                  exerciceId: 1,
+                  dietId,
+                })
+              }
             >
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>

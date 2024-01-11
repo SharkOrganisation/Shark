@@ -12,11 +12,36 @@ import {
 import Footer from "../Components/Footer";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-const CreatePlan = () => {
+import axios from "axios";
+const CreatePlan = ({ route }) => {
   const navigation = useNavigation();
+  const [plan, setPlan] = useState([]);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const { programId, dietId, exerciceId } = route.params??{}
+  console.log(programId, dietId, exerciceId, "from plan");
+  const postPlan = async () => {
+    try {
+      const PlanData = {
+        name: name,
+        price: +price,
+        programId: programId,
+        coachId:"1",
+        dietId: dietId,
+        exerciceId: exerciceId || 1
+      };
+      await axios.post(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/plan/post`,
+        PlanData,
+      );
+      console.log('success')
+    } catch (error) {
+      console.error("Error posting plan:", error);
+    }
+  };
 
   const arrow = () => {
-    navigation.navigate("CreateDiet");
+    navigation.navigate("CreateProgram");
   };
   return (
     <KeyboardAvoidingView
@@ -30,7 +55,7 @@ const CreatePlan = () => {
               <MaterialCommunityIcons
                 name="arrow-left-box"
                 size={40}
-                color={"black"} 
+                color={"black"}
               />
             </TouchableOpacity>
             <Text style={styles.title}>Create Plan</Text>
@@ -39,12 +64,23 @@ const CreatePlan = () => {
         <View style={styles.inputContainer}>
           <View>
             <Text style={styles.label}>Name</Text>
-            <TextInput placeholder="" style={styles.input} />
+            <TextInput
+              placeholder="Enter the name of the plan"
+              placeholderTextColor={"gray"}
+              style={styles.input}
+              onChangeText={(text) => setName(text)}
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
           <View>
             <Text style={styles.label}>Price</Text>
-            <TextInput placeholder="" style={styles.input} />
+            <TextInput
+              placeholder="Enter the price of the plan"
+              placeholderTextColor={"gray"}
+              keyboardType="numeric"
+              style={styles.input}
+              onChangeText={(text) => setPrice(text)}
+            />
             <TouchableOpacity style={styles.plusBtn}></TouchableOpacity>
           </View>
 
@@ -55,7 +91,7 @@ const CreatePlan = () => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity style={styles.doneBtn}>
+            <TouchableOpacity style={styles.doneBtn} onPress={() => postPlan()}>
               <Text style={styles.btnText}>Start</Text>
             </TouchableOpacity>
             {/* <Footer/> */}
