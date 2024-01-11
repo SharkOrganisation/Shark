@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import Dropdown from "../Components/Dropdown";
+import Dropdown from "../components/Dropdown";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import Footer from "../Components/Footer";
+import Footer from "../components/Footer";
 
 const CreateProgram = ({ route }) => {
   const [dataa, setDataa] = useState([]);

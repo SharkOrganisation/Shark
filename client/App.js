@@ -2,8 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/welcome';
-import Allproducts from './screens/Allproducts'
-import DetailProducts from './Components/DetailProducts';
+import Allproducts from './screens/Allproducts';
+import DetailProducts from './components/DetailProducts';
+import Checkout from "./screens/Checkout.js";
 import Login from './screens/login';
 import CreateUser from './screens/userCreateAccount'
 import CreateCoach from './screens/coachCreateAccount'
@@ -20,6 +21,7 @@ import PaymentSucces from './screens/PaymentSucces';
 import PaymentFailed from './screens/PaymentFailed';
 import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 import Coachprofile from './screens/Coachprofile';
+import Basket from './screens/Basket.js';
 const Stack = createNativeStackNavigator();
 
 
@@ -60,6 +62,8 @@ export default function App() {
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }} />
+        <Stack.Screen name="Basket" component={Basket} options={{ headerShown: false }} />
+
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
       <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
