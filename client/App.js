@@ -30,7 +30,7 @@ export default function App() {
 
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='getStarted'>
+      <Stack.Navigator initialRouteName='tabs'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
         }
