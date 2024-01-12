@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/welcome';
 import Allproducts from './screens/Allproducts';
-import DetailProducts from'./Components/DetailProducts';
+import DetailProducts from './Components/DetailProducts';
 import Checkout from "./screens/Checkout.js";
 import Login from './screens/login';
 import CreateUser from './screens/userCreateAccount'
