@@ -1,20 +1,98 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { FIREBASE_APP } from '../../firebase';
+import axios from 'axios'
+import { ipAddress } from '../../ipConfig';
+const storage = getStorage(FIREBASE_APP);
 
-const EditGymProfile = ({route}) => {
-    const {gymData} = route.params
-    console.log(gymData);
+const EditGymProfile = ({ route }) => {
+    const { gymData } = route.params
+    const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null)
+    const [fullname, setFullname] = useState('')
+    const [type, setType] = useState('')
+    const [location, setLocation] = useState('')
+    const [bio, setBio] = useState('')
+    const [loading,setLoading] = useState(false)
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+
+    const uploadImage = async () => {
+        try {
+            if (image) {
+                const response = await fetch(image);
+                const blob = await response.blob();
+                const storageRef = ref(storage, `gym_profiles/${Date.now()}.jpg`);
+
+                await uploadBytes(storageRef, blob);
+                const downloadURL = await getDownloadURL(storageRef);
+                setImageUrl(downloadURL)
+                console.log('Image uploaded. Download URL:', downloadURL);
+            } else {
+                console.error('No image selected.');
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error.message);
+        }
+    };
+
+    const handleEditProfileClick = async () => {
+        setLoading(true)
+        try {
+        const result = await axios.put(`http://${ipAddress}:3000/api/gym/updateGym/${gymData.id}`,{
+            pfImage:imageUrl,
+            fullname,
+            type,
+            location,
+            bio
+        })
+        console.log(result);
+        setLoading(false)
+
+        } catch (error) {
+        console.log(error);  
+        setLoading(false) 
+        }
+        // console.log('====================================');
+        // console.log({
+        //     pfImage: imageUrl,
+        //     fullname,
+        //     type,
+        //     location,
+        //     bio
+        // })
+        // console.log('====================================');
+    }
+
+
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.profileInfo}>
-                <Image
-                    source={{
-                        uri: gymData.pfImage
-                    }}
-                    style={styles.pfImage}
-                />
-                <TouchableOpacity style={styles.editPic}>
+                <TouchableOpacity onPress={pickImage}>
+                    <Image
+                        source={{
+                            uri: imageUrl || gymData.pfImage
+                        }}
+                        style={styles.pfImage}
+
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.editPic} onPress={uploadImage} >
                     <Icon name='camera' style={{ fontSize: 20 }} />
                 </TouchableOpacity>
             </View>
@@ -24,13 +102,7 @@ const EditGymProfile = ({route}) => {
                     <TextInput
                         style={styles.Input}
                         defaultValue={gymData.fullname}
-                    />
-                </View>
-                <View>
-                    <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>E-mail</Text>
-                    <TextInput
-                        style={styles.Input}
-                        defaultValue={gymData.Email}
+                        onChangeText={(text) => setFullname(text)}
                     />
                 </View>
                 <View>
@@ -38,6 +110,7 @@ const EditGymProfile = ({route}) => {
                     <TextInput
                         style={styles.Input}
                         defaultValue={gymData.type}
+                        onChangeText={(text) => setType(text)}
                     />
                 </View>
                 <View>
@@ -45,20 +118,23 @@ const EditGymProfile = ({route}) => {
                     <TextInput
                         style={styles.Input}
                         defaultValue={gymData.location}
+                        onChangeText={(text) => setLocation(text)}
                     />
                 </View>
                 <View>
                     <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>BIO</Text>
                     <TextInput
-                    multiline={true}
-                        style={[styles.Input,{height:100}]}
+                        multiline={true}
+                        style={[styles.Input, { height: 100 }]}
                         defaultValue={gymData.bio}
+                        onChangeText={(text) => setBio(text)}
                     />
                 </View>
                 <TouchableOpacity
                     style={styles.btn}
+                    onPress={handleEditProfileClick}
                 >
-                    <Text style={styles.btnText}>EDIT PROFILE</Text>
+                    <Text style={[styles.btnText,{opacity: loading ? 0.5 : 1}]}>{loading ? 'LOADING...' : 'EDIT PROFILE'}</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
