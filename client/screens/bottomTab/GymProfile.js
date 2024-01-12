@@ -4,31 +4,32 @@ import Icon from 'react-native-vector-icons/EvilIcons'
 import Posts from '../../Components/GymProfileComponent/Posts'
 import Memberships from '../../Components/GymProfileComponent/Memberships'
 import Saved from '../../Components/GymProfileComponent/Saved'
-import { useNavigation } from "@react-navigation/native";
-import  axios  from 'axios'
+import { useNavigation,useIsFocused } from "@react-navigation/native";
+import axios from 'axios'
 import { FIREBASE_AUTH } from '../../firebase'
-import {ipAddress} from '../../ipConfig'
+import { ipAddress } from '../../ipConfig'
 const GymProfile = () => {
     const [postsActive, setPostsActive] = useState(true)
     const [membershipsActive, setMembershipsActive] = useState(false)
     const [savedActive, setSavedActive] = useState(false)
-    const [view,setView] = useState("posts")
-    const [gymData,setGymData] = useState([])
+    const [view, setView] = useState("posts")
+    const [gymData, setGymData] = useState([])
     const navigation = useNavigation()
+    const isFocused = useIsFocused()
     const currentUser = FIREBASE_AUTH.currentUser
- 
 
-    useEffect(()=>{
+
+    useEffect(() => {
         axios
-        .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
-        .then((response)=>{
-            setGymData(response.data)
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+            .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
+            .then((response) => {
+                setGymData(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
 
-    })
+    }, [isFocused])
 
     return (
         <ScrollView style={styles.container}>
@@ -42,13 +43,14 @@ const GymProfile = () => {
                 <View style={styles.profileContainer}>
                     <Text style={styles.profileName}>{gymData.fullname}</Text>
                     <TouchableOpacity
-                    onPress={()=>{
-                        navigation.navigate('editGymProfile',{gymData})
-                    }}
+                        onPress={() => {
+                            navigation.navigate('editGymProfile', { gymData })
+                        }}
                     >
                         <Icon name='pencil' style={{ color: '#9AC61C', fontSize: 30 }} />
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.profileBio}>{gymData.bio}</Text>
             </View>
             <View style={styles.followingAndFollowerContainer}>
                 <View style={styles.box}>
@@ -99,9 +101,9 @@ const GymProfile = () => {
                 </TouchableOpacity>
 
             </View>
-            {view === 'posts' && <Posts/>}
-            {view === 'memberships' && <Memberships/>}
-            {view === 'saved' && <Saved/>}
+            {view === 'posts' && <Posts />}
+            {view === 'memberships' && <Memberships />}
+            {view === 'saved' && <Saved />}
         </ScrollView>
     )
 }
@@ -126,6 +128,11 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
+        alignSelf: 'center'
+    },
+    profileBio:{
+        color: 'white',
+        fontSize: 18,
         alignSelf: 'center'
     },
     profileContainer: {
