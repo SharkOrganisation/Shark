@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./home";
 import UserProfile from "./UserProfile";
+import Coachprofile from "./Coachprofile";
 
 const Tab = createBottomTabNavigator();
 const BottomTabScreens = () => {
@@ -20,8 +21,8 @@ const BottomTabScreens = () => {
         }}/>
 
       <Tab.Screen
-        name="userProfile"
-        component={UserProfile}
+        name="Coachprofile"
+        component={Coachprofile}
         options={{
           headerStyle: {
             backgroundColor: "black",

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert,Vibration } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert,Vibration, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +16,9 @@ const GetStarted = () => {
     const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
+            <ScrollView>
+
+            
             <View style={styles.logo}>
                 <Image
                     resizeMode="contain"
@@ -93,6 +96,7 @@ const GetStarted = () => {
                         style={styles.textStarted}>Get Started</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

@@ -123,13 +123,6 @@ const Coachprofile = () => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.pageTitle}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialCommunityIcons
-                name="arrow-left-box"
-                size={40}
-                color={"#9AC61C"}
-              />
-            </TouchableOpacity>
             <View style={styles.profileContainer}>
               <Image
                 style={styles.avatar}
