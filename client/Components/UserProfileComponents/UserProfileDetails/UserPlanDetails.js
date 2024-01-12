@@ -6,10 +6,10 @@ const UserPlanDetails = ({ data }) => {
   return (
     <ScrollView style={styles.Container}>
       <View style={styles.planContainer}>
-        <View style={styles.PlanTitleContainer}>
+        {/* <View style={styles.PlanTitleContainer}>
           <Text style={styles.planTitle}>Plan Name:</Text>
           <Text style={styles.planContent}>{data.name}</Text>
-        </View>
+        </View> */}
         <Text style={styles.planTitle}>My Coach:</Text>
         <View style={styles.CoachContainer}>
           <Image
@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
   imgCoach: {
     borderRadius: "100%",
     borderColor: "#E5E4E2",
-    objectFit: "contain",
-    borderWidth: 3,
-    height: 70,
-    width: 80,
+    objectFit: "fill",
+    borderWidth: 1,
+    height: 55,
+    width: 50,
     // justifyContent:"center",
     // alignItems:"center"
   },

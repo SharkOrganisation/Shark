@@ -16,45 +16,46 @@ import Dumbbell from "react-native-vector-icons/FontAwesome5";
 import MembershipIcon from "react-native-vector-icons/AntDesign";
 import MembershipUser from "../../Components/UserProfileComponents/MembershipUser";
 import SavedUser from "../../Components/UserProfileComponents/SavedUser";
+import { useNavigation, useIsFocused  } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../../firebase";
 import axios from "axios";
+import { ipAddress } from "../../ipConfig";
 
 const UserProfile = ({ navigation }) => {
+  const navigations = useNavigation();
   const [myplan, setMyplan] = useState(true);
   const [membership, setMembership] = useState(false);
   const [saved, setSaved] = useState(false);
   const [active, setActive] = useState("My Plan");
   const [planDetails, setPlanDetails] = useState("Plan Details");
   const [userData, setUserData] = useState([]);
-
   const user = FIREBASE_AUTH.currentUser;
-  // console.log(user.uid);
   // console.log(process.env.EXPO_PUBLIC_IP_ADRESS,'ip');
-  // console.log(process.env,'')
+  const isFocused = useIsFocused()
 
   const getUser = async () => {
     try {
       const getUserData = await axios.get(
-        `http://${"172.29.0.5"}:3000/api/user/getOne/${user.uid}`
+        `http://${ipAddress}:3000/api/user/getOne/${user.uid}`
       );
       setUserData(getUserData.data);
+      setUserName(getUserData.data.fullname);
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
+    console.log("triggered");
     getUser();
-  }, []);
+  }, [isFocused]);
 
-  
   return (
     <ScrollView style={styles.container}>
-      {/* <Text onPress={()=>navigation.navigate('getStarted')}>test screen</Text> */}
       <View style={styles.staticContainer}>
         <View style={styles.pfImageContainer}>
           <Image
             source={{
-              uri: `${userData.pfImage}`
+              uri: `${userData.pfImage}`,
             }}
             style={styles.pfImage}
           />
@@ -64,7 +65,14 @@ const UserProfile = ({ navigation }) => {
             <Text style={styles.name}>{userData.fullname}</Text>
           </View>
           <TouchableOpacity>
-            <EditIcon name="pencil" size={30} style={{ color: "#9AC61C" }} />
+            <EditIcon
+              name="pencil"
+              size={30}
+              style={{ color: "#9AC61C" }}
+              onPress={() => {
+                navigations.navigate("EditUserProfile", { userData });
+              }}
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.followContainer}>
@@ -156,6 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 20,
+    margin: "10%",
   },
   pfImageContainer: {
     justifyContent: "center",
@@ -195,7 +204,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   tabProfile: {
-    marginTop: "15%",
     flexDirection: "row",
     justifyContent: "space-around",
     borderBottomColor: "white",

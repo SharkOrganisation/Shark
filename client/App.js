@@ -23,6 +23,7 @@ import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 import Coachprofile from './screens/Coachprofile';
 import Basket from './screens/Basket.js';
 import EditGymProfile from './screens/bottomTab/EditGymProfile.js';
+import EditUserProfile from './screens/bottomTab/EditUserProfile.js';
 const Stack = createNativeStackNavigator();
 
 
@@ -71,6 +72,25 @@ export default function App() {
             },
             title: 'Edit Profile'
           }}/>
+          <Stack.Screen name='EditUserProfile' component={EditUserProfile} options={{ headerStyle: {
+                  backgroundColor: 'black',
+                  shadowColor: "#9AC61C",
+                  borderBottomColor: 'black',
+                  shadowOffset: {
+                    width: 0,
+                    height: 6,
+                  },
+                  shadowOpacity: 0.39,
+                  shadowRadius: 8.30,
+      
+                  elevation: 13,
+                },
+                headerTitleAlign: 'center',
+                headerTintColor: '#BEFF03',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+                title: 'Edit Profile'}} />
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
