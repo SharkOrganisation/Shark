@@ -22,7 +22,7 @@ export const getAllBasket = async (req: Request, res: Response) => {
 };
 
 export const getOneBasketByUserId = async (req: Request, res: Response) => {
-  const userId = req.params.id
+  const userId = req.params.id;
   try {
     const basket = await prisma.basket.findMany({
       where: {
@@ -30,11 +30,10 @@ export const getOneBasketByUserId = async (req: Request, res: Response) => {
       },
       include: {
         Product: true,
-       
       },
     });
 
-    if (!basket) {
+    if (basket.length === 0) {
       res.status(404).json({ error: "Basket not found" });
       return;
     }

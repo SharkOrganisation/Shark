@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Allproducts'>
+      <Stack.Navigator initialRouteName='getStarted'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
         }
