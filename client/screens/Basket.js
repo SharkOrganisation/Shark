@@ -1,45 +1,68 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet,Pressable,Image,TouchableOpacity } from "react-native";
-import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
+
+// import { useRoute } from '@react-navigation/native';
 import { ScrollView } from "@gluestack-ui/themed";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import {FIREBASE_AUTH} from "../firebase";
 
 export default function Basket() {
   const navigation = useNavigation();
-  const route = useRoute();
-  const rp = route.params.product;
-  console.log(rp, "basssssssssskett");
+  const [basketData, setBasketData] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const idUser=FIREBASE_AUTH.currentUser.uid
+  console.log("iddddddd",idUser);
+
+  const getBasketByUserId = async () => {
+    try {
+      const response = await axios.get(`http://192.168.1.14:3001/api/basket/getOneByUser/${idUser}`);
+      console.log("Basket data:", response.data);
+      setBasketData(response.data);
+    } catch (error) {
+      console.error('Error fetching basket:', error.response?.data || error.message || 'Network error');
+    }
+  };
+
+  useEffect(() => {
+    getBasketByUserId();
+  }, []);
+
+
+
 
   return (
     <ScrollView style={styles.cardContainer}>
       <View style={styles.pageTitle}>
- <TouchableOpacity onPress={() => {
-                navigation.navigate("Allproducts") }} >
-  <Ionicons
-    name="arrow-back-circle-sharp"
-    style={styles.icon}
-    size={40}
-    color="#97d91c"
-  />
- </TouchableOpacity>
- <Text style={styles.text}>MarketPlace</Text>
- <Icon name="storefront" size={30} color="#97d91c" style={styles.marketicon} />
-</View>
-
-      <Image source={{ uri: rp.images[0] }} style={styles.cardImage} />
-      <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>{rp.name.replace(/['"]+/g, '')}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Allproducts")}>
+          <Ionicons
+            name="arrow-back-circle-sharp"
+            style={styles.icon}
+            size={40}
+            color="#97d91c"
+          />
+        </TouchableOpacity>
+        <Text style={styles.text}>MarketPlace</Text>
+        <Icon name="storefront" size={30} color="#97d91c" style={styles.marketicon} />
       </View>
-      <View style={styles.box}>
-        <Text style={styles.id}> {rp.id}</Text>
-        </View>
-      {/* <TouchableOpacity style={styles.delbut}>
-        <Text style={styles.delText}>Delete</Text>
-      </TouchableOpacity>
-      */}
-       
+
+      {
+        basketData.length > 0 && basketData.map((basketItem) => (
+          <View key={basketItem.id} style={styles.cardContent}>
+            {basketItem.Product.images?.length > 0 && (
+              <Image source={{ uri: basketItem.Product.images[0] }} style={styles.cardImage} />
+            )}
+
+            <Text style={styles.cardTitle}>{basketItem?.Product?.name?.replace(/['"]+/g, '')}</Text>
+            <View style={styles.box}>
+              <Text style={styles.id}>{basketItem.Product.id}</Text>
+            </View>
+          </View>
+        ))
+      }
+
     </ScrollView>
   );
 }

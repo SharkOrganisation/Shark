@@ -1,18 +1,61 @@
 import { StatusBar } from 'expo-status-bar';
 import {React,useState} from 'react';
-import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight } from 'react-native';
+import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import Carousel from 'react-native-snap-carousel';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import{ FIREBASE_AUTH}  from "../firebase";
+
+
 
 export default function DetailProducts () {
+  const idUser=FIREBASE_AUTH.currentUser
+  console.log(idUser.uid,"iddddddd");
   const navigation =useNavigation()
   const route=useRoute()
-  const rp=route.params.product
+  const FromAllproduct=route.params.product
+  const role = route.params?.role
+ 
 
-  console.log(rp,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+  console.log(role,":roleeeeeeeeeeee")
+
+
+  
+  const addToBasket = async () => {
+    try {
+      if (role === 'user') {
+        const response = await axios.post(`http://192.168.1.14:3001/api/basket/add`, {
+          productId: FromAllproduct.id,
+          userId: idUser.uid,
+        });
+  
+        console.log("Response from server:", response.data);
+      } else if (role === 'Gym' && role !== undefined) {
+        const response = await axios.post(`http://192.168.1.14:3001/api/basket/add`, {
+          productId: 1,
+          gymId: idUser.uid,
+        });
+        console.log(idUser.uid,':iddddddddddd')
+  
+        console.log("Response from server:", response.data);
+      } else if (role === 'coach') {
+        const response = await axios.post(`http://192.168.1.14:3001/api/basket/add`, {
+          productId: FromAllproduct.id,
+          coachId: idUser.uid,
+        });
+  
+        console.log("Response from server:", response.data);
+      } else  {
+        alert('please register');
+      }
+    } catch (error) {
+      console.error('Error adding to basket:', error.message || 'Network error');
+    }
+  };
+  
 
 
   const [liked, setLiked] = useState(false);
@@ -41,13 +84,16 @@ return (
         <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="black" />
       </Pressable >
       <View style={styles.carouselContainer}>
-        <Carousel data={rp.images} renderItem={renderItem} sliderWidth={390} itemWidth={350} />
+        <Carousel data={FromAllproduct.images} renderItem={renderItem} sliderWidth={390} itemWidth={350} />
       </View>
       <View style={styles.blackBackground}>
-  <Text style={styles.whiteText } marginBottom={100}>{rp.description}</Text>
+  <Text style={styles.whiteText } marginBottom={100}>{FromAllproduct.description}</Text>
       <Text  style={{color:"#97d91c",right:150,marginBottom:480,fontSize:20,  fontWeight: 'bold',}}>_Description_</Text>
 </View>
-<TouchableHighlight style={styles.addButon} onPress={() => navigation.navigate('Basket', { product: rp })}>
+<TouchableHighlight style={styles.addButon} onPress={() => {
+  console.log('Adding to basket:', FromAllproduct.id, idUser.uid , role);
+  addToBasket();
+}}>
   <Text style={styles.buttonText}>Add To Basket</Text>
 </TouchableHighlight>  */}
 
