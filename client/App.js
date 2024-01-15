@@ -14,7 +14,6 @@ import CreateDiet from './screens/CreateDiet';
 import CreatePlan from './screens/CreatePlan';
 import GetStarted from './screens/getStarted';
 import ResetPassword from './screens/resetPassword';
-import ChatScreen from './screens/chatScreen'
 import CreateAllProgram from './screens/CreateAllProgram';
 import Home from './screens/bottomTab/home';
 import PaymentSucces from './screens/PaymentSucces';
@@ -23,6 +22,7 @@ import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 import Coachprofile from './screens/Coachprofile';
 import Basket from './screens/Basket.js';
 import EditGymProfile from './screens/bottomTab/EditGymProfile.js';
+import Followers from './screens/Followers.js';
 const Stack = createNativeStackNavigator();
 
 
@@ -35,42 +35,48 @@ export default function App() {
           headerShown: false
         }
         } />
-        <Stack.Screen
-          name='ChatScreen'
-          component={ChatScreen}
-          options={{
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleAlign: 'center',
-            headerTintColor: '#BEFF03',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            title: 'CHAT COMMUNITY'
-          }}
-        />
         <Stack.Screen name="editGymProfile" component={EditGymProfile} options={{
-            headerStyle: {
-              backgroundColor: 'black',
-              shadowColor: "#9AC61C",
-              borderBottomColor: 'black',
-              shadowOffset: {
-                width: 0,
-                height: 6,
-              },
-              shadowOpacity: 0.39,
-              shadowRadius: 8.30,
-  
-              elevation: 13,
+          headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
             },
-            headerTitleAlign: 'center',
-            headerTintColor: '#BEFF03',
-            headerTitleStyle: {
-              fontWeight: 'bold',
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title: 'Edit Profile'
+        }} />
+        <Stack.Screen name="follower" component={Followers} options={{
+          headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
             },
-            title: 'Edit Profile'
-          }}/>
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title: 'Profile'
+        }} />
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
@@ -78,7 +84,7 @@ export default function App() {
         <Stack.Screen name="CreateAllProgram" component={CreateAllProgram} options={{ headerShown: false }} />
         <Stack.Screen name="CreateDiet" component={CreateDiet} options={{ headerShown: false }} />
         <Stack.Screen name="CreatePlan" component={CreatePlan} options={{ headerShown: false }} />
-        <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }}   />
+        <Stack.Screen name="welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name='createUser' component={CreateUser} options={{ headerShown: false }} />
         <Stack.Screen name='createCoach' component={CreateCoach} options={{ headerShown: false }} />
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
@@ -86,9 +92,9 @@ export default function App() {
         <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }} />
         <Stack.Screen name="Basket" component={Basket} options={{ headerShown: false }} />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
-      <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
-      <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
-      <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
+        <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
+        <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
+        <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

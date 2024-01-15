@@ -1,13 +1,16 @@
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/EvilIcons'
+import LogoutIcon from 'react-native-vector-icons/Entypo'
 import Posts from '../../Components/GymProfileComponent/Posts'
 import Memberships from '../../Components/GymProfileComponent/Memberships'
 import Saved from '../../Components/GymProfileComponent/Saved'
-import { useNavigation,useIsFocused } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import axios from 'axios'
 import { FIREBASE_AUTH } from '../../firebase'
 import { ipAddress } from '../../ipConfig'
+
+
 const GymProfile = () => {
     const [postsActive, setPostsActive] = useState(true)
     const [membershipsActive, setMembershipsActive] = useState(false)
@@ -33,6 +36,15 @@ const GymProfile = () => {
 
     return (
         <ScrollView style={styles.container}>
+            <TouchableOpacity
+                style={{ marginTop:10,marginRight: 15,position:'absolute',right: 0 }}
+                onPress={() => {
+                    navigation.navigate('login',{role:'gym'});
+                }}>
+                <View>
+                    <LogoutIcon name="log-out" size={25} color="#9AC61C" />
+                </View>
+            </TouchableOpacity>
             <View style={styles.profileInfo}>
                 <Image
                     source={{
@@ -52,19 +64,26 @@ const GymProfile = () => {
                 </View>
                 <Text style={styles.profileBio}>{gymData.bio}</Text>
             </View>
-            <View style={styles.followingAndFollowerContainer}>
-                <View style={styles.box}>
-                    <Text style={styles.number}>100K</Text>
-                    <Text style={styles.text}>FOLLOWERS</Text>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('follower')
+                }}
+            >
+
+                <View style={styles.followingAndFollowerContainer}>
+                    <View style={styles.box}>
+                        <Text style={styles.number}>100K</Text>
+                        <Text style={styles.text}>FOLLOWERS</Text>
+                    </View>
+                    <View style={styles.box}>
+                        <Text style={styles.number}>90K</Text>
+                        <Text style={styles.text}>FOLLOWING</Text>
+                    </View>
                 </View>
-                <View style={styles.box}>
-                    <Text style={styles.number}>90K</Text>
-                    <Text style={styles.text}>FOLLOWING</Text>
-                </View>
-            </View>
-            <TouchableOpacity style={styles.followBtn}>
-                <Text style={styles.followBtnText}>FOLLOW +</Text>
             </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.followBtn}>
+                <Text style={styles.followBtnText}>FOLLOW +</Text>
+            </TouchableOpacity> */}
             <View style={styles.navbar}>
                 <TouchableOpacity onPress={() => {
                     setPostsActive(true)
@@ -130,7 +149,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         alignSelf: 'center'
     },
-    profileBio:{
+    profileBio: {
         color: 'white',
         fontSize: 18,
         alignSelf: 'center'
