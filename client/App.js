@@ -22,8 +22,12 @@ import PaymentFailed from './screens/PaymentFailed';
 import BottomTabScreens from './screens/bottomTab/BottomTabScreens';
 import Basket from './screens/Basket.js';
 import EditGymProfile from './screens/bottomTab/EditGymProfile.js';
+<<<<<<< HEAD
 import Coachprofile from './screens/bottomTab/Coachprofile.js';
 import EditCoachProfile from './screens/bottomTab/EditCoachProfile.js';
+=======
+import EditUserProfile from './screens/bottomTab/EditUserProfile.js';
+>>>>>>> e197ec25e387b200abf1ecfbfa2b3e52cbf800b6
 const Stack = createNativeStackNavigator();
 
 
@@ -72,6 +76,7 @@ export default function App() {
             },
             title: 'Edit Profile'
           }}/>
+<<<<<<< HEAD
         <Stack.Screen name="EditCoachProfile" component={EditCoachProfile} options={{
             headerStyle: {
               backgroundColor: 'black',
@@ -95,6 +100,27 @@ export default function App() {
           }}/>
         <Stack.Screen name="Coachprofile" component={Coachprofile} options={{ headerShown: false }} />
         <Stack.Screen name="getStarted" component={GetStarted} options={{ headerShown: false }} />
+=======
+          <Stack.Screen name='EditUserProfile' component={EditUserProfile} options={{ headerStyle: {
+                  backgroundColor: 'black',
+                  shadowColor: "#9AC61C",
+                  borderBottomColor: 'black',
+                  shadowOffset: {
+                    width: 0,
+                    height: 6,
+                  },
+                  shadowOpacity: 0.39,
+                  shadowRadius: 8.30,
+      
+                  elevation: 13,
+                },
+                headerTitleAlign: 'center',
+                headerTintColor: '#BEFF03',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+                title: 'Edit Profile'}} />
+>>>>>>> e197ec25e387b200abf1ecfbfa2b3e52cbf800b6
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
