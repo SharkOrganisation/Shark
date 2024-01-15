@@ -25,7 +25,7 @@ const BottomTabScreens = ({ route }) => {
         tabBarStyle: {
           display: 'flex',
           position: 'absolute',
-          bottom: 20,
+          bottom: 5,
           left: 25,
           right: 25,
           backgroundColor: '#192126',
