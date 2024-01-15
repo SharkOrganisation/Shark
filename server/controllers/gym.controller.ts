@@ -13,3 +13,23 @@ export const getOneGymById = async (req:Request, res:Response) => {
         res.status(500).send(error)
     }
 }
+
+export const updateGym = async (req:Request, res:Response) => {
+    const gymId = req.params.id
+    const {fullname,type,location,bio,pfImage} = req.body
+    try {
+        const updateUser = await prisma.gym.update({
+            where: {id: gymId},
+            data:{
+                fullname,
+                type,
+                location,
+                bio,
+                pfImage
+            }
+        })
+        res.status(201).json(updateUser)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}

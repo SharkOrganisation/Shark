@@ -14,7 +14,7 @@ const Login = ({ route }) => {
         
         try {
             const response = await signInWithEmailAndPassword(auth,email, password)
-            console.log(response);
+            // console.log(response);
             alert('user logged in successfully')
             navigation.navigate('Allproducts',{role})
         } catch (error) {

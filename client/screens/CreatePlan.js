@@ -13,21 +13,24 @@ import Footer from "../Components/Footer";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { FIREBASE_AUTH } from "../firebase";
 const CreatePlan = ({ route }) => {
   const navigation = useNavigation();
   const [plan, setPlan] = useState([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const { programId, dietId, exerciceId } = route.params??{}
-  console.log(programId, dietId, exerciceId, "from plan");
+  const coach= FIREBASE_AUTH.currentUser;
+  // // console.log(programId, dietId, exerciceId, "from plan");
+  console.log(coach.uid,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
   const postPlan = async () => {
     try {
       const PlanData = {
         name: name,
         price: +price,
         programId: programId,
-        coachId:"1",
         dietId: dietId,
+        coachId:coach.uid,
         exerciceId: exerciceId || 1
       };
       await axios.post(
