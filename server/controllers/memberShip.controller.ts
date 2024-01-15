@@ -18,8 +18,15 @@ export const getoneMemberbyuserId = async (req: Request, res: Response) => {
           select: {
             fullname: true,
             pfImage: true,
+            location:true
           },
         },
+        user:{
+          select:{
+            fullname:true,
+            pfImage:true
+          }
+        }
       },
     });
     res.json(member);
