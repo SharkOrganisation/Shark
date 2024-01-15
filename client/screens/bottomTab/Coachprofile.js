@@ -9,7 +9,11 @@ import {
   Alert,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useIsFocused } from "@react-navigation/native";
+import EditIcon from "react-native-vector-icons/EvilIcons";
+import axios from "axios";
+import { FIREBASE_AUTH } from "../../firebase";
+import EditCoachProfile from "./EditCoachProfile";
 
 const PostContent = () => {
   return (
@@ -35,12 +39,6 @@ const LikesContent = () => {
           uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
         }}
       />
-      <Image
-        style={styles.avatar}
-        source={{
-          uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
-        }}
-      />
       <Text>cjcjhcccccccccccccccccccccccccccccccccccccc</Text>
     </View>
   );
@@ -48,19 +46,7 @@ const LikesContent = () => {
 
 const MembershipContent = () => {
   return (
-    <View style={stylesMember.container} >
-      <Image
-        style={stylesMember.member}
-        source={{
-          uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
-        }}
-      />
-      <Image
-        style={stylesMember.member}
-        source={{
-          uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
-        }}
-      />
+    <View style={stylesMember.container}>
       <Image
         style={stylesMember.member}
         source={{
@@ -73,26 +59,22 @@ const MembershipContent = () => {
 };
 
 const stylesMember = StyleSheet.create({
-    container:{
-flex : 1,
-flexDirection:"row",
-},
-member:{
-     width: 140,
+  container: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  member: {
+    width: 140,
     height: 140,
     borderRadius: 140,
     borderColor: "#9AC61C",
     borderWidth: 5,
-},
-
-})
-
-
-
-
+  },
+});
 
 const Coachprofile = () => {
   const navigation = useNavigation();
+  const isFocused =useIsFocused()
   const [activeTab, setActiveTab] = useState("post");
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -117,35 +99,60 @@ const Coachprofile = () => {
       setIsFollowing((prevIsFollowing) => !prevIsFollowing);
     }
   };
+  const [coach, setCoach] = useState([]);
+  const coachId = FIREBASE_AUTH.currentUser;
+
+  const getCoachProfile = async () => {
+    try {
+      const response = await axios.get(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/coach/getOne/${coachId.uid}`
+      );
+      console.log(response.data);
+      setCoach(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    getCoachProfile();
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.pageTitle}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialCommunityIcons
-                name="arrow-left-box"
-                size={40}
-                color={"#9AC61C"}
-              />
-            </TouchableOpacity>
             <View style={styles.profileContainer}>
               <Image
                 style={styles.avatar}
                 source={{
-                  uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
+                  uri:`${coach.pfImage}`
                 }}
               />
-              <Text style={styles.name}>ishow speed</Text>
+              <View style={styles.nameContainer}>
+                <Text style={styles.name}>{coach.fullname}</Text>
+                <TouchableOpacity style={styles.editIconContainer}>
+                  <EditIcon
+                    name="pencil"
+                    size={30}
+                    style={{ color: "#9AC61C" }}
+                    onPress={()=>{
+                      navigation.navigate("EditCoachProfile",{coach});
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.bio}>
+              {coach.bio}
+              </Text>
               <View style={styles.followContainer}>
                 <TouchableOpacity>
-                  <Text style={styles.FollowText}>Following</Text>
-                  <Text style={styles.numberFollower}>50K</Text>
+                  <Text style={styles.FollowText}>Speciality</Text>
+                  <Text style={styles.numberFollower}>{coach.speciality}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Text style={styles.FollowText}>Followers</Text>
-                  <Text style={styles.numberFollower}>0</Text>
+                  <Text style={styles.FollowText}>PerSession</Text>
+                  <Text style={styles.numberFollower}>{coach.perSession}</Text>
                 </TouchableOpacity>
               </View>
               <View>
@@ -159,7 +166,6 @@ const Coachprofile = () => {
                 </TouchableOpacity>
               </View>
               <View style={styles.underline}>
-          
                 <TouchableOpacity onPress={() => setActiveTab("post")}>
                   <Text
                     style={[
@@ -201,7 +207,6 @@ const Coachprofile = () => {
               {activeTab === "post" && <PostContent />}
               {activeTab === "likes" && <LikesContent />}
               {activeTab === "membership" && <MembershipContent />}
-
             </View>
           </View>
         </View>
@@ -238,6 +243,17 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: "10%",
   },
+  nameContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  editIconContainer: {
+    right: 115,
+  },
+  bio: {
+    color: "white",
+    fontSize: 16,
+  },
   followContainer: {
     flexDirection: "row",
     gap: 60,
@@ -272,8 +288,8 @@ const styles = StyleSheet.create({
   underline: {
     borderBottomColor: "white",
     borderBottomWidth: 2,
-    flexDirection:'row',
-    justifyContent:'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     width: "100%",
   },
 
@@ -291,10 +307,8 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   selectedText: {
-    borderBottomColor:"#9AC61C",
-    borderBottomWidth:5,
-    
-    
+    borderBottomColor: "#9AC61C",
+    borderBottomWidth: 5,
   },
 });
 

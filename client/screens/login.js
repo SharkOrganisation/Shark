@@ -14,9 +14,10 @@ const Login = ({ route }) => {
         
         try {
             const response = await signInWithEmailAndPassword(auth,email, password)
-            console.log(response);
+            // console.log(response);
             alert('user logged in successfully')
-            navigation.navigate('tabs')
+            // navigation.navigate('Allproducts',{role})
+            navigation.navigate('tabs',{role})
         } catch (error) {
             console.log(error.code )
             if (error.code === 'auth/invalid-credential') {

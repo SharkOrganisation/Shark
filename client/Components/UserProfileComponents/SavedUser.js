@@ -22,7 +22,11 @@ const styles = StyleSheet.create({
 
   },
   titlePost:{
-
-  }
+    color: "white",
+    fontSize: 20,
+    position:"relative",
+    alignSelf: "center",
+    letterSpacing:1
+    }
 })
 export default SavedUser

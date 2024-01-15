@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert,Vibration } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert,Vibration, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useRoute } from '@react-navigation/native';
 import GymLogo from 'react-native-vector-icons/FontAwesome'
 import UserLogo from 'react-native-vector-icons/Entypo'
 
@@ -14,8 +14,13 @@ const GetStarted = () => {
 
 
     const navigation = useNavigation()
+    const route = useRoute();
+
     return (
         <SafeAreaView style={styles.container}>
+            <ScrollView>
+
+            
             <View style={styles.logo}>
                 <Image
                     resizeMode="contain"
@@ -93,6 +98,7 @@ const GetStarted = () => {
                         style={styles.textStarted}>Get Started</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
