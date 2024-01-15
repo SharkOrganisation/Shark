@@ -67,15 +67,6 @@ const EditGymProfile = ({ route }) => {
         console.log(error);  
         setLoading(false) 
         }
-        // console.log('====================================');
-        // console.log({
-        //     pfImage: imageUrl,
-        //     fullname,
-        //     type,
-        //     location,
-        //     bio
-        // })
-        // console.log('====================================');
     }
 
 

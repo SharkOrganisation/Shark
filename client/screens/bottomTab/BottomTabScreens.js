@@ -8,8 +8,8 @@ const BottomTabScreens = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="gymProfile"
-        component={GymProfile}
+        name="userProfile"
+        component={UserProfile}
         options={{
           headerStyle: {
             backgroundColor: "black",
