@@ -1,16 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./home";
 import UserProfile from "./UserProfile";
+import Coachprofile from "./Coachprofile";
 import GymProfile from "./GymProfile";
 
 const Tab = createBottomTabNavigator();
 const BottomTabScreens = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen
-        name="userProfile"
-        component={UserProfile}
-        options={{
+      <Tab.Screen name="Home" component={Home}  options={{
           headerStyle: {
             backgroundColor: "black",
             borderBottomColor: 'black',
@@ -34,7 +32,7 @@ const BottomTabScreens = () => {
           title: "Profile"
         }}
       />
-      <Tab.Screen name="Home" component={Home} options={{
+      <Tab.Screen name="Coachprofile" component={Coachprofile} options={{
         headerStyle: {
           backgroundColor: "black",
         },

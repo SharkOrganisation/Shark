@@ -40,7 +40,7 @@ const UserProfile = ({ navigation }) => {
       );
       setUserData(getUserData.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   useEffect(() => {

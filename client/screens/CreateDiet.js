@@ -12,7 +12,8 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import Footer from "../Components/Footer";
-const CreateDiet = () => {
+import axios from "axios";
+const CreateDiet = ({route}) => {
   const navigation = useNavigation();
   const [diet, setDiet] = useState([]);
   const [name, setName] = useState("");

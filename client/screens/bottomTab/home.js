@@ -15,8 +15,9 @@ import Begin from "react-native-vector-icons/AntDesign";
 import Shop from "react-native-vector-icons/Feather";
 import CardImg from "../../assets/HomePicture/CoverCard.jpg";
 import QuoteImg from "../../assets/HomePicture/QuoteImg.jpg";
-
+import { useNavigation } from "@react-navigation/native";
 const Home = () => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.Container}>
       {/* <ScrollView > */}
@@ -41,7 +42,7 @@ const Home = () => {
               right: -40,
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("CreateAllProgram")}>
               <Text
                 style={{
                   color: "white",
