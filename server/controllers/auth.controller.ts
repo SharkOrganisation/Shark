@@ -7,9 +7,6 @@ export const signUp = async (req: Request, res: Response) => {
   const role = req.params.role;
   const { id, fullname, email,age, datebirth, location,type, speciality, perSession,bmi } =
     req.body;
-    console.log('====================================');
-    console.log(req.body);
-    console.log('====================================');
   try {
     if (role === "user") {
       const userExisted = await prisma.user.count({
@@ -26,7 +23,7 @@ export const signUp = async (req: Request, res: Response) => {
             datebirth,
             age,
             bmi,
-            pfImage: "",
+            pfImage: "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
           },
         });
         res.status(200).json(newUser);
@@ -38,16 +35,13 @@ export const signUp = async (req: Request, res: Response) => {
       if (gymOwnerExisted !== 0) {
         res.status(409).send("Gym owner already exists");
       } else if (gymOwnerExisted === 0) {
-        console.log('====================================');
-        console.log('from gym table');
-        console.log('====================================');
         const newGym = await prisma.gym.create({
           data: {
             id,
             fullname,
             type,
             Email: email,
-            pfImage: "",
+            pfImage: "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
             location,
           },
         });
@@ -68,7 +62,7 @@ export const signUp = async (req: Request, res: Response) => {
             datebirth,
             speciality,
             perSession,
-            pfImage: "",
+            pfImage: "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
             bio: "",
           },
         });

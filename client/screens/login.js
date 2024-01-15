@@ -14,9 +14,9 @@ const Login = ({ route }) => {
         
         try {
             const response = await signInWithEmailAndPassword(auth,email, password)
-            console.log(response);
+            // console.log(response);
             alert('user logged in successfully')
-            navigation.navigate('ChatScreen')
+            navigation.navigate('Coachprofile')
         } catch (error) {
             console.log(error.code )
             if (error.code === 'auth/invalid-credential') {

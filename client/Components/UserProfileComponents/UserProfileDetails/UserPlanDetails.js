@@ -1,23 +1,76 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import React from "react";
 
-const UserPlanDetails = () => {
+const UserPlanDetails = ({ data }) => {
+  console.log(data);
   return (
     <ScrollView style={styles.Container}>
-      <View style>
-        <Text style={styles.text}>UserPlanDetails</Text>
+      <View style={styles.planContainer}>
+        <View style={styles.PlanTitleContainer}>
+          <Text style={styles.planTitle}>Plan Name:</Text>
+          <Text style={styles.planContent}>{data.name}</Text>
+        </View>
+        <Text style={styles.planTitle}>My Coach:</Text>
+        <View style={styles.CoachContainer}>
+          <Image
+            style={styles.imgCoach}
+            source={{ uri: `${data.Coach.pfImage}` }}
+          />
+          <Text style={styles.planContent}>{data.Coach.fullname}</Text>
+        </View>
+        <Text style={styles.planTitle}>My Diet:</Text>
+        <View style={styles.planContainer}>
+          <Text style={styles.planContent}> {data.Diet.name}</Text>
+          <Text style={styles.planContent}>{data.Diet.meals}</Text>
+        </View>
       </View>
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
-  Container:{
+  Container: {
     flex: 1,
   },
-  text: {
-    color: "white",
-    fontSize: 30,
+  planContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    margin: 10,
   },
-  
+  PlanTitleContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    margin: 10,
+  },
+  CoachContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 15,
+  },
+  planTitle: {
+    color: "#999999",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  planContent: {
+    color: "white",
+    fontWeight: "900",
+    fontWeight: 15,
+    fontSize: 20,
+  },
+  imgCoach: {
+    borderRadius: "100%",
+    borderColor: "#E5E4E2",
+    objectFit: "contain",
+    borderWidth: 3,
+    height: 70,
+    width: 80,
+    // justifyContent:"center",
+    // alignItems:"center"
+  },
 });
 export default UserPlanDetails;
