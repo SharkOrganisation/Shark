@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
-import React from "react";
-
+import React, { useState } from "react";
+import ExercicesDetails from "./ExercicesDetails.js";
 const UserPlanDetails = ({ data }) => {
+  const [showExercices, setShowExercices] = useState("all Plan");
   console.log(data);
   return (
     <ScrollView style={styles.Container}>
@@ -22,6 +23,19 @@ const UserPlanDetails = ({ data }) => {
         <View style={styles.planContainer}>
           <Text style={styles.planContent}> {data.Diet.name}</Text>
           <Text style={styles.planContent}>{data.Diet.meals}</Text>
+        </View>
+        <Text style={styles.planTitle}>Program Duration:</Text>
+        <View style={styles.planContainer}>
+          <Text style={styles.planContent}> {data.program.name}</Text>
+          <Text style={styles.planContent}>{data.program.duration}</Text>
+        </View>
+        <Text style={styles.planTitle}> All The Exercices:</Text>
+        <View style={styles.planContainer}>
+          {/* <Image style={styles.planContent} source={{uri:`${data.program.programExercice[0].Exercice.gifUrl}`}} /> */}
+          {/* <Text style={styles.planContent}></Text> */}
+          {data.program.programExercice.map((exercice) => {
+            
+          })}
         </View>
       </View>
     </ScrollView>

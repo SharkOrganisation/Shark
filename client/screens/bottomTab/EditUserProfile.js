@@ -9,18 +9,59 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
-import React, {useState } from "react";
+import React, { useState } from "react";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytes,
+} from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import { FIREBASE_APP } from "../../firebase";
 import { ipAddress } from "../../ipConfig.js";
 import axios from "axios";
-import { reload } from "firebase/auth";
+const storage = getStorage(FIREBASE_APP);
 
 const EditUserProfile = ({ route }) => {
   const { userData } = route.params;
   const navigation = useNavigation();
   const [fullname, setFullname] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const uploadImage = async () => {
+    try {
+      if (image) {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const storageRef = ref(storage, `gym_profiles/${Date.now()}.jpg`);
+
+        await uploadBytes(storageRef, blob);
+        const downloadURL = await getDownloadURL(storageRef);
+        setImageUrl(downloadURL);
+        console.log("Image uploaded. Download URL:", downloadURL);
+      } else {
+        console.error("No image selected.");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+    }
+  };
 
   const editProfile = async () => {
     const heightInMeters = height / 100;
@@ -28,27 +69,43 @@ const EditUserProfile = ({ route }) => {
     try {
       await axios.put(`http://${ipAddress}:3000/api/user/update/${userData.id}`, {
         fullname,
+        pfImage:imageUrl,
         height,
         weight,
         age: +age,
         bmi,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       alert("Try Later");
     }
+    console.log({
+      fullname, 
+      pfImage: imageUrl,
+      height,
+      weight,
+      age: +age,
+      bmi,
+    });
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileInfo}>
-        <Image
-          source={{
-            uri: userData.pfImage,
+        <TouchableOpacity onPress={() => pickImage()}>
+          <Image
+            source={{
+              uri: imageUrl || userData.pfImage,
+            }}
+            style={styles.pfImage}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.editPic}
+          onPress={() => {
+            uploadImage();
           }}
-          style={styles.pfImage}
-        />
-        <TouchableOpacity style={styles.editPic}>
+        >
           <Icon name="camera" style={{ fontSize: 20 }} />
         </TouchableOpacity>
       </View>
@@ -61,14 +118,6 @@ const EditUserProfile = ({ route }) => {
             onChangeText={(value) => setFullname(value)}
           />
         </View>
-        {/* <View>
-          <Text style={{ color: "#BEFF03", fontWeight: "bold" }}>E-mail</Text>
-          <TextInput
-            style={styles.Input}
-            defaultValue={userData.email}
-            onChangeText={(value) => setEmail(value)}
-          />
-        </View> */}
         <View style={styles.smallInptContainer}>
           <View>
             <Text style={{ color: "#BEFF03", fontWeight: "bold" }}>Height</Text>
@@ -96,8 +145,7 @@ const EditUserProfile = ({ route }) => {
           style={styles.btn}
           onPress={() => {
             console.log("test");
-            editProfile(),
-              navigation.navigate("userProfile")
+            editProfile(), navigation.navigate("userProfile");
           }}
         >
           <Text style={styles.btnText}>EDIT PROFILE</Text>

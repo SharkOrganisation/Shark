@@ -39,7 +39,6 @@ const UserProfile = ({ navigation }) => {
         `http://${ipAddress}:3000/api/user/getOne/${user.uid}`
       );
       setUserData(getUserData.data);
-      setUserName(getUserData.data.fullname);
     } catch (err) {
       console.log(err);
     }
