@@ -8,11 +8,6 @@ import {
   ScrollView,
 } from "react-native";
 import UserPlan from "../../Components/UserProfileComponents/UserPlan";
-<<<<<<< HEAD
-import Ionicons from "react-native-vector-icons/Ionicons";
-=======
-// import Ionicons from "react-native-vector-icons/Ionicons";
->>>>>>> 19467e08fcdd9671e7c961c8891c9b2b3f1cb468
 import EditIcon from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Save from "react-native-vector-icons/Fontisto";
@@ -20,13 +15,10 @@ import Dumbbell from "react-native-vector-icons/FontAwesome5";
 import MembershipIcon from "react-native-vector-icons/AntDesign";
 import MembershipUser from "../../Components/UserProfileComponents/MembershipUser";
 import SavedUser from "../../Components/UserProfileComponents/SavedUser";
-<<<<<<< HEAD
-=======
 import { useNavigation, useIsFocused  } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../../firebase";
 import axios from "axios";
 import { ipAddress } from "../../ipConfig";
->>>>>>> 19467e08fcdd9671e7c961c8891c9b2b3f1cb468
 
 const UserProfile = ({ navigation }) => {
   const navigations = useNavigation();

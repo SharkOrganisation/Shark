@@ -7,7 +7,7 @@ import { ScrollView } from "@gluestack-ui/themed";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import {FIREBASE_AUTH} from "../firebase";
+import {FIREBASE_AUTH} from "../../firebase";
 
 export default function Basket() {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ export default function Basket() {
 
   return (
     <ScrollView style={styles.cardContainer}>
-      <View style={styles.pageTitle}>
+      {/* <View style={styles.pageTitle}>
         <TouchableOpacity onPress={() => navigation.navigate("Allproducts")}>
           <Ionicons
             name="arrow-back-circle-sharp"
@@ -46,7 +46,7 @@ export default function Basket() {
         </TouchableOpacity>
         <Text style={styles.text}>MarketPlace</Text>
         <Icon name="storefront" size={30} color="#97d91c" style={styles.marketicon} />
-      </View>
+      </View> */}
 
       {
         basketData.length > 0 && basketData.map((basketItem) => (

@@ -45,7 +45,7 @@ export default function Allproducts({route}) {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.pageTitle}>
+      {/* <View style={styles.pageTitle}>
         <TouchableOpacity>
           <Ionicons
             name="arrow-back-circle-sharp"
@@ -57,7 +57,7 @@ export default function Allproducts({route}) {
         <Text style={styles.text}>Marketplace</Text>
         <Icon name="storefront" size={40} color="black" style={styles.marketicon} onPress={()=>{navigation.navigate('Basket')}}  />
 
-      </View>
+      </View> */}
       <View style={{ flexDirection: "row", marginTop: 70 }}>
         <TouchableOpacity
           style={{
