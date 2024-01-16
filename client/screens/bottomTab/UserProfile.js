@@ -15,7 +15,7 @@ import Dumbbell from "react-native-vector-icons/FontAwesome5";
 import MembershipIcon from "react-native-vector-icons/AntDesign";
 import MembershipUser from "../../Components/UserProfileComponents/MembershipUser";
 import SavedUser from "../../Components/UserProfileComponents/SavedUser";
-import { useNavigation, useIsFocused  } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../../firebase";
 import axios from "axios";
 import { ipAddress } from "../../ipConfig";
@@ -30,7 +30,7 @@ const UserProfile = ({ navigation }) => {
   const [userData, setUserData] = useState([]);
   const user = FIREBASE_AUTH.currentUser;
   // console.log(process.env.EXPO_PUBLIC_IP_ADRESS,'ip');
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
 
   const getUser = async () => {
     try {
@@ -73,12 +73,16 @@ const UserProfile = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.followContainer}>
-          <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("UserFollowing");
+          }}
+        >
+          <View style={styles.followContainer}>
             <Text style={styles.numberFollower}>400</Text>
-          </TouchableOpacity>
-          <Text style={styles.FollowText}>Following</Text>
-        </View>
+            <Text style={styles.FollowText}>Following</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.tabProfile}>

@@ -1,34 +1,36 @@
 import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useNavigation, useIsFocused  } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { FIREBASE_AUTH } from "../../firebase.js";
-import {ipAddress} from "../../ipConfig";
+import { ipAddress } from "../../ipConfig";
 
 import axios from "axios";
 
 const MembershipUser = () => {
-  const [userMemb,setUserMemb]=useState([])
+  const [userMemb, setUserMemb] = useState([]);
   const user = FIREBASE_AUTH.currentUser;
-  const isFocused = useIsFocused()
-  const getMembership=async()=>{
-    try{
-      let membership=await axios.get(`http://${ipAddress}:3000/api/memberShip/getByUser/${user.uid}`)
-      setUserMemb(membership.data[0])
-    }catch(err){[]
+  const isFocused = useIsFocused();
+  const getMembership = async () => {
+    try {
+      let membership = await axios.get(
+        `http://${ipAddress}:3000/api/memberShip/getByUser/${user.uid}`
+      );
+      setUserMemb(membership.data[0]);
+    } catch (err) {
+      [];
       console.log(err);
     }
+  };
+  useEffect(() => {
+    if (isFocused) {
+      getMembership();
+    }
+  }, [isFocused]);
+  console.log(userMemb);
+  if (!userMemb || !userMemb.Gym || !userMemb.user) {
+    return <Text style={{ color: "white" }}>is loading...</Text>;
   }
-useEffect(()=>{
-  if(isFocused){
-
-    getMembership()
-  }
-},[isFocused])
-console.log(userMemb);
-if (!userMemb || !userMemb.Gym || !userMemb.user) {
-  return <Text style={{color:"white"}}>is loading...</Text>
-}
 
   return (
     <View style={styles.allcontainer}>
@@ -43,18 +45,21 @@ if (!userMemb || !userMemb.Gym || !userMemb.user) {
             <Image
               style={styles.gymPic}
               source={{
-                uri: userMemb.Gym.pfImage
+                uri: userMemb.Gym.pfImage,
               }}
             />
           </View>
+
           <Text>{userMemb.Gym.location}</Text>
           <Text style={styles.membershipDuration}>Membership Duration:</Text>
           <Text>{userMemb.type}</Text>
+
           <View style={styles.qrContainer}>
             <View>
               <Text style={styles.membershipDuration}>Expired At:</Text>
               <Text>15-01-2025</Text>
             </View>
+
             <View style={styles.Qr}>
               <Text style={{ fontSize: 8, fontWeight: "700" }}>QR CODE:</Text>
               <Image
@@ -66,6 +71,7 @@ if (!userMemb || !userMemb.Gym || !userMemb.user) {
             </View>
           </View>
         </View>
+
         <View style={styles.RightContainer}>
           <Image
             style={styles.userPf}
@@ -78,7 +84,8 @@ if (!userMemb || !userMemb.Gym || !userMemb.user) {
             <Text style={styles.name}> {userMemb.user.fullname}</Text>
           </View>
         </View>
-      </ImageBackground> 
+        
+      </ImageBackground>
     </View>
   );
 };
