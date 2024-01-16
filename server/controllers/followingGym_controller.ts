@@ -42,7 +42,7 @@ export const userFollowers = async (
         }
       }
     });
-    const followers = userFollower?.followedGym.map((follow) => follow.Gym?{fullname:follow.Gym.fullname, pfImage:follow.Gym.pfImage }:[] ) || []
+    const followers = userFollower?.followedGym.map((follow) => follow.Gym?{id:follow.Gym.id,fullname:follow.Gym.fullname, pfImage:follow.Gym.pfImage }:[] ) || []
 
     res.status(200).send(followers);
   } catch (err) {

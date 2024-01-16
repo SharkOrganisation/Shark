@@ -1,39 +1,40 @@
 import { View, Text, StyleSheet, ScrollView,Image ,TouchableOpacity} from "react-native";
 import React from "react";
 
-const Following = () => {
+const Following = ({data}) => {
+  console.log(data);
   return (
-    <ScrollView style={styles.container}>
+    // <View style={styles.container}>
       <View style={styles.followersContainer}>
         <View style={styles.follwerProfile}>
           <Image source={{
-            uri: 'https://www.the-sun.com/wp-content/uploads/sites/6/2023/11/c380374e-5b5e-4178-ae9d-d81bd1d75466-1.jpg'
+            uri: data.pfImage
           }}
             style={styles.followerPic}
           />
-          <Text style={styles.followerName}>jeremy buendia</Text>
+          <Text style={styles.followerName}>{data.fullname}</Text>
         </View>
         <TouchableOpacity style={styles.unfollowBtn}>
-          <Text style={styles.unfollowBtnText}>FOLLOW +</Text>
+          <Text style={styles.unfollowBtnText}>UNFOLLOW +</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    // </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    gap: 20,
-    position: "absolute",
-    top: "10%",
+    gap:20,
+    position:'relative',
+    top:200,
   },
   followersContainer:{
-    width: "94%",
+    width: 410,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     borderBottomColor:'white',
     borderBottomWidth: 0.2,
-    paddingBottom:10
+    paddingBottom:10,
   },
   follwerProfile:{
     flexDirection: 'row',
