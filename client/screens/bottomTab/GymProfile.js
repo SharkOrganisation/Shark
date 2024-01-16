@@ -120,7 +120,7 @@ const GymProfile = () => {
                 </TouchableOpacity>
 
             </View>
-            {view === 'posts' && <Posts />}
+            {view === 'posts' && <Posts data={gymData} />}
             {view === 'memberships' && <Memberships />}
             {view === 'saved' && <Saved />}
         </ScrollView>
