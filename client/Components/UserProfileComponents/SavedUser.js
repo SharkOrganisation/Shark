@@ -16,7 +16,8 @@ const SavedUser = () => {
 const styles = StyleSheet.create({
   
   savedContainer:{
-
+    flex:1,
+    backgroundColor:"black"
   },
   imgPost:{
 

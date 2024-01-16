@@ -67,9 +67,8 @@ const PostContent = () => {
           <Image
             source={{
               // uri: 'https://ceinture-de-force.fr/cdn/shop/articles/Blog_body_france_1.png?v=1692176612&width=1100',
-              // uri: post.image,
-              uri:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVVA_E2Q6ohZwBq822E9NBMA1XD1g1ZJS6PA&usqp=CAU"
-
+              uri: post.image[0],
+              // uri:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVVA_E2Q6ohZwBq822E9NBMA1XD1g1ZJS6PA&usqp=CAU"
             }}
             style={stylesPost.postImage}
           />
