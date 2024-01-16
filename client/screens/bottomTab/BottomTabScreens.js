@@ -11,6 +11,7 @@ import Coachprofile from "./Coachprofile";
 import GymProfile from "./GymProfile";
 import ChatScreen from "./chatScreen";
 import Allproducts from "./Allproducts";
+import CreatePost from "./CreatePost";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,12 +26,13 @@ const BottomTabScreens = ({ route }) => {
         tabBarStyle: {
           display: 'flex',
           position: 'absolute',
-          bottom: 20,
+          bottom: 5,
           left: 25,
           right: 25,
           backgroundColor: '#192126',
-          borderRadius: 30,
-          height: 60,
+          borderRadius: 40,
+          height: 70,
+          width:'90%',
           borderTopWidth: 0,
         },
         tabBarShowLabel: false,
@@ -59,6 +61,8 @@ const BottomTabScreens = ({ route }) => {
         },
         title: "Home"
       }} />
+
+
 
       <Tab.Screen
         name="marketplace"
@@ -107,7 +111,49 @@ const BottomTabScreens = ({ route }) => {
           )
         }}
       />
+      <Tab.Screen
+        name="Create"
+        component={CreatePost}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                width: Platform.OS === 'ios' ? 50 : 60,
+                height: Platform.OS === 'ios' ? 50 : 60,
+                borderRadius: Platform.OS === 'ios' ? 25 : 30,
+                backgroundColor: 'white',
+              }}>
+              <Icon
+                name="pluscircle"
+                size={Platform.OS === 'ios' ? 50 : 60}
+                color={'#9AC61C'}
+              />
+            </View>
+          ),
+          tabBarIconStyle: {},
+          headerStyle: {
+            backgroundColor: "black",
+            borderBottomColor: 'black',
+            shadowColor: "#9AC61C",
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
 
+            elevation: 13,
+
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#9AC61C",
+          headerTitleStyle: {
+            fontWeight: "bold",
+            fontSize: 20,
+          },
+          title: "Create Post"
+        }}
+      />
       <Tab.Screen
         name="chat"
         component={ChatScreen}
@@ -273,9 +319,9 @@ const BottomTabScreens = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  marketicon:{
-    top:3,
-    right:19,
+  marketicon: {
+    top: 3,
+    right: 19,
   }
 })
 
