@@ -3,37 +3,45 @@ import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export const getAllBasket = async (req: Request, res: Response) => {
-  try {
-    const baskets = await prisma.basket.findMany({
-      include: {
-        Product: true,
-        User: true,
-        Coach: true,
-        Gym: true,
-      },
-    });
-
-    res.json(baskets);
-  } catch (error) {
-    console.error("Error fetching baskets:", error);
-    res.status(500).json({ error: "Server Error" });
-  }
-};
-
 export const getOneBasketByUserId = async (req: Request, res: Response) => {
   const userId = req.params.id;
+
   try {
     const basket = await prisma.basket.findMany({
       where: {
-         userId,
+        userId,
       },
       include: {
         Product: true,
       },
     });
 
-    if (basket.length === 0) {
+    if (!basket || basket.length === 0) {
+      res.status(404).json({ error: 'Basket not found' });
+      return;
+    }
+
+    res.json(basket);
+  } catch (error) {
+    console.error('Error fetching basket:', error);
+    res.status(500).json({ error: 'Server Error' });
+  }
+};
+
+export const getOneBasketByGymId = async (req: Request, res: Response) => {
+  const gymId = req.params.id
+  try {
+    const basket = await prisma.basket.findMany({
+      where: {
+         gymId,
+      },
+      include: {
+        Product: true,
+       
+      },
+    });
+
+    if (!basket) {
       res.status(404).json({ error: "Basket not found" });
       return;
     }
@@ -88,7 +96,7 @@ export const addToBasket = async (req: Request, res: Response): Promise<void> =>
   } catch (error) {
     // Handle error
     console.error("Error creating basket item:", error);
-  
+    
     if (error instanceof Error) {
       res.status(500).json({ error: error.message || "Server Error" });
     } else {
@@ -100,24 +108,24 @@ export const addToBasket = async (req: Request, res: Response): Promise<void> =>
 
 export const deleteBasket = async (req: Request, res: Response) => {
   try {
-    const productId = +req.params.id;
+    const id = +req.params.id;
     const role = req.params.role;
-
-    let whereClause: any = { productId };
-
-    if (role === 'user') {
-      const userId = req.params.userId;
-      whereClause = { ...whereClause, userId };
-    } else if (role === 'coach') {
-      const coachId = +req.params.coachId;
-      whereClause = { ...whereClause, coachId };
-    } else if (role === 'gym') {
-      const gymId = +req.params.gymId;
-      whereClause = { ...whereClause, gymId };
-    } else {
-      return res.status(400).json({ error: 'Invalid role' });
-    }
-
+    const idConnected=req.params.idConnected
+    let whereClause: any = {};
+    console.log(role,"=",idConnected,"=",id);
+    
+if (role === 'user') {
+ const userId =idConnected;
+ whereClause = { ...whereClause, userId, id };
+} else if (role === 'coach') {
+ const coachId =idConnected;
+ whereClause = { ...whereClause, coachId , id };
+} else if (role === 'gym') {
+ const gymId =idConnected;
+ whereClause = { ...whereClause, gymId , id };
+} else {
+ return res.status(400).json({ error: 'Invalid role' });
+}
     console.log('Constructed Where Clause:', whereClause);
 
     const deletedBasket = await prisma.basket.deleteMany({
@@ -138,30 +146,6 @@ export const deleteBasket = async (req: Request, res: Response) => {
 };
 
 
-export const getOneBasketByGymId = async (req: Request, res: Response) => {
-  const gymId = req.params.id
-  try {
-    const basket = await prisma.basket.findMany({
-      where: {
-         gymId,
-      },
-      include: {
-        Product: true,
-       
-      },
-    });
-
-    if (!basket) {
-      res.status(404).json({ error: "Basket not found" });
-      return;
-    }
-
-    res.json(basket);
-  } catch (error) {
-    console.error("Error fetching basket:", error);
-    res.status(500).json({ error: "Server Error" });
-  }
-};
   
  export const updateBasket = async (req: Request, res: Response) => {
   try {

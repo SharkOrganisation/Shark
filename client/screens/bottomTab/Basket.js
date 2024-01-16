@@ -1,52 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet,Pressable,Image,TouchableOpacity } from "react-native";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 
 // import { useRoute } from '@react-navigation/native';
 import { ScrollView } from "@gluestack-ui/themed";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+// import Ionicons from "react-native-vector-icons/Ionicons";
+// import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {FIREBASE_AUTH} from "../../firebase";
 
 export default function Basket() {
   const navigation = useNavigation();
   const [basketData, setBasketData] = useState([]);
   const [loading, setLoading] = useState(true); 
+  const route=useRoute()
+  const role = route.params?.role
+  console.log(role,"roleloggggg");
   const idUser=FIREBASE_AUTH.currentUser.uid
   console.log("iddddddd",idUser);
 
-  const getBasketByUserId = async () => {
+
+
+
+  const getBasketByRole = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.14:3001/api/basket/getOneByUser/${idUser}`);
-      console.log("Basket data:", response.data);
+      let endpoint = '';
+  
+    
+      if (role === 'user') {
+        endpoint = `http://172.29.0.18:3000/api/basket/getOneByUser/${idUser}`;
+      } else if (role === 'Gym') {
+        endpoint = `http://172.29.0.18:3000/api/basket/getOneByGym/${idUser}`;
+      } else if (role === 'coach') {
+        endpoint = `http://172.29.0.18:3000/api/basket/getOneByCoach/${idUser}`;
+      } else {
+        console.error('Invalid role');
+        return;
+      }
+  
+      const response = await axios.get(endpoint);
+      console.log('Basket data:', response.data);
       setBasketData(response.data);
     } catch (error) {
-      console.error('Error fetching basket:', error.response?.data || error.message || 'Network error');
+      console.error('Error fetching basket:', error.message || 'Network error');
+      setBasketData([]);
     }
   };
-
+  
   useEffect(() => {
-    getBasketByUserId();
+    getBasketByRole(); 
   }, []);
+ 
 
 
+ 
+
+
+  const deleteBasketItem=async(role, id, userId)=> {
+    
+    try {
+      const url = `http://172.29.0.18:3000/api/basket/delete/${role}/${id}/${userId}`;
+      await axios.delete(url)
+      getBasketByRole(); 
+      console.log("deleted");
+    } catch (error) {
+      console.log('Error deleting basket item:', error.message);
+    }
+  }
+  
 
 
   return (
     <ScrollView style={styles.cardContainer}>
-      {/* <View style={styles.pageTitle}>
-        <TouchableOpacity onPress={() => navigation.navigate("Allproducts")}>
-          <Ionicons
-            name="arrow-back-circle-sharp"
-            style={styles.icon}
-            size={40}
-            color="#97d91c"
-          />
-        </TouchableOpacity>
-        <Text style={styles.text}>MarketPlace</Text>
-        <Icon name="storefront" size={30} color="#97d91c" style={styles.marketicon} />
-      </View> */}
+    
 
       {
         basketData.length > 0 && basketData.map((basketItem) => (
@@ -56,10 +83,18 @@ export default function Basket() {
             )}
 
             <Text style={styles.cardTitle}>{basketItem?.Product?.name?.replace(/['"]+/g, '')}</Text>
+         
+            <View>
+            <TouchableOpacity onPress={() => deleteBasketItem(role, basketItem.id, idUser)}>
+            <MaterialIcons name="delete" size={30} color="gray" top={-20} left={330}/>
+          </TouchableOpacity>
+
+            </View>
             <View style={styles.box}>
               <Text style={styles.id}>{basketItem.Product.id}</Text>
             </View>
           </View>
+             
         ))
       }
 
@@ -126,20 +161,18 @@ const styles = StyleSheet.create({
     marginTop: -104,
     left:190,
   },
-  delbut:{
-    backgroundColor: 'red',
-    width:70,
-    borderRadius: 5,
-    top:-80,
-    padding:10,
-    left:190,
-
-  },
   
-  id :{
+  id: {
+    top:-50,
+    color: "black",
     height: 30,
     width: 30,
-    },
+    borderRadius: 8, 
+    backgroundColor: "white",
+    textAlign: "center", 
+    lineHeight: 30, 
+    marginLeft: 180,
+  },
 
     box:{
     backgroundcolor: "#ffffff",
@@ -151,8 +184,5 @@ const styles = StyleSheet.create({
     top: 0,
     width: 30,
     },
-  delText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
+
 });
