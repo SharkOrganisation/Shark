@@ -67,6 +67,7 @@ const EditGymProfile = ({ route }) => {
         console.log(error);  
         setLoading(false) 
         }
+     
     }
 
 

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
@@ -84,6 +85,10 @@ const EditCoachProfile = ({ route }) => {
   };
 
   return (
+    <KeyboardAvoidingView
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={styles.container}
+  >
     <ScrollView style={styles.container}>
       <View style={styles.profileInfo}>
         <TouchableOpacity onPress={() => pickImage()}>
@@ -158,6 +163,7 @@ const EditCoachProfile = ({ route }) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+</KeyboardAvoidingView>
   );
 };
 

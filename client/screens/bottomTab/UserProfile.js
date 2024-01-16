@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from "react-native";
 import UserPlan from "../../Components/UserProfileComponents/UserPlan";
-// import Ionicons from "react-native-vector-icons/Ionicons";
 import EditIcon from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Save from "react-native-vector-icons/Fontisto";
