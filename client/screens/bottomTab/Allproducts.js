@@ -14,7 +14,7 @@ export default function Allproducts({route}) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.1.14:3001/api/product/get/products');
+      const response = await fetch('http://172.29.0.18:3000/api/product/get/products');
       const result = await response.json();
       // console.log("dataaaaaa", result);
       setData(result);
@@ -45,19 +45,8 @@ export default function Allproducts({route}) {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <View style={styles.pageTitle}>
-        <TouchableOpacity>
-          <Ionicons
-            name="arrow-back-circle-sharp"
-            style={styles.icon}
-            size={40}
-            color="black"
-          />
-        </TouchableOpacity>
-        <Text style={styles.text}>Marketplace</Text>
-        <Icon name="storefront" size={40} color="black" style={styles.marketicon} onPress={()=>{navigation.navigate('Basket')}}  />
-
-      </View> */}
+    
+      <Text style={{color:"#030000",fontWeight:"bold", top:45,left:20}}>{selectedCategory? selectedCategory+"("+filteredData.length+")": "Allproducts"+ "("+data.length+")"}</Text>
       <View style={{ flexDirection: "row", marginTop: 70 }}>
         <TouchableOpacity
           style={{
@@ -151,8 +140,8 @@ export default function Allproducts({route}) {
                   <Text>{product.icon}</Text>
                 </Text>
               </View>
-              <Text style={styles.cardTitle}>{product.name}</Text>
-              <Text style={styles.cardPrice}>{product.price}</Text>
+              <Text style={styles.cardTitle}>{product.name.replace(/['"]+/g, '')}</Text>
+              <Text style={styles.cardPrice}>{product.price} TND</Text>
             </View>
           </View>
         ))}
@@ -188,22 +177,22 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     padding: 10,
-    borderRadius: 5,
+    // borderRadius: 15,
     marginBottom: 15,
     marginTop: 20,
     marginLeft: 15,
-    shadowColor: "#000",
+    shadowColor: "blue",
     shadowOffset: { width: 10, height: 20 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 6,
     shadowRadius: 2,
-    elevation: 2,
+    elevation: 5,
     width: "80%",
     justifyContent: "center",
   },
   cardImage: {
     width: 140,
-    height: 120,
-    borderRadius: 5,
+    height: 130,
+    borderRadius: 3,
     justifyContent: "center",
   },
   cardContent: {
