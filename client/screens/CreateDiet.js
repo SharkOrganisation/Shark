@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-import Footer from "../Components/Footer";
 import axios from "axios";
 const CreateDiet = ({route}) => {
   const navigation = useNavigation();
@@ -98,7 +97,6 @@ const CreateDiet = ({route}) => {
             <TouchableOpacity style={styles.doneBtn} onPress={() => done()}>
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
-            <Footer />
           </View>
         </View>
       </ScrollView>
