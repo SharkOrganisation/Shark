@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/welcome';
 import Allproducts from './screens/bottomTab/Allproducts.js';
-import DetailProducts from './Components/DetailProducts';
+import DetailProducts from './screens/bottomTab/DetailProducts.js';
 import Checkout from "./screens/Checkout.js";
 import Login from './screens/login';
 import CreateUser from './screens/userCreateAccount'
@@ -143,6 +143,28 @@ export default function App() {
           },
           title:"Basket"
         }} />
+        <Stack.Screen name="DetailProducts" component={DetailProducts}  options={{ 
+           headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title:"Details"
+        }} />
+
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
@@ -155,7 +177,6 @@ export default function App() {
         <Stack.Screen name='createCoach' component={CreateCoach} options={{ headerShown: false }} />
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
-        <Stack.Screen name="DetailProducts" component={DetailProducts} options={{ headerShown: false }} />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
         <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
         <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />

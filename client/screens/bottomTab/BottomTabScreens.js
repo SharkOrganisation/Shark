@@ -103,11 +103,11 @@ const BottomTabScreens = ({ route }) => {
           },
           title: "Marketplace",
           headerRight: () => (
-            <BasketIcon
-              name="shopping-cart"
-              size={30} color="black"
-              style={styles.marketicon}
-              onPress={() => { navigation.navigate('Basket') }} />
+            <BasketIcon 
+            name="shopping-cart" 
+            size={30} color="black" 
+            style={styles.marketicon} 
+            onPress={() => { navigation.navigate('Basket',{ role: role }) }} />
           )
         }}
       />
