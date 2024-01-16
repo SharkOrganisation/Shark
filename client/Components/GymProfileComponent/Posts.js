@@ -78,16 +78,77 @@ const Posts = ({ data }) => {
                                 </View>
                             </View>
                             <View style={styles.commentsContainer}>
-                                <View style={styles.commentProfile}>
-                                    <Image
-                                        source={{
-                                            uri: data.pfImage
-                                        }}
-                                        style={styles.commentPic}
-                                    />
-                                    <View style={styles.profileNameContainer}>
-                                        <Text style={styles.commentProfileName}>{data.fullname}</Text>
+                                <View style={styles.commentContainer}>
+                                    <View style={styles.commentProfile}>
+                                        <Image
+                                            source={{
+                                                uri: data.pfImage
+                                            }}
+                                            style={styles.commentPic}
+                                        />
+                                        <View style={styles.profileNameContainer}>
+                                            <Text style={styles.commentProfileName}>{data.fullname}</Text>
+                                            <Text style={styles.commentText}>this the best gym in the world</Text>
+                                        </View>
                                     </View>
+                                    <HeartIcon
+                                        name='hearto'
+                                        size={20}
+                                        style={{ color: heartActive ? '#9AC61C' : 'white' }} />
+                                </View>
+                                <View style={styles.commentContainer}>
+                                    <View style={styles.commentProfile}>
+                                        <Image
+                                            source={{
+                                                uri: data.pfImage
+                                            }}
+                                            style={styles.commentPic}
+                                        />
+                                        <View style={styles.profileNameContainer}>
+                                            <Text style={styles.commentProfileName}>{data.fullname}</Text>
+                                            <Text style={styles.commentText}>this the best gym in the world</Text>
+                                        </View>
+                                    </View>
+                                    <HeartIcon
+                                        name='hearto'
+                                        size={20}
+                                        style={{ color: heartActive ? '#9AC61C' : 'white' }} />
+                                </View>
+                                <View style={styles.commentContainer}>
+                                    <View style={styles.commentProfile}>
+                                        <Image
+                                            source={{
+                                                uri: data.pfImage
+                                            }}
+                                            style={styles.commentPic}
+                                        />
+                                        <View style={styles.profileNameContainer}>
+                                            <Text style={styles.commentProfileName}>{data.fullname}</Text>
+                                            <Text style={styles.commentText}>this the best gym in the world</Text>
+                                        </View>
+                                    </View>
+                                    <HeartIcon
+                                        name='hearto'
+                                        size={20}
+                                        style={{ color: heartActive ? '#9AC61C' : 'white' }} />
+                                </View>
+                                <View style={styles.commentContainer}>
+                                    <View style={styles.commentProfile}>
+                                        <Image
+                                            source={{
+                                                uri: data.pfImage
+                                            }}
+                                            style={styles.commentPic}
+                                        />
+                                        <View style={styles.profileNameContainer}>
+                                            <Text style={styles.commentProfileName}>{data.fullname}</Text>
+                                            <Text style={styles.commentText}>this the best gym in the world</Text>
+                                        </View>
+                                    </View>
+                                    <HeartIcon
+                                        name='hearto'
+                                        size={20}
+                                        style={{ color: heartActive ? '#9AC61C' : 'white' }} />
                                 </View>
                             </View>
                             <View style={styles.commentInputContainer}>
@@ -243,12 +304,28 @@ const styles = StyleSheet.create({
         height: '75%',
         position: 'absolute',
         top: '15%',
-        borderWidth: 2,
-        borderColor: 'white'
+        paddingHorizontal: 15,
+        gap:20
     },
-    commentProfileName:{
+    commentProfileName: {
         color: 'white',
-        fontWeight:'bold',
-        fontSize:18
+        fontWeight: 'bold',
+        fontSize: 15,
+        alignItems: 'center'
+    },
+    commentProfile: {
+        flexDirection: 'row',
+        gap: 8
+    },
+    commentText: {
+        color: 'white',
+    },
+    commentContainer: {
+        borderBottomColor: 'white',
+        borderBottomWidth: 0.2,
+        paddingBottom: 10,
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        alignItems:'center',
     }
 })
