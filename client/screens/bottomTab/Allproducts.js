@@ -3,6 +3,7 @@ import { View, Text, StyleSheet,Image, TouchableOpacity , ScrollView} from "reac
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {ipAddress} from '../../ipConfig'
 
 export default function Allproducts({route}) {
   const navigation = useNavigation();
@@ -14,7 +15,7 @@ export default function Allproducts({route}) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://172.29.0.18:3000/api/product/get/products');
+      const response = await fetch(`http://${ipAddress}:3000/api/product/get/products`);
       const result = await response.json();
       // console.log("dataaaaaa", result);
       setData(result);

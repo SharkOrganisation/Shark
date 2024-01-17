@@ -9,6 +9,7 @@ import { ScrollView } from "@gluestack-ui/themed";
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {FIREBASE_AUTH} from "../../firebase";
+import {ipAddress} from '../../ipConfig'
 
 export default function Basket() {
   const navigation = useNavigation();
@@ -19,6 +20,7 @@ export default function Basket() {
   console.log(role,"roleloggggg");
   const idUser=FIREBASE_AUTH.currentUser.uid
   console.log("iddddddd",idUser);
+  const [totalPrice, setTotalPrice] = useState(0);
 
 
 
@@ -29,11 +31,11 @@ export default function Basket() {
   
     
       if (role === 'user') {
-        endpoint = `http://172.29.0.18:3000/api/basket/getOneByUser/${idUser}`;
+        endpoint = `http://${ipAddress}:3000/api/basket/getOneByUser/${idUser}`;
       } else if (role === 'Gym') {
-        endpoint = `http://172.29.0.18:3000/api/basket/getOneByGym/${idUser}`;
+        endpoint = `http://${ipAddress}:3000/api/basket/getOneByGym/${idUser}`;
       } else if (role === 'coach') {
-        endpoint = `http://172.29.0.18:3000/api/basket/getOneByCoach/${idUser}`;
+        endpoint = `http://${ipAddress}:3000/api/basket/getOneByCoach/${idUser}`;
       } else {
         console.error('Invalid role');
         return;
@@ -42,6 +44,10 @@ export default function Basket() {
       const response = await axios.get(endpoint);
       console.log('Basket data:', response.data);
       setBasketData(response.data);
+      const total = response.data.reduce((acc, item) => {
+        return acc + (item.Product.price || 0); 
+      }, 0);
+      setTotalPrice(total);
     } catch (error) {
       console.error('Error fetching basket:', error.message || 'Network error');
       setBasketData([]);
@@ -51,6 +57,9 @@ export default function Basket() {
   useEffect(() => {
     getBasketByRole(); 
   }, []);
+
+
+  console.log(totalPrice, "Totaaaaaaal");
  
 
 
@@ -60,7 +69,7 @@ export default function Basket() {
   const deleteBasketItem=async(role, id, userId)=> {
     
     try {
-      const url = `http://172.29.0.18:3000/api/basket/delete/${role}/${id}/${userId}`;
+      const url = `http://${ipAddress}:3000/api/basket/delete/${role}/${id}/${userId}`;
       await axios.delete(url)
       getBasketByRole(); 
       console.log("deleted");
@@ -83,20 +92,27 @@ export default function Basket() {
             )}
 
             <Text style={styles.cardTitle}>{basketItem?.Product?.name?.replace(/['"]+/g, '')}</Text>
+            <Text style={styles.cardPrice}>{basketItem?.Product?.price} USD</Text>
          
             <View>
             <TouchableOpacity onPress={() => deleteBasketItem(role, basketItem.id, idUser)}>
-            <MaterialIcons name="delete" size={30} color="gray" top={-20} left={330}/>
+            <MaterialIcons name="delete" size={30} color="gray" top={-40} left={330}/>
           </TouchableOpacity>
 
             </View>
             <View style={styles.box}>
               <Text style={styles.id}>{basketItem.Product.id}</Text>
             </View>
+        
           </View>
              
         ))
       }
+          {basketData.length > 0 && (
+        <TouchableOpacity style={styles.checkoutButton} onPress={()=>{navigation.navigate('Checkout', { totalPrice })}}>
+          <Text style={styles.buttonText}>Checkout</Text>
+        </TouchableOpacity>
+      )}
 
     </ScrollView>
   );
@@ -108,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     flex:1,
     borderRadius: 10,
-    padding: 15,
+    padding: 12,
     marginBottom: 15,
   },
   pageTitle:{
@@ -142,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   cardContent: {
-    padding: 10,
+    padding: 5,
   },
   cardTitle: {
     top:-80,
@@ -151,6 +167,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+  },
+  cardPrice:{
+    color:"white",
+    left:180,
+    top:-74,
+    fontSize: 17,
+    // fontWeight: 'bold',
+
   },
 
   cardButton: {
@@ -163,7 +187,7 @@ const styles = StyleSheet.create({
   },
   
   id: {
-    top:-50,
+    top:-72,
     color: "black",
     height: 30,
     width: 30,
@@ -183,6 +207,19 @@ const styles = StyleSheet.create({
     position: "fixed",
     top: 0,
     width: 30,
+    },
+    checkoutButton: {
+      borderRadius: 45, // Adjust the border radius as needed
+      borderWidth:20,
+      backgroundColor: '#97d91c',
+      padding: 20, // Adjust the padding as needed
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: 'black',
+      fontSize: 16,
+      // fontWeight:900 // Adjust the font size as needed
     },
 
 });

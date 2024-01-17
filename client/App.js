@@ -25,13 +25,17 @@ import Coachprofile from './screens/bottomTab/Coachprofile.js';
 import EditCoachProfile from './screens/bottomTab/EditCoachProfile.js';
 import EditUserProfile from './screens/bottomTab/EditUserProfile.js';
 import Followers from './screens/Followers.js';
-const Stack = createNativeStackNavigator();
+import { StripeProvider } from '@stripe/stripe-react-native';
 
+const Stack = createNativeStackNavigator();
+const STRIPE_KEY ="pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mwr7CLtbVvHMYdzCOnkIQ6qya6yh4dPte536bi00GBMIlpuI"
 
 
 export default function App() {
   return (
+    <StripeProvider publishableKey={STRIPE_KEY}>
     <NavigationContainer>
+      
       <Stack.Navigator initialRouteName='getStarted'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
@@ -181,8 +185,12 @@ export default function App() {
         <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
         <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
         <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
+        <Stack.Screen name='Checkout' component={Checkout} options={{ headerShown: false }} />
+        
       </Stack.Navigator>
+     
     </NavigationContainer>
+    </StripeProvider>
   );
 }
 const styles = StyleSheet.create({

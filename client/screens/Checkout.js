@@ -1,18 +1,90 @@
-import React from "react";
-import { View, Text, StyleSheet , TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet , TouchableOpacity, Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useNavigation ,useRoute} from '@react-navigation/native';
+import { usePaymentSheet, useStripe } from "@stripe/stripe-react-native";
+import { ipAddress } from "../ipConfig";
 
 export default function Checkout() {
+  const navigation = useNavigation();
+  const route =useRoute();
+  const totalPrice=route.params.totalPrice || 0
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const [loading, setLoading] = useState(false);
+ 
+  const fetchPaymentSheetParams = async () => {
+    const response = await fetch(`http://${ipAddress}:3000/api/payment/create-payment-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount: totalPrice * 100,
+      }),
+    })
+    const { paymentIntent, ephemeralKey, customer} = await response.json();
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  }
+
+  const initializePaymentSheet = async () => {
+    const {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+      publishableKey,
+    } = await fetchPaymentSheetParams();
+
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: "Example, Inc.",
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: 'Gymshark',
+      }
+    });
+    if (!error) {
+      setLoading(true);
+    }
+  };
+
+  const openPaymentSheet = async () => {
+
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      navigation.navigate('PaymentFailed')
+      // Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      // Alert.alert('Success', 'Your order is confirmed!');
+      navigation.navigate('PaymentSucces')
+
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
+
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.pageTitle}>
-       <TouchableOpacity>   
+       <TouchableOpacity onPress={()=>{navigation.navigate('Basket')}}>   
         <Ionicons name="arrow-back-circle-sharp" style={styles.icon} size={40} color="#97d91c" />
           </TouchableOpacity>
         <Text style={styles.text}>Checkout</Text>
       </View>
       <View> 
-      <Text style={{ fontSize: 20, color: 'white', fontWeight:"bold", top:100 , left:20 }}>Shipping adress</Text>
+      <Text style={{ fontSize: 20, color: "lightgray", fontWeight:"bold", top:100 , left:20 }}>Shipping adress</Text>
       <Text style={{fontSize: 18, color: 'gray',left:20, top:120 }}>hjqchskhsqc scqjhcqj csqjnkhx scjx jbk xw nks yuc sqc</Text>
       </View>
 
@@ -21,17 +93,10 @@ export default function Checkout() {
       </View>
 
       <View style={styles.totprice}>
-      <View style={styles.label}>
-      <Text style={styles.textWrapper}>Total Items 1</Text>
-      </View>
-      <View style={{}}>
-      <Text style={{color:"white" ,top:178,fontSize:20, left:300}}> Rp 89.000</Text>
-      </View>
-      <View style={{ fontWeight: 'bold' }}>
       <Text style={styles.total}>Total</Text>
-     </View>
-      <Text style={{color:"white" ,top:170,fontSize:35, left:230}}> Rp 89.000</Text>
+      <Text style={{color:'#cccccc' ,top:174,fontSize:30, left:260}}> {totalPrice} Usd</Text>
       </View>
+
       <View style={styles.container2}>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Credit card</Text>
@@ -43,7 +108,12 @@ export default function Checkout() {
         <Text style={styles.buttonText}>E-Dinar</Text>
       </TouchableOpacity>
      </View>
-     <TouchableOpacity style={styles.pay}>
+     <TouchableOpacity 
+     style={styles.pay}
+     onPress={()=>{
+      openPaymentSheet()
+     }}
+     >
         <Text style={styles.PayText}>Pay Now</Text>
       </TouchableOpacity>
 
@@ -76,13 +146,7 @@ const styles = StyleSheet.create({
   icon:{
 marginLeft:15,
   },
-  label: {
-    top:200,
-    height: 15,
-    width: 72,
-    left:20
-    // Consider using a wrapper with position: 'absolute' or 'relative' to position within a parent
-  },
+ 
   textWrapper: {
     color: '#ffffff',
     fontSize: 12,
@@ -90,33 +154,33 @@ marginLeft:15,
     textAlign: 'center',
   },
   total:{
-    color: '#ffffff',
+    color: '#cccccc',
     left:20,
-    top:220,
+    top:210,
     fontSize:25,
   },
   totprice:{
-    top:-50,
+    top:-60,
   },
   container2: {
     gap:15,
-    top:55,
+    top:45,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
     backgroundColor: 'black',
-    borderWidth: 4,
+    borderWidth: 1,
     borderColor: "#97d91c",
-    padding: 17,
+    padding: 15,
     borderRadius: 80,
     width:350,
   },
   buttonText: {
     color: '#9ac61c',
     textAlign: 'center',
-    fontSize:30
+    fontSize:25
   },
   pay:{
     backgroundColor: "#97d91c",

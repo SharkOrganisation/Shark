@@ -23,7 +23,7 @@ const PaymentSuccess = () => {
         Hooray! 🎉 Your payment was successful! Funds have been securely transferred, and your transaction is complete. Thank you for using our service. If you have any questions, feel free to reach out to our support team
         </Text>
         <View>
-          <TouchableOpacity style={styles.doneBtn}>
+          <TouchableOpacity style={styles.doneBtn} onPress={()=>{NavigationPreloadManager.navigate('A')}}>
             <Text style={styles.btnText}>Success</Text>
           </TouchableOpacity>
         </View>

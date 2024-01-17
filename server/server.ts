@@ -21,6 +21,9 @@ import coachFollowGym from "./routes/CoachFollowGym";
 import savedPost from "./routes/savedPost_route";
 import routePost from "./routes/posts.route";
 import userPlan from "./routes/UserPlan_route";
+import paymentroute from './routes/payment.route'
+
+
 const app: Application = express();
 const PORT = 3000;
 
@@ -88,6 +91,8 @@ app.use("/api/coach", coachRoute);
 
 // UserPlan :
 app.use("/api/userPlan", userPlan);
+// payment route:
+app.use("/api/payment",paymentroute)
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
