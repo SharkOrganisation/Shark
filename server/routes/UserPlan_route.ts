@@ -3,7 +3,7 @@ import * as userPlan from "../controllers/UserPlan_controller";
 const router = Router();
 
 router.get("/:userId", userPlan.getUserPlan);
-router.post("/sendPlan",userPlan.getUserPlan);
+router.post("/sendPlan",userPlan.giveUserPlan);
 router.put("/:id/:userId",userPlan.updatePlan);
 
 
