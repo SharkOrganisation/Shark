@@ -28,6 +28,8 @@ const UserProfile = ({ navigation }) => {
   const [active, setActive] = useState("My Plan");
   const [planDetails, setPlanDetails] = useState("Plan Details");
   const [userData, setUserData] = useState([]);
+  const [gymFollowing, setGymFollowing] = useState([]);
+  const [coachFollowing,setCoachFollowing]=useState([])
   const user = FIREBASE_AUTH.currentUser;
   // console.log(process.env.EXPO_PUBLIC_IP_ADRESS,'ip');
   const isFocused = useIsFocused();
@@ -42,9 +44,30 @@ const UserProfile = ({ navigation }) => {
       console.error(err);
     }
   };
+
+  const getFollowers = async () => {
+    try {
+      const getGymFollowing = await axios.get(
+        `http://${ipAddress}:3000/api/followingGym/userFollowers/${user.uid}`
+      );
+      setGymFollowing(getGymFollowing.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getCoachFollowing=async()=>{
+    try{
+      const coachFollow=await axios.get(`http://${ipAddress}:3000/api/followingCoach/userFollowers/${user.uid}`)
+      setCoachFollowing(coachFollow.data)
+    }catch(err){
+      console.log(err);
+    }
+  }
   useEffect(() => {
     console.log("triggered");
     getUser();
+    getFollowers()
+    getCoachFollowing()
   }, [isFocused]);
 
   return (
@@ -79,7 +102,7 @@ const UserProfile = ({ navigation }) => {
           }}
         >
           <View style={styles.followContainer}>
-            <Text style={styles.numberFollower}>400</Text>
+            <Text style={styles.numberFollower}>{(gymFollowing.length+coachFollowing.length)||0}</Text>
             <Text style={styles.FollowText}>Following</Text>
           </View>
         </TouchableOpacity>
