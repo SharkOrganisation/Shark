@@ -17,30 +17,26 @@ import Uncheck from "react-native-vector-icons/Feather";
 import axios from "axios"                     
 const user = FIREBASE_AUTH.currentUser;
 const UserPlanDetails = ({ data }) => {
-  const [competePlan,setCompletePlan]=useState([])
+  const [test,setTest]=useState(true)
   const isFocused=useIsFocused()
+  const [color, setColor] = useState(data.status)
   // console.log(data);
 
-const updateUncheckPlan=async(idPlan)=>{
-  try{
-  await  axios.put(`http://${ipAddress}:3000/api/userPlan/${idPlan}/${user.uid}`,{status:false})
+const updatecheckPlan=async(idPlan,status)=>{
 
-  }catch{
-    <Text style={{color:"white",fontSize:18}}>Try Again</Text>
-  }
-}
-const updateCheckPlan=async(idPlan)=>{
   try{
-     await  axios.put(`http://${ipAddress}:3000/api/userPlan/${idPlan}/${user.uid}`,{status:true})
+  await  axios.put(`http://${ipAddress}:3000/api/userPlan/${idPlan}/${user.uid}`,{status:status})
+    setColor(status) 
   }catch{
     <Text style={{color:"white",fontSize:18}}>Try Again</Text>
   }
 }
 
-useEffect(()=>{
-if(isFocused){
-}
-},[isFocused])
+
+
+// useEffect(()=>{
+
+// },[test])
   return (
     <ScrollView style={styles.Container}>
       <ImageBackground
@@ -83,14 +79,14 @@ if(isFocused){
         </View>
 
         <View style={styles.selectContainer}>
-          <TouchableOpacity style={styles.checkContainer} onPress={()=>{updateCheckPlan(data.id)}}>
-            <Text style={data.status?styles.complete:styles.editComplete}>Complete</Text>
-            <Check name="checkcircleo" style={data.Plan.status? styles.complete:styles.editComplete}/>
+          <TouchableOpacity style={styles.checkContainer} onPress={()=>{updatecheckPlan(data.id,true)}}>
+            <Text style={color?styles.complete:styles.editComplete}>Complete</Text>
+            <Check name="checkcircleo" style={color? styles.complete:styles.editComplete}/>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.unCheckContainer} onPress={()=>{updateUncheckPlan(data.id)}}>
-            <Text style={!data.status?styles.unComplete:styles.editUncomplete}>Uncomplete</Text>
-            <Uncheck name="x" style={!data.Plan.status?styles.unComplete:styles.editUncomplete} />
+          <TouchableOpacity style={styles.unCheckContainer} onPress={()=>{updatecheckPlan(data.id,false)}}>
+            <Text style={!color ?styles.unComplete : styles.editUncomplete}>Uncomplete</Text>
+            <Uncheck name="x" style={!color?styles.unComplete:styles.editUncomplete} />
           </TouchableOpacity>
         </View>
       </ImageBackground>

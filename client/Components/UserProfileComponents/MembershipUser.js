@@ -45,7 +45,7 @@ const MembershipUser = () => {
             <Image
               style={styles.gymPic}
               source={{
-                uri: userMemb.Gym.pfImage,
+                uri: userMemb.Gym.pfImage || "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg"
               }}
             />
           </View>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     objectFit: "fill",
     borderWidth: 2,
     borderColor: "#9AC61C",
-    borderRadius: "100%",
+    borderRadius: 100,
   },
   gymInfo: {
     flexDirection: "row",
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderWidth: 2,
     borderColor: "#9AC61C",
-    borderRadius: "100%",
+    borderRadius: 100,
     backgroundColor: "white",
   },
   userInfo: {

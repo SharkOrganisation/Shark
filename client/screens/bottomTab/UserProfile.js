@@ -11,6 +11,7 @@ import UserPlan from "../../Components/UserProfileComponents/UserPlan";
 import EditIcon from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Save from "react-native-vector-icons/Fontisto";
+import LogoutIcon from "react-native-vector-icons/Entypo";
 import Dumbbell from "react-native-vector-icons/FontAwesome5";
 import MembershipIcon from "react-native-vector-icons/AntDesign";
 import MembershipUser from "../../Components/UserProfileComponents/MembershipUser";
@@ -29,7 +30,7 @@ const UserProfile = ({ navigation }) => {
   const [planDetails, setPlanDetails] = useState("Plan Details");
   const [userData, setUserData] = useState([]);
   const [gymFollowing, setGymFollowing] = useState([]);
-  const [coachFollowing,setCoachFollowing]=useState([])
+  const [coachFollowing, setCoachFollowing] = useState([]);
   const user = FIREBASE_AUTH.currentUser;
   // console.log(process.env.EXPO_PUBLIC_IP_ADRESS,'ip');
   const isFocused = useIsFocused();
@@ -55,28 +56,45 @@ const UserProfile = ({ navigation }) => {
       console.log(err);
     }
   };
-  const getCoachFollowing=async()=>{
-    try{
-      const coachFollow=await axios.get(`http://${ipAddress}:3000/api/followingCoach/userFollowers/${user.uid}`)
-      setCoachFollowing(coachFollow.data)
-    }catch(err){
+  const getCoachFollowing = async () => {
+    try {
+      const coachFollow = await axios.get(
+        `http://${ipAddress}:3000/api/followingCoach/userFollowers/${user.uid}`
+      );
+      setCoachFollowing(coachFollow.data);
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
   useEffect(() => {
     console.log("triggered");
     getUser();
-    getFollowers()
-    getCoachFollowing()
+    getFollowers();
+    getCoachFollowing();
   }, [isFocused]);
 
   return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity
+        style={{
+          marginTop: 10,
+          marginRight: 15,
+          position: "absolute",
+          right: 0,
+        }}
+        onPress={() => {
+          navigation.navigate("login", { role: "gym" });
+        }}
+      >
+        <View>
+          <LogoutIcon name="log-out" size={25} color="#9AC61C" />
+        </View>
+      </TouchableOpacity>
       <View style={styles.staticContainer}>
         <View style={styles.pfImageContainer}>
           <Image
             source={{
-              uri: `${userData.pfImage}`,
+              uri: userData.pfImage || "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
             }}
             style={styles.pfImage}
           />
@@ -102,7 +120,9 @@ const UserProfile = ({ navigation }) => {
           }}
         >
           <View style={styles.followContainer}>
-            <Text style={styles.numberFollower}>{(gymFollowing.length+coachFollowing.length)||0}</Text>
+            <Text style={styles.numberFollower}>
+              {gymFollowing.length + coachFollowing.length || 0}
+            </Text>
             <Text style={styles.FollowText}>Following</Text>
           </View>
         </TouchableOpacity>
@@ -200,7 +220,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderWidth: 5,
     borderColor: "#9AC61C",
-    borderRadius: "100%",
+    borderRadius: 100,
     backgroundColor: "white",
   },
   name: {
