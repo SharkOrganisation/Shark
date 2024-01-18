@@ -4,13 +4,13 @@ import {getFirestore} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDVh0DLrN26XLuMQ03VWkl3TeqGuJvU_kY",
-    authDomain: "shark-8ab57.firebaseapp.com",
-    projectId: "shark-8ab57",
-    storageBucket: "shark-8ab57.appspot.com",
-    messagingSenderId: "105989767421",
-    appId: "1:105989767421:web:497c0190e296cc5dbafe94"
-};
+    apiKey: "AIzaSyDLUtApcEwCd_sHVFIwnxpQJqX76id_dtw",
+    authDomain: "gymshark-f929b.firebaseapp.com",
+    projectId: "gymshark-f929b",
+    storageBucket: "gymshark-f929b.appspot.com",
+    messagingSenderId: "534550081729",
+    appId: "1:534550081729:web:cfb2ca18cd4e70b594a440"
+  };
 
 // Initialize Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig);
