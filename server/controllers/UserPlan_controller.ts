@@ -14,6 +14,7 @@ export const getUserPlan = async (
       select: {
         id:true,
         status: true,
+        planId:true,
         Plan: {
           select: {
             id:true,
