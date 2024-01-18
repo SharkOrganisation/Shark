@@ -25,6 +25,7 @@ import Coachprofile from './screens/bottomTab/Coachprofile.js';
 import EditCoachProfile from './screens/bottomTab/EditCoachProfile.js';
 import EditUserProfile from './screens/bottomTab/EditUserProfile.js';
 import Followers from './screens/Followers.js';
+import ChatScreen from './screens/bottomTab/chatScreen.js';
 const Stack = createNativeStackNavigator();
 
 
@@ -163,6 +164,26 @@ export default function App() {
             fontWeight: 'bold',
           },
           title:"Details"
+        }} />
+        <Stack.Screen name="chatScreen" component={ChatScreen}  options={{ 
+           headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+
         }} />
 
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />

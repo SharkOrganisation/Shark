@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     objectFit: "fill",
     borderWidth: 2,
     borderColor: "#9AC61C",
-    borderRadius: "100%",
+    borderRadius: 100,
   },
   gymInfo: {
     flexDirection: "row",

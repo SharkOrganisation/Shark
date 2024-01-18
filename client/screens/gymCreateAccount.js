@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { FIREBASE_AUTH } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
+import { ipAddress } from '../ipConfig';
 
 const GymCreateAccount = ({ route }) => {
   const { role } = route.params
@@ -23,7 +24,7 @@ const GymCreateAccount = ({ route }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const { user } = userCredential;
-      await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/auth/addUser/${role}`, {
+      await axios.post(`http://${ipAddress}:3000/api/auth/addUser/${role}`, {
         id: user.uid,
         fullname,
         email,

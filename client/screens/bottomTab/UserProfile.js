@@ -53,7 +53,7 @@ const UserProfile = ({ navigation }) => {
         <View style={styles.pfImageContainer}>
           <Image
             source={{
-              uri: `${userData.pfImage}`,
+              uri: userData.pfImage || "https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" ,
             }}
             style={styles.pfImage}
           />
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderWidth: 5,
     borderColor: "#9AC61C",
-    borderRadius: "100%",
+    borderRadius:100,
     backgroundColor: "white",
   },
   name: {
