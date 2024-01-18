@@ -4,6 +4,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation ,useRoute} from '@react-navigation/native';
 import { usePaymentSheet, useStripe } from "@stripe/stripe-react-native";
 import { ipAddress } from "../ipConfig";
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 export default function Checkout() {
   const navigation = useNavigation();
@@ -54,16 +56,16 @@ export default function Checkout() {
     }
   };
 
-  const openPaymentSheet = async () => {
+  const openPaymentSheet = async (totalPrice) => {
 
     const { error } = await presentPaymentSheet();
 
     if (error) {
-      navigation.navigate('PaymentFailed')
+      navigation.navigate('PaymentFailed',{totalPrice})
       // Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
       // Alert.alert('Success', 'Your order is confirmed!');
-      navigation.navigate('PaymentSucces')
+      navigation.navigate('PaymentSucces',{totalPrice})
 
     }
   };
@@ -76,6 +78,7 @@ export default function Checkout() {
 
 
   return (
+    
     <View style={styles.container}>
       <View style={styles.pageTitle}>
        <TouchableOpacity onPress={()=>{navigation.navigate('Basket')}}>   
@@ -85,7 +88,7 @@ export default function Checkout() {
       </View>
       <View> 
       <Text style={{ fontSize: 20, color: "lightgray", fontWeight:"bold", top:100 , left:20 }}>Shipping adress</Text>
-      <Text style={{fontSize: 18, color: 'gray',left:20, top:120 }}>hjqchskhsqc scqjhcqj csqjnkhx scjx jbk xw nks yuc sqc</Text>
+      <Text style={{fontSize: 18, color: 'gray',left:20, top:120 }}>Streamline your shopping journey here – enjoy a seamless process and swift order confirmation for a convenient and efficient shopping experience.</Text>
       </View>
 
       <View>
@@ -111,7 +114,7 @@ export default function Checkout() {
      <TouchableOpacity 
      style={styles.pay}
      onPress={()=>{
-      openPaymentSheet()
+      openPaymentSheet(totalPrice)
      }}
      >
         <Text style={styles.PayText}>Pay Now</Text>

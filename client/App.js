@@ -137,7 +137,6 @@ export default function App() {
             },
             shadowOpacity: 0.39,
             shadowRadius: 8.30,
-
             elevation: 13,
           },
           headerTitleAlign: 'center',
@@ -168,7 +167,45 @@ export default function App() {
           },
           title:"Details"
         }} />
+        <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{  headerStyle: {
+            backgroundColor: '#97d91c',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
 
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title:"Payment Succes"}} />
+        <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title:"PaymentFailed"}} />
+        <Stack.Screen name='Checkout' component={Checkout} options={{  headerShown: false  }} />
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
@@ -182,10 +219,7 @@ export default function App() {
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
         <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
-        <Stack.Screen name='Checkout' component={Checkout} options={{ headerShown: false }} />
         
       </Stack.Navigator>
      

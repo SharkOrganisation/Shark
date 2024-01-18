@@ -78,9 +78,9 @@ return (
         <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
         <Icon name="star-border" style={styles.icon} size={28} color="#97d91c" />
       </Pressable>
-  <Pressable style={styles.like} onPress={toggleLike}>
+  {/* <Pressable style={styles.like} onPress={toggleLike}>
         <Ionicons name={liked ? "favorite" : "favorite-border"} size={30} color="black" />
-      </Pressable>
+      </Pressable> */}
    
       <View style={styles.carouselContainer}>
         <Carousel data={FromAllproduct.images} renderItem={renderItem} sliderWidth={390} itemWidth={350} />
@@ -126,8 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    // resizeMode: 'cover',
-    // position: 'absolute',
     top:10,
   },
   blackBackground: {
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
   },
   reviewIcon: {
     position: 'absolute',
-    top: 484, 
+    top: 314, 
     right: 10, 
     zIndex: 1,
     flexDirection:"row"

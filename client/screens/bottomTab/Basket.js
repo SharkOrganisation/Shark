@@ -172,9 +172,7 @@ const styles = StyleSheet.create({
     color:"white",
     left:180,
     top:-74,
-    fontSize: 17,
-    // fontWeight: 'bold',
-
+    fontSize: 17
   },
 
   cardButton: {

@@ -12,6 +12,7 @@ import GymProfile from "./GymProfile";
 import ChatScreen from "./chatScreen";
 import Allproducts from "./Allproducts";
 import CreatePost from "./CreatePost";
+import PaymentSuccess from "../PaymentSucces";
 
 const Tab = createBottomTabNavigator();
 
@@ -82,7 +83,7 @@ const BottomTabScreens = ({ route }) => {
             </View>
           ),
           headerStyle: {
-            backgroundColor: "#9AC61C",
+            backgroundColor: "#97d91c",
             borderBottomColor: 'black',
             shadowColor: "#9AC61C",
             shadowOffset: {
@@ -111,6 +112,7 @@ const BottomTabScreens = ({ route }) => {
           )
         }}
       />
+     
       <Tab.Screen
         name="Create"
         component={CreatePost}

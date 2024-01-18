@@ -1,13 +1,23 @@
 import * as React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { useNavigation ,useRoute} from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 const PaymentFailed = () => {
+  const navigation=useNavigation()
+  const route=useRoute
+  const { totalPrice } = route.params || {};
   return (
-    <View style={styles.container}>
+    <LinearGradient
+    colors={['#97d91c', 'black']} 
+    style={styles.container}
+  >
+    <View >
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>Payment Failed</Text>
-        <Text style={styles.subtitleText}>Wael</Text>
+        {/* <Text style={styles.subtitleText}>Wael</Text> */}
         <Text style={styles.descriptionText}>
           please check your information
         </Text>
@@ -16,18 +26,18 @@ const PaymentFailed = () => {
        
           <AntDesign name="closecircle" size={100} style={styles.icon} />
       
-        <Text style={styles.priceText}>Rp 89.100</Text>
+        <Text style={styles.priceText}>{totalPrice}</Text>
       </View>
       <View style={styles.longDescriptionContainer}>
         <Text style={styles.longDescriptionText}>
-        Oops! 🙁 It looks like the payment didn't go through. Please check your payment details and ensure you have enough funds in your account. If the issue persists, reach out to your financial institution for assistance.        </Text>
-        <View>
-          <TouchableOpacity style={styles.doneBtn}>
+        {' '}{' '}{' '} Oops! 🙁 {'\n'}It looks like the payment didn't go through.{'\n'} Please check your payment details and ensure you have enough funds in your account.{'\n'} If the issue persists, reach out to your financial institution for assistance.        </Text>
+        
+      </View>
+      <TouchableOpacity onPress={()=>navigation.navigate('home')}>
             <Text style={styles.btnText}>Failed</Text>
           </TouchableOpacity>
-        </View>
-      </View>
     </View>
+    </LinearGradient>
   );
 };
 
@@ -44,16 +54,17 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#000",
     fontWeight: "700",
-    fontSize: 25,
+    fontSize: 35,
   },
-  subtitleText: {
-    color: "#000",
-    fontWeight: "700",
-    fontSize: 14,
-  },
+  // subtitleText: {
+  //   color: "#000",
+  //   fontWeight: "700",
+  //   fontSize: 14,
+  // },
   descriptionText: {
+    top:10,
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 15,
   },
   priceContainer: {
     alignSelf: "center",
@@ -66,14 +77,16 @@ const styles = StyleSheet.create({
     top: 30,
   },
   longDescriptionContainer: {
-    alignItems: "center",
+    // alignItems: "center",
     marginVertical: 100,
-    maxWidth: 255,
+    // maxWidth: 255,
+
   },
   longDescriptionText: {
+     bottom:100,
     color: "black",
     fontWeight: "700",
-    fontSize: 10,
+    fontSize: 15,
     textAlign: "center",
   },
   doneBtn: {
@@ -84,10 +97,17 @@ const styles = StyleSheet.create({
     marginVertical: 44,
   },
   btnText: {
+    bottom:100,
     color: "white",
     textAlign: "center",
     fontSize: 21,
     fontWeight: "bold",
+    backgroundColor: "black",
+    width: 200,
+    padding: 10,
+    borderRadius: 20,
+    marginVertical: 44,
+    left:60
   },
   icon: {
     justifyContent: "center",
