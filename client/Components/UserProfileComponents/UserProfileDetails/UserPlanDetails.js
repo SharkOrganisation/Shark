@@ -1,80 +1,139 @@
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { ipAddress } from "../../../ipConfig.js";
+import { FIREBASE_AUTH } from "../../../firebase.js";
+import { useIsFocused } from "@react-navigation/native";
 import ExercicesDetails from "./ExercicesDetails.js";
+import Check from "react-native-vector-icons/AntDesign";
+import Uncheck from "react-native-vector-icons/Feather";
+import axios from "axios"                     
+const user = FIREBASE_AUTH.currentUser;
 const UserPlanDetails = ({ data }) => {
-  const [showExercices, setShowExercices] = useState("all Plan");
-  console.log(data);
+  const [test,setTest]=useState(true)
+  const isFocused=useIsFocused()
+  const [color, setColor] = useState(data.status)
+  // console.log(data);
+
+const updatecheckPlan=async(idPlan,status)=>{
+
+  try{
+  await  axios.put(`http://${ipAddress}:3000/api/userPlan/${idPlan}/${user.uid}`,{status:status})
+    setColor(status) 
+  }catch{
+    <Text style={{color:"white",fontSize:18}}>Try Again</Text>
+  }
+}
+
+
+
+// useEffect(()=>{
+
+// },[test])
   return (
     <ScrollView style={styles.Container}>
-      <View style={styles.planContainer}>
-        {/* <View style={styles.PlanTitleContainer}>
-          <Text style={styles.planTitle}>Plan Name:</Text>
-          <Text style={styles.planContent}>{data.name}</Text>
-        </View> */}
-        <Text style={styles.planTitle}>My Coach:</Text>
-        <View style={styles.CoachContainer}>
-          <Image
-            style={styles.imgCoach}
-            source={{ uri: `${data.Coach.pfImage}` }}
-          />
-          <Text style={styles.planContent}>{data.Coach.fullname}</Text>
+      <ImageBackground
+        style={styles.planContainer}
+        source={require("../../../assets/MembershipCard/CardPlan.png")}
+        resizeMode="cover"
+      >
+        <View style={styles.CenterContainer}>
+          <View style={styles.headerContainer}>
+            <View style={styles.PlanContent}>
+              <Text style={styles.Title}>My Coach:</Text>
+              <View style={styles.allContent}>
+                <Image
+                  style={styles.imgCoach}
+                  source={{ uri: data.Plan.Coach.pfImage }}
+                />
+                <Text style={styles.Content}>{data.Plan.Coach.fullname}</Text>
+              </View>
+            </View>
+            <View style={styles.PlanDur}>
+              <Text style={styles.Title}>Program Duration:</Text>
+              <View style={styles.PlanDuration}>
+                <Text style={styles.Content}> {data.Plan.program.name}</Text>
+                <Text style={styles.Content}>{data.Plan.program.duration}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.PlanContent}>
+            <Text style={styles.Title}>My Diet:</Text>
+            <Text style={styles.Content}> {data.Plan.Diet.name}</Text>
+            <Text style={styles.Content}>{data.Plan.Diet.meals}</Text>
+          </View>
+          <View style={styles.ExerciceContainer}>
+            <Text style={styles.Title}>All The Exercices:</Text>
+            {data.Plan.program.programExercice.map((ele) => {
+              return <ExercicesDetails key={ele.id} data={ele} />;
+            })}
+          </View>
         </View>
-        <Text style={styles.planTitle}>My Diet:</Text>
-        <View style={styles.planContainer}>
-          <Text style={styles.planContent}> {data.Diet.name}</Text>
-          <Text style={styles.planContent}>{data.Diet.meals}</Text>
+
+        <View style={styles.selectContainer}>
+          <TouchableOpacity style={styles.checkContainer} onPress={()=>{updatecheckPlan(data.id,true)}}>
+            <Text style={color?styles.complete:styles.editComplete}>Complete</Text>
+            <Check name="checkcircleo" style={color? styles.complete:styles.editComplete}/>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.unCheckContainer} onPress={()=>{updatecheckPlan(data.id,false)}}>
+            <Text style={!color ?styles.unComplete : styles.editUncomplete}>Uncomplete</Text>
+            <Uncheck name="x" style={!color?styles.unComplete:styles.editUncomplete} />
+          </TouchableOpacity>
         </View>
-        <Text style={styles.planTitle}>Program Duration:</Text>
-        <View style={styles.planContainer}>
-          <Text style={styles.planContent}> {data.program.name}</Text>
-          <Text style={styles.planContent}>{data.program.duration}</Text>
-        </View>
-        <Text style={styles.planTitle}> All The Exercices:</Text>
-        <View style={styles.planContainer}>
-          {/* <Image style={styles.planContent} source={{uri:`${data.program.programExercice[0].Exercice.gifUrl}`}} /> */}
-          {/* <Text style={styles.planContent}></Text> */}
-          {data.program.programExercice.map((exercice) => {
-            
-          })}
-        </View>
-      </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
+    margin: "1%",
+    marginTop: "10%",
+    marginBottom: "30%",
   },
   planContainer: {
+    alignItems: "center",
+    borderRadius: "10%",
+    borderColor: "#9AC61C",
+    borderWidth: 1,
     flexDirection: "column",
+    gap: "20%",
+    margin: 5,
+  },
+  CenterContainer: {
+    flexDirection: "column",
+    margin: 20,
     justifyContent: "center",
     alignItems: "center",
-    gap: 10,
-    margin: 10,
   },
-  PlanTitleContainer: {
+  headerContainer: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-    margin: 10,
+    justifyContent: "space-around",
   },
-  CoachContainer: {
-    flexDirection: "row",
+  PlanContent: {
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     gap: 15,
   },
-  planTitle: {
-    color: "#999999",
-    fontSize: 20,
-    fontWeight: "bold",
+  PlanDur: {
+    alignItems: "center",
+    gap: 15,
   },
-  planContent: {
-    color: "white",
-    fontWeight: "900",
-    fontWeight: 15,
-    fontSize: 20,
+  allContent: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 5,
   },
   imgCoach: {
     borderRadius: "100%",
@@ -86,5 +145,67 @@ const styles = StyleSheet.create({
     // justifyContent:"center",
     // alignItems:"center"
   },
+  ExerciceContainer: {
+    margin: 20,
+    marginBottom:1
+  },
+  Title: {
+    color: "#999999",
+    fontSize: 18,
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  Content: {
+    color: "white",
+    fontWeight: "900",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  PlanDuration: {
+    flexDirection: "column",
+    gap: 4,
+  },
+  rightContainer: {
+    flexDirection: "column",
+  },
+  selectContainer: {
+    flexDirection: "row",
+    marginBottom:"10%",
+    gap: 50,
+  },
+  checkContainer: {
+    flexDirection: "row",
+    justifyContent:"center",
+    alignItems:"center",
+    gap: "10",
+  },
+  unCheckContainer: {
+    flexDirection: "row",
+    justifyContent:"center",
+    alignItems:"center",
+    gap: 10,
+  },
+  complete: {
+    color: "#9AC61C",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  unComplete: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  editComplete:{
+    color:"#567a18",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  editUncomplete:{
+    color:"#7c100e",
+    fontWeight: "bold",
+    fontSize: 18,
+  }
+
 });
 export default UserPlanDetails;

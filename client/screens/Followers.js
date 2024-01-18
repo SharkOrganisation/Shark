@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
     },
     navbar: {
-        position: 'absolute',
+        position: "absolute",
         top: 30,
-        borderBottomColor: 'white',
+        borderBottomColor: "white",
         borderBottomWidth: 2,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
+        flexDirection: "row",
+        justifyContent: "center",
+        width: "100%",
     },
     navItemText: {
         color: 'white',
