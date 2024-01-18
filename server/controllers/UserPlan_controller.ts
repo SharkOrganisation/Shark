@@ -13,8 +13,10 @@ export const getUserPlan = async (
       where: { userId: userId },
       select: {
         status: true,
+        planId:true,
         Plan: {
           select: {
+            id:true,
             name: true,
             price: true,
             Coach: {
