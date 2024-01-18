@@ -64,6 +64,7 @@ export const getplanBycoach = async (req: Request, res: Response) => {
   const exercises = await prisma.plan.findMany({
     where: { coachId: req.params.coachId },
     select: {
+      id:true,
       name: true,
       price: true,
       Diet: {
