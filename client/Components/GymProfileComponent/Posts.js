@@ -14,203 +14,166 @@ import SaveIcon from "react-native-vector-icons/Fontisto";
 import ShareIcon from "react-native-vector-icons/SimpleLineIcons";
 import CloseIcon from "react-native-vector-icons/AntDesign";
 import SendIcon from "react-native-vector-icons/Ionicons";
-import React, { useState } from "react";
+import { ipAddress } from '../../ipConfig.js';
+import axios from 'axios';
+import React, { useEffect, useState } from "react";
 
 const Posts = ({ data }) => {
   const [heartActive, setHeartActive] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [posts, setPosts] = useState([]);
+
+  const getPost = async () => {
+    try {
+      const response = await axios.get(`http://${ipAddress}:3000/api/posts/Gymposts/${data.id}`);
+      setPosts(response.data);
+      console.log(response.data)
+    } catch (err) {
+      <Text>Try Later</Text>
+    }
+  }
+
+  useEffect(() => {
+    getPost()
+
+  }, []);
+
 
   return (
     <View style={styles.container}>
-      <View style={styles.postContainer}>
-        <View style={styles.postHeader}>
-          <View style={styles.gymProfile}>
-            <Image
-              source={{
-                uri: data.pfImage,
-              }}
-              style={styles.profilePic}
-            />
-            <Text style={styles.profileName}>{data.fullname}</Text>
-          </View>
-          <Icon name="options-vertical" size={20} style={{ color: "white" }} />
-        </View>
-        <Image
-          source={{
-            uri: "https://ceinture-de-force.fr/cdn/shop/articles/Blog_body_france_1.png?v=1692176612&width=1100",
-          }}
-          style={styles.postImage}
-        />
-        <View style={styles.postContent}>
-          <Text style={styles.postText}>
-            When I feel tired, I just think about how great I will feel once I
-            finally reach my goal.
-          </Text>
-        </View>
-        <View style={styles.iconsContainer}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 18 }}>
-            <HeartIcon
-              onPress={() => {
-                setHeartActive(!heartActive);
-              }}
-              name="hearto"
-              size={24}
-              style={{ color: heartActive ? "#9AC61C" : "white" }}
-            />
-            <CommentIcon
-              name="comment-o"
-              size={26}
-              style={{ color: "white" }}
-              onPress={() => setModalVisible(true)}
-            />
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <CloseIcon
-                      name="down"
-                      size={24}
-                      style={{ color: "gray" }}
-                    />
-                  </Pressable>
-                </View>
-                <View style={styles.modalTitle}>
-                  <Text style={styles.titleText}>Comments</Text>
-                </View>
-              </View>
-              <View style={styles.commentsContainer}>
-                <View style={styles.commentContainer}>
-                  <View style={styles.commentProfile}>
-                    <Image
-                      source={{
-                        uri: data.pfImage,
-                      }}
-                      style={styles.commentPic}
-                    />
-                    <View style={styles.profileNameContainer}>
-                      <Text style={styles.commentProfileName}>
-                        {data.fullname}
-                      </Text>
-                      <Text style={styles.commentText}>
-                        this the best gym in the world
-                      </Text>
-                    </View>
-                  </View>
-                  <HeartIcon
-                    name="hearto"
-                    size={20}
-                    style={{ color: heartActive ? "#9AC61C" : "white" }}
-                  />
-                </View>
-                <View style={styles.commentContainer}>
-                  <View style={styles.commentProfile}>
-                    <Image
-                      source={{
-                        uri: data.pfImage,
-                      }}
-                      style={styles.commentPic}
-                    />
-                    <View style={styles.profileNameContainer}>
-                      <Text style={styles.commentProfileName}>
-                        {data.fullname}
-                      </Text>
-                      <Text style={styles.commentText}>
-                        this the best gym in the world
-                      </Text>
-                    </View>
-                  </View>
-                  <HeartIcon
-                    name="hearto"
-                    size={20}
-                    style={{ color: heartActive ? "#9AC61C" : "white" }}
-                  />
-                </View>
-                <View style={styles.commentContainer}>
-                  <View style={styles.commentProfile}>
-                    <Image
-                      source={{
-                        uri: data.pfImage,
-                      }}
-                      style={styles.commentPic}
-                    />
-                    <View style={styles.profileNameContainer}>
-                      <Text style={styles.commentProfileName}>
-                        {data.fullname}
-                      </Text>
-                      <Text style={styles.commentText}>
-                        this the best gym in the world
-                      </Text>
-                    </View>
-                  </View>
-                  <HeartIcon
-                    name="hearto"
-                    size={20}
-                    style={{ color: heartActive ? "#9AC61C" : "white" }}
-                  />
-                </View>
-                <View style={styles.commentContainer}>
-                  <View style={styles.commentProfile}>
-                    <Image
-                      source={{
-                        uri: data.pfImage,
-                      }}
-                      style={styles.commentPic}
-                    />
-                    <View style={styles.profileNameContainer}>
-                      <Text style={styles.commentProfileName}>
-                        {data.fullname}
-                      </Text>
-                      <Text style={styles.commentText}>
-                        this the best gym in the world
-                      </Text>
-                    </View>
-                  </View>
-                  <HeartIcon
-                    name="hearto"
-                    size={20}
-                    style={{ color: heartActive ? "#9AC61C" : "white" }}
-                  />
-                </View>
-              </View>
-              <View style={styles.commentInputContainer}>
+      {posts.map((post) => {
+        return (
+          <View style={styles.postContainer} key={post.id}>
+            <View style={styles.postHeader}>
+              <View style={styles.gymProfile}>
                 <Image
                   source={{
                     uri: data.pfImage,
                   }}
-                  style={styles.commentPic}
+                  style={styles.profilePic}
                 />
-                <TextInput
-                  placeholder="Add a comment"
-                  placeholderTextColor={"gray"}
-                  style={styles.commentInput}
-                />
-                <SendIcon
-                  name="send"
-                  size={24}
-                  style={{
-                    color: "#9AC61C",
-                    position: "absolute",
-                    right: 20,
-                    bottom: 22,
-                  }}
-                />
+                <Text style={styles.profileName}>{data.fullname}</Text>
               </View>
-            </Modal>
-            <ShareIcon name="share" size={22} style={{ color: "white" }} />
+              <Icon name="options-vertical" size={20} style={{ color: "white" }} />
+            </View>
+            <Image
+              source={{
+                uri: post.image[0],
+              }}
+              style={styles.postImage}
+            />
+            <View style={styles.postContent}>
+              <Text style={styles.postText}>
+                {post.content}
+              </Text>
+
+            </View>
+
+            <View style={styles.iconsContainer}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 18 }}>
+                <HeartIcon
+                  onPress={() => {
+                    setHeartActive(!heartActive);
+                  }}
+                  name="hearto"
+                  size={24}
+                  style={{ color: heartActive ? "#9AC61C" : "white" }}
+                />
+                <CommentIcon
+                  name="comment-o"
+                  size={26}
+                  style={{ color: "white" }}
+                  onPress={() => setModalVisible(true)}
+                />
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <CloseIcon
+                          name="down"
+                          size={24}
+                          style={{ color: "gray" }}
+                        />
+                      </Pressable>
+                    </View>
+                    <View style={styles.modalTitle}>
+                      <Text style={styles.titleText}>Comments</Text>
+                    </View>
+                  </View>
+                  <View style={styles.commentsContainer}>
+                    {post.comments.map(comment => {
+                      console.log('====================================');
+                      // console.log(comment);
+                      console.log('====================================');
+                      return (
+                        <View style={styles.commentContainer}>
+                          <View style={styles.commentProfile}>
+                            <Image
+                              source={{
+                                uri: comment.User.pfImage,
+                              }}
+                              style={styles.commentPic}
+                            />
+                            <View style={styles.profileNameContainer}>
+                              <Text style={styles.commentProfileName}>
+                                {comment.User.fullname}
+                              </Text>
+                              <Text style={styles.commentText}>
+                                {comment.content}
+                              </Text>
+                            </View>
+                          </View>
+                          <HeartIcon
+                            name="hearto"
+                            size={20}
+                            style={{ color: heartActive ? "#9AC61C" : "white" }}
+                          />
+                        </View>
+                      )
+                    })}
+
+                  </View>
+                  <View style={styles.commentInputContainer}>
+                    <Image
+                      source={{
+                        uri: data.pfImage,
+                      }}
+                      style={styles.commentPic}
+                    />
+                    <TextInput
+                      placeholder="Add a comment"
+                      placeholderTextColor={"gray"}
+                      style={styles.commentInput}
+                    />
+                    <SendIcon
+                      name="send"
+                      size={24}
+                      style={{
+                        color: "#9AC61C",
+                        position: "absolute",
+                        right: 20,
+                        bottom: 22,
+                      }}
+                    />
+                  </View>
+                </Modal>
+                <ShareIcon name="share" size={22} style={{ color: "white" }} />
+              </View>
+              <SaveIcon name="favorite" size={24} style={{ color: "white" }} />
+            </View>
           </View>
-          <SaveIcon name="favorite" size={24} style={{ color: "white" }} />
-        </View>
-      </View>
+        )
+      })}
     </View>
   );
 };
@@ -229,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     padding: 10,
-    marginBottom: 100,
+    marginBottom: 50,
   },
   postHeader: {
     width: "100%",
