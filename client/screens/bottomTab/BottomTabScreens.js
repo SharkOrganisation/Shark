@@ -115,6 +115,7 @@ const BottomTabScreens = ({ route }) => {
       <Tab.Screen
         name="Create"
         component={CreatePost}
+        initialParams={{role: role}}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
