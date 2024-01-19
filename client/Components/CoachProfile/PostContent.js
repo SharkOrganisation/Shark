@@ -22,7 +22,6 @@ import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase";
 
 const PostContent = ({ data }) => {
-
   const [posts, setPosts] = useState([]);
   const coachId = FIREBASE_AUTH.currentUser;
   const [likedPosts, setLikedPosts] = useState([]);
@@ -65,6 +64,22 @@ const PostContent = ({ data }) => {
     const updatedHeartActiveArray = [...heartActiveArray];
     updatedHeartActiveArray[index] = !updatedHeartActiveArray[index];
     setHeartActiveArray(updatedHeartActiveArray);
+  };
+  const postPosts = async (post) => {
+    const userId = FIREBASE_AUTH.currentUser.uid;
+    const dataPosts = {
+      userId: "InXYMbGpRgUtaH7naFju46RZDsy1",
+      postId: post,
+    };
+    try {
+      const response = await axios.post(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/save`,
+        dataPosts
+      );
+      console.log(userId,":user",post , ':post' , '',  "gggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -201,7 +216,17 @@ const PostContent = ({ data }) => {
               </Modal>
               <ShareIcon name="share" size={22} style={{ color: "white" }} />
             </View>
-            <SaveIcon name="favorite" size={22} style={{ color: "white" }} />
+            <TouchableOpacity>
+
+            <SaveIcon
+              name="favorite"
+              size={22}
+              style={{ color: "white" }}
+              onPress={() => postPosts(post.id)}
+            />
+            <Text style={{ color: "white" }}
+            >{post.id}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       ))}

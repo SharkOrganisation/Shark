@@ -184,7 +184,7 @@ const Coachprofile = () => {
                       activeTab === "membership" && styles.selectedText,
                     ]}
                   >
-                    Gym
+                    Saved Posts
                   </Text>
                 </TouchableOpacity>
               </View>
