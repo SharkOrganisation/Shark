@@ -3,7 +3,7 @@ import * as savedPost from "../controllers/savedPost_controller";
 const router = Router();
 
 router.get("/:iduser",savedPost.getPost);
-router.post("/save/:userId/:postId",savedPost.addSave);
+router.post("/save",savedPost.addSave);
 router.delete("/remove/:userId/:postId",savedPost.removeSaved)
 
 

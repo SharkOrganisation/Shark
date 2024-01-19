@@ -6,6 +6,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FIREBASE_AUTH } from '../firebase'
 import axios from 'axios';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { FIRESTORE_DB } from '../firebase';
+
 
 const UserCreateAccount = ({ route }) => {
     const [date, setDate] = useState(new Date())
@@ -49,10 +52,16 @@ const UserCreateAccount = ({ route }) => {
 
         const heightInMeters = height / 100;
         const bmi = weight / (heightInMeters * heightInMeters);
-
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password)
             const { user } = userCredential;
+            await setDoc(doc(FIRESTORE_DB, "users", user.uid),
+                {
+                    uid: user.uid,
+                    email: email,
+                    name: fullname,
+                    avatar: "https://i.pravatar.cc/300"
+                });
             await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/auth/addUser/${role}`, {
                 id: user.uid,
                 fullname,

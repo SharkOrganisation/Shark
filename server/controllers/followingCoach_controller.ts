@@ -19,7 +19,7 @@ export const coachFollowers = async (
         },
       },
     });
-    const followers = follower?.followers.map((follow) => follow.User?({fullname:follow.User?.fullname, pfImage:follow.User.pfImage}) : []) || [];
+    const followers = follower?.followers.map((follow) => follow.User?({id:follow.User.id,fullname:follow.User?.fullname, pfImage:follow.User.pfImage}) : []) || [];
     res.status(200).send(followers);
   } catch (err) {
     res.status(400).send(err);
@@ -43,7 +43,7 @@ export const userFollowers = async (
       },
     });
     const following =
-      userFollower?.followedCoach.map((follow) => follow.Coach? ({fullname:follow.Coach.fullname ,pfImage:follow.Coach.pfImage }):[])
+      userFollower?.followedCoach.map((follow) => follow.Coach? ({id:follow.Coach.id,fullname:follow.Coach.fullname ,pfImage:follow.Coach.pfImage }):[])
     res.status(200).send(following);
   } catch (err) {
     res.status(400).send(err);

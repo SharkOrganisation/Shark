@@ -12,9 +12,12 @@ export const getUserPlan = async (
     let userPlan = await prisma.userPlan.findMany({
       where: { userId: userId },
       select: {
+        id:true,
         status: true,
+        planId:true,
         Plan: {
           select: {
+            id:true,
             name: true,
             price: true,
             Coach: {
@@ -31,10 +34,12 @@ export const getUserPlan = async (
             },
             program: {
               select: {
+                id:true,
                 name: true,
                 duration: true,
                 programExercice: {
                   select: {
+                    id:true,
                     reps: true,
                     sets: true,
                     Exercice: {

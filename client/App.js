@@ -26,6 +26,8 @@ import EditCoachProfile from './screens/bottomTab/EditCoachProfile.js';
 import EditUserProfile from './screens/bottomTab/EditUserProfile.js';
 import Followers from './screens/Followers.js';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import UserFollowing from "./screens/UserFollowing.js"
+import ChatScreen from './screens/bottomTab/chatScreen.js';
 
 const Stack = createNativeStackNavigator();
 const STRIPE_KEY ="pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mwr7CLtbVvHMYdzCOnkIQ6qya6yh4dPte536bi00GBMIlpuI"
@@ -126,6 +128,28 @@ export default function App() {
           },
           title: 'Profile'
         }} />
+        <Stack.Screen name="UserFollowing" component={UserFollowing} options={{
+          headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title: 'Profile'
+        }} />
         <Stack.Screen name="Basket" component={Basket} options={{ 
            headerStyle: {
             backgroundColor: 'black',
@@ -166,6 +190,26 @@ export default function App() {
             fontWeight: 'bold',
           },
           title:"Details"
+        }} />
+        <Stack.Screen name="chatScreen" component={ChatScreen}  options={{ 
+           headerStyle: {
+            backgroundColor: 'black',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+
+            elevation: 13,
+          },
+          headerTintColor: '#BEFF03',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+
         }} />
         <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{  headerStyle: {
             backgroundColor: '#97d91c',

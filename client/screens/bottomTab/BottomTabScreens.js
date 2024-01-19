@@ -12,6 +12,7 @@ import GymProfile from "./GymProfile";
 import ChatScreen from "./chatScreen";
 import Allproducts from "./Allproducts";
 import CreatePost from "./CreatePost";
+import UserListScreen from "./UserListScreen";
 import PaymentSuccess from "../PaymentSucces";
 
 const Tab = createBottomTabNavigator();
@@ -158,7 +159,7 @@ const BottomTabScreens = ({ route }) => {
       />
       <Tab.Screen
         name="chat"
-        component={ChatScreen}
+        component={UserListScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
@@ -192,7 +193,7 @@ const BottomTabScreens = ({ route }) => {
             fontWeight: "bold",
             fontSize: 20,
           },
-          title: "CHAT COMMUNITY"
+          title: "CHAT"
         }}
       />
       {role === 'Gym' && (
