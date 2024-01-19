@@ -177,18 +177,17 @@ export default function App() {
             },
             shadowOpacity: 0.39,
             shadowRadius: 8.30,
-
             elevation: 13,
           },
           headerTitleAlign: 'center',
-          headerTintColor: 'black',
+          headerTintColor: '#97d91c',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
           title:"Payment Succes"}} />
         <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerStyle: {
-            backgroundColor: 'black',
-            shadowColor: "#9AC61C",
+            backgroundColor: '#97d91c',
+            shadowColor: '#97d91c',
             borderBottomColor: 'black',
             shadowOffset: {
               width: 0,
@@ -200,11 +199,9 @@ export default function App() {
             elevation: 13,
           },
           headerTitleAlign: 'center',
-          headerTintColor: '#BEFF03',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          title:"PaymentFailed"}} />
+          headerTintColor: '#97d91c',
+        
+        }} />
         <Stack.Screen name='Checkout' component={Checkout} options={{  headerShown: false  }} />
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />

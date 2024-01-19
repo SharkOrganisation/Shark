@@ -56,11 +56,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 35,
   },
-  // subtitleText: {
-  //   color: "#000",
-  //   fontWeight: "700",
-  //   fontSize: 14,
-  // },
+  
   descriptionText: {
     top:10,
     textAlign: "center",
@@ -77,9 +73,7 @@ const styles = StyleSheet.create({
     top: 30,
   },
   longDescriptionContainer: {
-    // alignItems: "center",
     marginVertical: 100,
-    // maxWidth: 255,
 
   },
   longDescriptionText: {

@@ -20,8 +20,8 @@ export default function Allproducts({route}) {
   const animateText = () => {
     Animated.loop(
      Animated.timing(translateX, {
-       toValue: 200,
-       duration: 2000,
+       toValue: 400,
+       duration: 3000,
        useNativeDriver: true,
      }),
     ).start();
@@ -47,18 +47,23 @@ export default function Allproducts({route}) {
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
-   
-    const filteredProducts = category
-     ? data.filter((product) =>
-         (product.catergory || "").replace(/['"]+/g, '') === category
-       )
-     : data;
+    
+    let filteredProducts;
+    if (category === "All") {
+      filteredProducts = data;
+    } else {
+      filteredProducts = category
+        ? data.filter((product) =>
+            (product.catergory || "").replace(/['"]+/g, '') === category
+          )
+        : data;
+    }
    
     setFilteredData(filteredProducts);
    };
    
    
-
+   
   return (
     <LinearGradient
    colors={['#97d91c', 'black']} 
@@ -68,8 +73,31 @@ export default function Allproducts({route}) {
 
     <ScrollView contentContainerStyle={{ paddingBottom: 50 }} >
     
-      <Animated.Text style={{color:"#030000",fontWeight:"bold", top:45,left:20, transform: [{ translateX }]} }>{selectedCategory? selectedCategory+"("+filteredData.length+")": "Allproducts"+ "("+data.length+")"}</Animated.Text>
+    <Animated.Text style={{ fontSize:20, color:"#030000",fontWeight:"bold", top:45,left:20, transform: [{ translateX }]} }>
+ {selectedCategory ? selectedCategory + " (" + filteredData.length + ")" : "Allproducts (" + data.length + ")"}
+</Animated.Text>
+
+      <ScrollView horizontal={true}>
       <View style={{ flexDirection: "row", marginTop: 70 }}>
+      <TouchableOpacity
+    style={{
+      backgroundColor: selectedCategory === "All" ? "white" : "black",
+      padding: 8,
+      borderRadius: 90,
+      width: 80,
+      alignItems: "center",
+      marginLeft: 10,
+    }}
+    onPress={() => handleCategoryPress("All")}
+  >
+    <Text
+      style={{
+        color: selectedCategory === "All" ? "black" : "white",
+      }}
+    >
+      All
+    </Text>
+  </TouchableOpacity>
         <TouchableOpacity
           style={{
             backgroundColor: selectedCategory === "Gym Equipment" ? "white" : "black",
@@ -127,8 +155,27 @@ export default function Allproducts({route}) {
             Clothes
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+   style={{
+     backgroundColor: selectedCategory === "Snacks" ? "white" : "black",
+     padding: 8,
+     borderRadius: 90,
+     width: 130,
+     alignItems: "center",
+     marginLeft: 10,
+   }}
+   onPress={() => handleCategoryPress("Snacks")}
+ >
+   <Text
+     style={{
+       color: selectedCategory === "Snacks" ? "black" : "white",
+     }}
+   >
+     Snacks
+   </Text>
+ </TouchableOpacity>
       </View>
-    
+      </ScrollView>
        <FlatList
    data={(selectedCategory ? filteredData : data)}
    keyExtractor={(item) => item.id.toString()}
@@ -146,10 +193,10 @@ export default function Allproducts({route}) {
        </TouchableOpacity>
        <View style={styles.infoContainer}>
          <Text style={styles.name}>{item.name}</Text>
-         <Text style={styles.price}>{item.price}</Text>
+         <Text style={styles.price}>{item.price} USD</Text>
        </View>
        <View style={styles.quantityContainer}>
-         <Text>{item.quantity}</Text>
+         <Text>Stack({item.quantity})</Text>
        </View>
      </View>
    )}
@@ -171,13 +218,13 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     margin: 25,
     borderRadius: 10,
-    width: windowWidth / 2 - 50, // Subtract the margin to account for the gap
-    height: 190, // Set a fixed 
+    width: windowWidth / 2 - 50,
+    height: 190, 
     paddingBottom:50,
   },
   image: {
     width: '90%',
-    height: '70%', // Take up 70% of the card's height
+    height: '70%', 
   },
   infoContainer: {
     marginTop: 10,
@@ -188,10 +235,12 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 14,
-    color: '#787878',
+    color:'#97d91c'
   },
   quantityContainer: {
     marginTop: 7,
+    color: '#787878',
+    
   },
 
 });
