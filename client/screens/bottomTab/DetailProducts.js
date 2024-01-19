@@ -3,11 +3,12 @@ import {React,useState} from 'react';
 import { View, Image, StyleSheet,Text, Pressable,TouchableHighlight, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from 'react-native-snap-carousel';
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import{ FIREBASE_AUTH}  from "../../firebase";
+import {ipAddress} from '../../ipConfig'
 
 
 
@@ -27,14 +28,14 @@ export default function DetailProducts () {
   const addToBasket = async () => {
     try {
       if (role === 'user') {
-        const response = await axios.post(`http://172.29.0.18:3000/api/basket/add`, {
+        const response = await axios.post(`http://${ipAddress}:3000/api/basket/add`, {
           productId: FromAllproduct.id,
           userId: idUser.uid,
         });
   
         console.log("Response from server:", response.data);
       } else if (role === 'Gym' && role !== undefined) {
-        const response = await axios.post(`http://172.29.0.18:3000/api/basket/add`, {
+        const response = await axios.post(`http://${ipAddress}:3000/api/basket/add`, {
           productId: 1,
           gymId: idUser.uid,
         });
@@ -42,7 +43,7 @@ export default function DetailProducts () {
   
         console.log("Response from server:", response.data);
       } else if (role === 'coach') {
-        const response = await axios.post(`http://172.29.0.18:3000/api/basket/add`, {
+        const response = await axios.post(`http://${ipAddress}:3000/api/basket/add`, {
           productId: FromAllproduct.id,
           coachId: idUser.uid,
         });
@@ -77,9 +78,9 @@ return (
         <Icon name="star-rate" style={styles.icon} size={28} color="#97d91c" />
         <Icon name="star-border" style={styles.icon} size={28} color="#97d91c" />
       </Pressable>
-  <Pressable style={styles.like} onPress={toggleLike}>
-        <Icon name={liked ? "favorite" : "favorite-border"} size={30} color="black" />
-      </Pressable>
+  {/* <Pressable style={styles.like} onPress={toggleLike}>
+        <Ionicons name={liked ? "favorite" : "favorite-border"} size={30} color="black" />
+      </Pressable> */}
    
       <View style={styles.carouselContainer}>
         <Carousel data={FromAllproduct.images} renderItem={renderItem} sliderWidth={390} itemWidth={350} />
@@ -125,8 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    // resizeMode: 'cover',
-    // position: 'absolute',
     top:10,
   },
   blackBackground: {
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
   },
   reviewIcon: {
     position: 'absolute',
-    top: 484, 
+    top: 314, 
     right: 10, 
     zIndex: 1,
     flexDirection:"row"

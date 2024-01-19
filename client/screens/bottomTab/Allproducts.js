@@ -1,8 +1,9 @@
 import {React,useState,useEffect} from "react";
-import { View, Text, StyleSheet,Image, TouchableOpacity , ScrollView} from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import {FlatList, View, Text, StyleSheet,Image, TouchableOpacity , ScrollView, Dimensions} from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {ipAddress} from '../../ipConfig'
+import { LinearGradient } from 'expo-linear-gradient';
+import { Animated } from 'react-native';
 
 export default function Allproducts({route}) {
   const navigation = useNavigation();
@@ -11,10 +12,25 @@ export default function Allproducts({route}) {
   const [filteredData, setFilteredData] = useState([]);
   const { role } = route?.params || { role: undefined };
   console.log(role, "rrrrrrrrrrrrrrrrrrrrr");
+  const [translateX, setTranslateX] = useState(new Animated.Value(0));
+  
+
+
+
+  const animateText = () => {
+    Animated.loop(
+     Animated.timing(translateX, {
+       toValue: 400,
+       duration: 3000,
+       useNativeDriver: true,
+     }),
+    ).start();
+   };
+   
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://172.29.0.18:3000/api/product/get/products');
+      const response = await fetch(`http://${ipAddress}:3000/api/product/get/products`);
       const result = await response.json();
       // console.log("dataaaaaa", result);
       setData(result);
@@ -26,28 +42,62 @@ export default function Allproducts({route}) {
 
   useEffect(() => {
     fetchData();
+    animateText()
   }, []);
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
-   
-    const filteredProducts = category
-     ? data.filter((product) =>
-         (product.catergory || "").replace(/['"]+/g, '') === category
-       )
-     : data;
+    
+    let filteredProducts;
+    if (category === "All") {
+      filteredProducts = data;
+    } else {
+      filteredProducts = category
+        ? data.filter((product) =>
+            (product.catergory || "").replace(/['"]+/g, '') === category
+          )
+        : data;
+    }
    
     setFilteredData(filteredProducts);
-    // console.log(filteredProducts)
    };
    
    
-
+   
   return (
-    <ScrollView style={styles.container}>
+    <LinearGradient
+   colors={['#97d91c', 'black']} 
+   style={styles.containerA}
+ >
+
+
+    <ScrollView contentContainerStyle={{ paddingBottom: 50 }} >
     
-      <Text style={{color:"#030000",fontWeight:"bold", top:45,left:20}}>{selectedCategory? selectedCategory+"("+filteredData.length+")": "Allproducts"+ "("+data.length+")"}</Text>
-      <View style={{ flexDirection: "row", marginTop: 70}}>
+    <Animated.Text style={{ fontSize:20, color:"#030000",fontWeight:"bold", top:45,left:20, transform: [{ translateX }]} }>
+ {selectedCategory ? selectedCategory + " (" + filteredData.length + ")" : "Allproducts (" + data.length + ")"}
+</Animated.Text>
+
+      <ScrollView horizontal={true}>
+      <View style={{ flexDirection: "row", marginTop: 70 }}>
+      <TouchableOpacity
+    style={{
+      backgroundColor: selectedCategory === "All" ? "white" : "black",
+      padding: 8,
+      borderRadius: 90,
+      width: 80,
+      alignItems: "center",
+      marginLeft: 10,
+    }}
+    onPress={() => handleCategoryPress("All")}
+  >
+    <Text
+      style={{
+        color: selectedCategory === "All" ? "black" : "white",
+      }}
+    >
+      All
+    </Text>
+  </TouchableOpacity>
         <TouchableOpacity
           style={{
             backgroundColor: selectedCategory === "Gym Equipment" ? "white" : "black",
@@ -105,118 +155,92 @@ export default function Allproducts({route}) {
             Clothes
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+   style={{
+     backgroundColor: selectedCategory === "Snacks" ? "white" : "black",
+     padding: 8,
+     borderRadius: 90,
+     width: 130,
+     alignItems: "center",
+     marginLeft: 10,
+   }}
+   onPress={() => handleCategoryPress("Snacks")}
+ >
+   <Text
+     style={{
+       color: selectedCategory === "Snacks" ? "black" : "white",
+     }}
+   >
+     Snacks
+   </Text>
+ </TouchableOpacity>
       </View>
-      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {(selectedCategory ? filteredData : data).map((product, index) => (
-          <View
-            key={product.id}
-            style={{
-              width: "48%",
-              marginBottom: 10,
-              marginRight: index % 2 === 0 ? 10 : 0,
-            }}
-          >
-            <TouchableOpacity
-              style={styles.cardContainer}
-              onPress={() => {
+      </ScrollView>
+       <FlatList
+   data={(selectedCategory ? filteredData : data)}
+   keyExtractor={(item) => item.id.toString()}
+   renderItem={({ item }) => (
+     <View key={item.id} style={styles.itemContainer}>
+      <TouchableOpacity   onPress={() => {
                 navigation.navigate("DetailProducts", {
-                  productId: product.id,
-                  product,
+                  productId: item.id,
+                  product:item,
                   role
                 });
 
-              }}
-            >
-              <Image
-                source={{ uri: product.images[0] }}
-                style={styles.cardImage}
-              />
-              {console.log(product.images[0])}
-            </TouchableOpacity>
-            <View style={styles.cardContent}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={styles.cardquantity}>{product.quantity}</Text>
-                <Text>
-                  <Text>{product.icon}</Text>
-                </Text>
-              </View>
-              <Text style={styles.cardTitle}>{product.name.replace(/['"]+/g, '')}</Text>
-              <Text style={styles.cardPrice}>{product.price} TND</Text>
-            </View>
-          </View>
-        ))}
-      </View>
+              }}>  
+       <Image source={{ uri: item.images[0] }} style={styles.image} />
+       </TouchableOpacity>
+       <View style={styles.infoContainer}>
+         <Text style={styles.name}>{item.name}</Text>
+         <Text style={styles.price}>{item.price} USD</Text>
+       </View>
+       <View style={styles.quantityContainer}>
+         <Text>Stack({item.quantity})</Text>
+       </View>
+     </View>
+   )}
+   numColumns={2}
+ />
     </ScrollView>
+    </LinearGradient>
   );
 }
+const windowWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#97d91c",
+  containerA: {
     flex: 1,
   },
-  pageTitle: {
-    flexDirection: "row",
-    marginTop: 80,
-    gap: 90,
-    display: "flex",
-    justifyContent: "10px",
+  itemContainer: {
+    backgroundColor: '#f0f8ff',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    margin: 25,
+    borderRadius: 10,
+    width: windowWidth / 2 - 50,
+    height: 190, 
+    paddingBottom:50,
   },
-  text: {
-    fontSize: 27,
-    alignItems: "center",
-    fontWeight: "700",
+  image: {
+    width: '90%',
+    height: '70%', 
   },
-  icon: {
-    marginLeft: 15,
-    marginTop: -9,
+  infoContainer: {
+    marginTop: 10,
   },
-  marketicon:{
-    top:3,
-    right:19,
+  name: {
+    fontSize: 13,
+    fontWeight: 'bold',
   },
-  cardContainer: {
-    padding: 10,
-    // borderRadius: 15,
-    marginBottom: 15,
-    marginTop: 20,
-    marginLeft: 15,
-    shadowColor: "blue",
-    shadowOffset: { width: 10, height: 20 },
-    shadowOpacity: 6,
-    shadowRadius: 2,
-    elevation: 5,
-    width: "80%",
-    justifyContent: "center",
+  price: {
+    fontSize: 14,
+    color:'#97d91c'
   },
-  cardImage: {
-    width: 140,
-    height: 130,
-    borderRadius: 3,
-    justifyContent: "center",
+  quantityContainer: {
+    marginTop: 7,
+    color: '#787878',
+    
   },
-  cardContent: {
-    padding: 15,
-    marginVertical: -20,
-  },
-  cardTitle: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  cardPrice: {
-    fontWeight: "bold",
-    top: -4,
-    color: "#033",
-  },
-  cardquantity: {
-    fontWeight: "bold",
-    top: -4,
-    color: "gray",
-  },
-  icon1: {
-    fontSize: 20,
-    marginRight: 5,
-  },
+
 });
