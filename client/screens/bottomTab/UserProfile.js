@@ -73,6 +73,7 @@ const UserProfile = ({ navigation }) => {
     getCoachFollowing();
   }, [isFocused]);
 
+
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity
