@@ -37,6 +37,7 @@ export const getGympost = async (req: Request, res: Response) => {
     const response = await prisma.post.findMany({
       where: { gymId: id },
       select: {
+        id: true,
         content: true,
         likes: true,
         image: true,
@@ -66,6 +67,7 @@ export const getCoachpost = async (req: Request, res: Response) => {
     const response = await prisma.post.findMany({
       where: { coachId: id },
       select: {
+        id : true,
         content: true,
         likes: true,
         image: true,

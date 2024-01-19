@@ -24,10 +24,10 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const addSave = async (req: Request, res: Response): Promise<void> => {
-  const { userId, postId } = req.params;
+  const { userId, postId } = req.body;
   try {
     let newSave = await prisma.savedPost.create({
-      data: { userId: userId, postId: +postId },
+      data: { userId, postId: Number(postId) },
     });
     res.status(200).send("Post Saved successfully");
   } catch (err) {

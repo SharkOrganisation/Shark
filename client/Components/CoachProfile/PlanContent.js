@@ -43,7 +43,6 @@ const PlanContent = () => {
         `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/user/getAll`
       );
       setUsers(response.data);
-      // console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -113,7 +112,7 @@ const PlanContent = () => {
           <Image
             style={stylesPlan.avatar}
             source={{
-              uri: "https://i1.sndcdn.com/artworks-000464548089-wbl999-t500x500.jpg",
+              uri: "https://www.digital-discovery.tn/wp-content/uploads/2023/09/Gattouz0-1200x675.jpg",
             }}
           />
           <View>
@@ -127,9 +126,6 @@ const PlanContent = () => {
             </Text>
             <Text style={stylesPlan.likesText}>
               Diet Name: {plan.Diet.name}
-            </Text>
-            <Text style={stylesPlan.likesText}>
-              Diet Meals: {plan.Diet.meals}
             </Text>
             <TouchableOpacity onPress={() => handlePlanPress(plan)}>
               <View style={stylesPlan.sendButtonContainer}>
