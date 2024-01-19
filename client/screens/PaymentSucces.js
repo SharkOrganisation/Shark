@@ -1,34 +1,48 @@
 import * as React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useNavigation ,useRoute} from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+
+
 
 const PaymentSuccess = () => {
+  const navigation = useNavigation();
+  const route =useRoute();
+  const totalPrice=route.params.totalPrice || 0
+  console.log(totalPrice);
+
   return (
-    <View style={styles.container}>
+    <LinearGradient
+    colors={['#97d91c', 'black']} 
+    style={styles.container}
+  >
+    <View >
       <View style={styles.textContainer}>
-        <Text style={styles.titleText}>Payment Success</Text>
-        <Text style={styles.subtitleText}>wael</Text>
+        <Text style={styles.titleText}>Success</Text>
+        {/* <Text style={styles.subtitleText}>wael</Text> */}
         <Text style={styles.descriptionText}>
           Thank you for using our service
         </Text>
       </View>
       <View style={styles.priceContainer}>
        
-          <FontAwesome name="check-circle" size={100} style={styles.icon} />
+          <FontAwesome name="check-circle" size={150} style={styles.icon} />
       
-        <Text style={styles.priceText}>Rp 89.100</Text>
+        <Text style={styles.priceText}>{totalPrice}USD</Text>
       </View>
       <View style={styles.longDescriptionContainer}>
         <Text style={styles.longDescriptionText}>
-        Hooray! 🎉 Your payment was successful! Funds have been securely transferred, and your transaction is complete. Thank you for using our service. If you have any questions, feel free to reach out to our support team
-        </Text>
-        <View>
-          <TouchableOpacity style={styles.doneBtn}>
+        {' '}{' '}{' '} Hooray! 🎉{'\n'}  Your payment was successful! {'\n'} Funds have been securely transferred, {'\n'} and your transaction is complete.{'\n'} Thank you for using our service.{'\n'} If you have any questions,{'\n'} feel free to reach out to our support team 
+          </Text>
+      </View>
+      <View>
+          <TouchableOpacity  onPress={()=>{navigation.navigate('home')}}>
             <Text style={styles.btnText}>Success</Text>
           </TouchableOpacity>
         </View>
-      </View>
     </View>
+    </LinearGradient>
   );
 };
 
@@ -45,16 +59,13 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#000",
     fontWeight: "700",
-    fontSize: 25,
+    fontSize: 35,
   },
-  subtitleText: {
-    color: "#000",
-    fontWeight: "700",
-    fontSize: 14,
-  },
+ 
   descriptionText: {
+    top:10,
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 15,
   },
   priceContainer: {
     alignSelf: "center",
@@ -64,39 +75,40 @@ const styles = StyleSheet.create({
   priceText: {
     fontWeight: "700",
     fontSize: 20,
+    left:25,
   },
   longDescriptionContainer: {
-    alignItems: "center",
     marginVertical: 100,
-    maxWidth: 255,
+
   },
   longDescriptionText: {
+    bottom:100,
     color: "black",
     fontWeight: "700",
-    fontSize: 10,
+    fontSize: 15,
     textAlign: "center",
   },
-  doneBtn: {
+
+  btnText: {
+    bottom:100,
+    color: "white",
+    textAlign: "center",
+    fontSize: 21,
+    fontWeight: "bold",
     backgroundColor: "black",
     width: 200,
     padding: 10,
     borderRadius: 20,
     marginVertical: 44,
-  },
-  btnText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 21,
-    fontWeight: "bold",
+    left:60
   },
   icon: {
     justifyContent: "center",
     alignItems: "center",
-    left: 8,
     top: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1  ,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 2  ,
     shadowRadius: 30,
    },
  

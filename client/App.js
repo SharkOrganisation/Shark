@@ -25,15 +25,19 @@ import Coachprofile from './screens/bottomTab/Coachprofile.js';
 import EditCoachProfile from './screens/bottomTab/EditCoachProfile.js';
 import EditUserProfile from './screens/bottomTab/EditUserProfile.js';
 import Followers from './screens/Followers.js';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import UserFollowing from "./screens/UserFollowing.js"
 import ChatScreen from './screens/bottomTab/chatScreen.js';
-const Stack = createNativeStackNavigator();
 
+const Stack = createNativeStackNavigator();
+const STRIPE_KEY ="pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mwr7CLtbVvHMYdzCOnkIQ6qya6yh4dPte536bi00GBMIlpuI"
 
 
 export default function App() {
   return (
+    <StripeProvider publishableKey={STRIPE_KEY}>
     <NavigationContainer>
+      
       <Stack.Navigator initialRouteName='getStarted'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
@@ -157,7 +161,6 @@ export default function App() {
             },
             shadowOpacity: 0.39,
             shadowRadius: 8.30,
-
             elevation: 13,
           },
           headerTitleAlign: 'center',
@@ -208,7 +211,42 @@ export default function App() {
           },
 
         }} />
+        <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{  headerStyle: {
+            backgroundColor: '#97d91c',
+            shadowColor: "#9AC61C",
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#97d91c',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title:"Payment Succes"}} />
+        <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerStyle: {
+            backgroundColor: '#97d91c',
+            shadowColor: '#97d91c',
+            borderBottomColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.39,
+            shadowRadius: 8.30,
 
+            elevation: 13,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#97d91c',
+        
+        }} />
+        <Stack.Screen name='Checkout' component={Checkout} options={{  headerShown: false  }} />
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
@@ -222,11 +260,12 @@ export default function App() {
         <Stack.Screen name='createGym' component={CreateGym} options={{ headerShown: false }} />
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerShown: false }} />
         <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
+        
       </Stack.Navigator>
+     
     </NavigationContainer>
+    </StripeProvider>
   );
 }
 const styles = StyleSheet.create({
