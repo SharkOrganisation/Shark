@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { FIREBASE_APP } from '../../firebase';
 import axios from 'axios'
 import { ipAddress } from '../../ipConfig';

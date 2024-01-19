@@ -47,7 +47,7 @@ export default function Allproducts({route}) {
     <ScrollView style={styles.container}>
     
       <Text style={{color:"#030000",fontWeight:"bold", top:45,left:20}}>{selectedCategory? selectedCategory+"("+filteredData.length+")": "Allproducts"+ "("+data.length+")"}</Text>
-      <View style={{ flexDirection: "row", marginTop: 70 }}>
+      <View style={{ flexDirection: "row", marginTop: 70}}>
         <TouchableOpacity
           style={{
             backgroundColor: selectedCategory === "Gym Equipment" ? "white" : "black",
