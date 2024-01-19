@@ -224,7 +224,6 @@ const CreateProgram = ({ route }) => {
             >
               <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
-
           </View>
         </View>
 
@@ -243,32 +242,32 @@ const CreateProgram = ({ route }) => {
               <Text style={styles.modalText}>SETS : {sets}</Text>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  onPress={incrementSets}
-                  style={styles.modalButton}
-                >
-                  <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
                   onPress={decrementSets}
                   style={styles.modalButton}
                 >
                   <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={incrementSets}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
               </View>
 
               <Text style={styles.modalText}>REPS : {reps}</Text>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  onPress={incrementReps}
-                  style={styles.modalButton}
-                >
-                  <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
                   onPress={decrementReps}
                   style={styles.modalButton}
                 >
                   <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={incrementReps}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
               </View>
 

@@ -8,21 +8,20 @@ const MembershipContent = () => {
 
   const [saved, setSaved] = useState([]);
 
-
-  const getSavedPosts = async () => {      
+  const getSavedPosts = async () => {
     try {
-      const response  = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:3000/api/savedPost/${currentUser.uid}`
+      const response = await axios.get(
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/${currentUser.uid}`
       );
-      console.log(response.data,"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+      // console.log(response.data,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
       setSaved(response.data);
     } catch (error) {
       console.error(error);
-    } 
+    }
   };
 
   useEffect(() => {
-    getSavedPosts();
+    // getSavedPosts();
   }, []);
 
   return (
@@ -30,19 +29,17 @@ const MembershipContent = () => {
       style={styles.membershipContainer}
       onPress={() => console.log("Membership details clicked")}
     >
-     
-          <Image
-            style={styles.memberImage}
-            source={{
-              uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.membershipText}>
-              Member since 1920. Active and dedicated fitness enthusiast.
-            </Text>
-          </View>
-      
+      <Image
+        style={styles.memberImage}
+        source={{
+          uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
+        }}
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.membershipText}>
+          Member since 1920. Active and dedicated fitness enthusiast.
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -50,6 +47,7 @@ const MembershipContent = () => {
 const styles = StyleSheet.create({
   membershipContainer: {
     paddingVertical: 50,
+    alignItems: "center",
     justifyContent: "center",
     backgroundColor: "black",
     flexDirection: "row",
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
     padding: 15,
     marginVertical: 10,
-    marginBottom:80,
+    marginBottom:80 ,
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: {
