@@ -15,6 +15,7 @@ CREATE TABLE "User" (
     "fullname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "age" INTEGER NOT NULL,
+    "region" TEXT NOT NULL,
     "datebirth" TEXT NOT NULL,
     "bmi" DOUBLE PRECISION,
 
@@ -44,7 +45,9 @@ CREATE TABLE "Gym" (
     "pfImage" TEXT NOT NULL,
     "type" TEXT,
     "bio" TEXT,
+    "region" TEXT NOT NULL,
     "location" TEXT NOT NULL,
+    "verified" BOOLEAN,
 
     CONSTRAINT "Gym_pkey" PRIMARY KEY ("id")
 );

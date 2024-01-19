@@ -20,6 +20,7 @@ const UserCreateAccount = ({ route }) => {
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
     const [age, setAge] = useState('');
+    const [region, setRegion] = useState('');
     const { role } = route.params
     const navigation = useNavigation()
     const auth = FIREBASE_AUTH
@@ -66,6 +67,7 @@ const UserCreateAccount = ({ route }) => {
                 id: user.uid,
                 fullname,
                 email,
+                region,
                 datebirth: dateBirth,
                 age: +age,
                 bmi
@@ -122,6 +124,7 @@ const UserCreateAccount = ({ route }) => {
                         onChangeText={(value) => setEmail(value)}
                     />
                 </View>
+               
                 <View>
                     <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>PASSWORD</Text>
                     <TextInput
@@ -154,6 +157,15 @@ const UserCreateAccount = ({ route }) => {
                             value={dateBirth}
                         />
                     </Pressable>
+                </View>
+                <View>
+                    <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>Region</Text>
+                    <TextInput
+                        placeholder='ENTER YOUR REGION'
+                        placeholderTextColor={"gray"}
+                        style={styles.Input}
+                        onChangeText={(value) => setRegion(value)}
+                    />
                 </View>
                 <View style={styles.smallInptContainer}>
                     <View>

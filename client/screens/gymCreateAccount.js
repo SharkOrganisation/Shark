@@ -15,6 +15,7 @@ const GymCreateAccount = ({ route }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [type, setType] = useState('')
+  const [region, setRegion] = useState('')
   const [location, setLocation] = useState('')
 
 
@@ -29,6 +30,7 @@ const GymCreateAccount = ({ route }) => {
         fullname,
         email,
         type,
+        region,
         location
       })
       Alert.alert('Gym added successfully')
@@ -99,6 +101,15 @@ const GymCreateAccount = ({ route }) => {
             placeholderTextColor={"gray"}
             style={styles.Input}
             onChangeText={(value) => setType(value)}
+          />
+        </View>
+        <View>
+          <Text style={{ color: "#BEFF03", fontWeight: 'bold' }}>Region</Text>
+          <TextInput
+            placeholder='ENTER YOUR LOCATION'
+            placeholderTextColor={"gray"}
+            style={styles.Input}
+            onChangeText={(value) => setRegion(value)}
           />
         </View>
         <View>
