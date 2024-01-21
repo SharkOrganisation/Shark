@@ -36,7 +36,7 @@ export default function DetailProducts () {
         console.log("Response from server:", response.data);
       } else if (role === 'Gym' && role !== undefined) {
         const response = await axios.post(`http://${ipAddress}:3000/api/basket/add`, {
-          productId: 1,
+          productId:  FromAllproduct.id,
           gymId: idUser.uid,
         });
         console.log(idUser.uid,':iddddddddddd')
