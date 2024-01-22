@@ -38,8 +38,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 };
 
 export const createProduct = async (req: Request, res: Response) => {
-  // const { name, price, quantity, catergory,description,images }: Product =
-  //   req.body;
+ 
   try {
     const prod = await prisma.product.create({
       data: req.body,

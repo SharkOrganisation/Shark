@@ -21,21 +21,22 @@ const GymProfile = () => {
     const isFocused = useIsFocused()
     const currentUser = FIREBASE_AUTH.currentUser
 
-// console.log('====================================');
-// console.log(currentUser);
-// console.log('====================================');
     useEffect(() => {
         axios
-            .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
-            .then((response) => {
-                setGymData(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-
+        .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
+        .then((response) => {
+            setGymData(response.data)
+            console.log(response,"response")
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        
     }, [isFocused])
-
+    
+    // console.log('====================================');
+    // console.log(gymData);
+    // console.log('====================================');
     return (
         <ScrollView style={styles.container}>
             <TouchableOpacity

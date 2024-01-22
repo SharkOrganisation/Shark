@@ -4,6 +4,15 @@ import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
+export const getAllCoachs = async (req: Request, res: Response) => {
+  try {
+    const coaches = await prisma.coach.findMany();
+    res.status(200).json(coaches);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 export const getOneCoachById = async (req: Request, res: Response) => {
   const coachId = req.params.id;
   try {

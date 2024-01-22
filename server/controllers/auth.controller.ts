@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export const signUp = async (req: Request, res: Response) => {
   const role = req.params.role;
-  const { id, fullname, email,age, datebirth, location,type, speciality, perSession,bmi } =
+  const { id, fullname, email,age, region,datebirth, location,type,speciality, perSession,bmi } =
     req.body;
   try {
     if (role === "user") {
@@ -21,6 +21,7 @@ export const signUp = async (req: Request, res: Response) => {
             fullname,
             email,
             datebirth,
+            region,
             age,
             bmi,
             pfImage: "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
@@ -42,6 +43,8 @@ export const signUp = async (req: Request, res: Response) => {
             type,
             Email: email,
             pfImage: "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
+            region,
+            verified:false,
             location,
           },
         });
