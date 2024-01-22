@@ -5,16 +5,17 @@ const SavedUser = () => {
   return (
       <ScrollView>
     <View style={styles.savedContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity style={styles.savedPosts}>
       <Image source={{uri:""}} styles={styles.imgPost}/>
-      <Text style={styles.titlePost}>Post Title</Text>
+      <Image source={{uri:""}} styles={styles.imgPost}/>
+      <Image source={{uri:""}} styles={styles.imgPost}/>
+      <Image source={{uri:""}} styles={styles.imgPost}/>
       </TouchableOpacity>
     </View>
       </ScrollView>
   )
 }
 const styles = StyleSheet.create({
-  
   savedContainer:{
     flex:1,
     backgroundColor:"black"
@@ -22,12 +23,9 @@ const styles = StyleSheet.create({
   imgPost:{
 
   },
-  titlePost:{
-    color: "white",
-    fontSize: 20,
-    position:"relative",
-    alignSelf: "center",
-    letterSpacing:1
-    }
+  savedPosts:{
+    flexDirection:"row",
+    
+  }
 })
 export default SavedUser

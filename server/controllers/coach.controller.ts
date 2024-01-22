@@ -6,7 +6,30 @@ const prisma = new PrismaClient();
 
 export const getAllCoachs = async (req: Request, res: Response) => {
   try {
-    const coaches = await prisma.coach.findMany();
+    const coaches = await prisma.coach.findMany({
+      select: {
+        id: true,
+        fullname: true,
+        email: true,
+        pfImage: true,
+        datebirth: true,
+        bio: true,
+        speciality: true,
+        perSession: true,
+        Gym: {
+          select: {
+            id: true,
+            fullname: true,
+            Email: true,
+            pfImage: true,
+            type: true,
+            bio: true,
+            region: true,
+            location: true,
+          },
+        },
+      },
+    });
     res.status(200).json(coaches);
   } catch (err) {
     res.status(500).send(err);
@@ -45,3 +68,4 @@ export const updateCoach = async (req: Request, res: Response) => {
     console.error(err);
   }
 };
+
