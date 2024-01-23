@@ -49,7 +49,7 @@ const Coachprofile = () => {
   };
   const [coach, setCoach] = useState([]);
   const coachId = FIREBASE_AUTH.currentUser;
-
+console.log(coachId.uid,"fffffffffff:fffffffffffffffffffffffffffffffffffffffffffffffffffff");
   const getCoachProfile = async () => {
     try {
       const response = await axios.get(
@@ -102,7 +102,7 @@ const Coachprofile = () => {
               <Image
                 style={styles.avatar}
                 source={{
-                  uri: `${coach.pfImage}`,
+                  uri: `${coach?.pfImage}`,
                 }}
               />
               <View style={styles.followInfoContainer}>

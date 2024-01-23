@@ -10,8 +10,7 @@ const UserPlan = () => {
   const [userPlan, setUserPlan] = useState([]);
   const [plan, setPlan] = useState([]);
   const user = FIREBASE_AUTH.currentUser;
-  // console.log(user.uid,"iduser");
-  // console.log(ipAddress,"ip from UserPlan");
+  
   const getUserPlan = async () => {
     try {
       const getPlan = await axios.get(

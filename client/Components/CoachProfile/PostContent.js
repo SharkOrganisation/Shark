@@ -43,8 +43,9 @@ const PostContent = ({ data }) => {
   const getComments = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/comments/get/4oCiSci45LU15a9rBQazug9837z2/3`
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/comments/get/1/4`
       );
+      console.log("ggggggggggggggggggggggggggggggggggggggg,",response.data);
       setComments(response.data);
     } catch (err) {
       console.error(err);
@@ -65,22 +66,22 @@ const PostContent = ({ data }) => {
     updatedHeartActiveArray[index] = !updatedHeartActiveArray[index];
     setHeartActiveArray(updatedHeartActiveArray);
   };
-  const postPosts = async (post) => {
-    const userId = FIREBASE_AUTH.currentUser.uid;
-    const dataPosts = {
-      userId: "InXYMbGpRgUtaH7naFju46RZDsy1",
-      postId: post,
-    };
-    try {
-      const response = await axios.post(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/save`,
-        dataPosts
-      );
-      console.log(userId,":user",post , ':post' , '',  "gggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const postPosts = async (post) => {
+  //   const userId = FIREBASE_AUTH.currentUser.uid;
+  //   const dataPosts = {
+  //     userId: "InXYMbGpRgUtaH7naFju46RZDsy1",
+  //     postId: post,
+  //   };
+  //   try {
+  //     const response = await axios.post(
+  //       `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/save`,
+  //       dataPosts
+  //     );
+  //     console.log(userId,":user",post , ':post' , '',  "gggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <View style={stylesPost.container}>
@@ -222,10 +223,8 @@ const PostContent = ({ data }) => {
               name="favorite"
               size={22}
               style={{ color: "white" }}
-              onPress={() => postPosts(post.id)}
+              // onPress={() => postPosts(post.id)}
             />
-            <Text style={{ color: "white" }}
-            >{post.id}</Text>
             </TouchableOpacity>
           </View>
         </View>

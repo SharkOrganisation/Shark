@@ -21,6 +21,7 @@ model User {
   fullname      String
   email         String
   age           Int
+  region        String
   datebirth     String
   bmi           Float?
   basket        Basket[]
@@ -58,7 +59,9 @@ model Gym {
   pfImage        String
   type           String?
   bio            String?
+  region         String
   location       String
+  verified       Boolean?
   basket         Basket[]
   coaches        Coach[]
   followersCoach CoachfollowingGym[]
