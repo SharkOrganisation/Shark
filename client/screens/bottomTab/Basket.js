@@ -28,6 +28,7 @@ export default function Basket() {
   const idUser = FIREBASE_AUTH.currentUser.uid;
   console.log("iddddddd", idUser);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [quantities, setQuantities] = useState({});
 
   //this for get the products of the basket
 
@@ -62,6 +63,21 @@ export default function Basket() {
   useEffect(() => {
     getBasketByRole();
   }, []);
+  useEffect(() => {
+    const initialQuantities = {};
+    basketData.forEach((item) => {
+        initialQuantities[item.id] = 1;
+    });
+    setQuantities(initialQuantities);
+   }, [basketData]);
+   
+   useEffect(() => {
+    let total = 0;
+    basketData.forEach((item) => {
+       total += (item.Product.price || 0) * (quantities[item.id] || 0);
+    });
+    setTotalPrice(total);
+   }, [quantities, basketData]);
 
   console.log(totalPrice, "Totaaaaaaal");
 
@@ -70,16 +86,18 @@ export default function Basket() {
     try {
       console.log("Deleting basket item with:", role, basketId, userId);
       const lowercasedRole = role.toLowerCase();
-      const response = await axios.delete(
+      await axios.delete(
         `http://192.168.1.14:3000/api/basket/delete/${lowercasedRole}/${basketId}/${userId}`
       );
-      getBasketByRole();
+      // Wait for the deletion operation to complete before fetching the updated basket
+      await getBasketByRole();
     } catch (error) {
       if (error.response) {
         console.error("Response data:", error.response.data);
       }
     }
   };
+
 
   return (
     <ScrollView style={styles.cardContainer}>
@@ -97,8 +115,8 @@ export default function Basket() {
               {basketItem?.Product?.name?.replace(/['"]+/g, "")}
             </Text>
             <Text style={styles.cardPrice}>
-              {basketItem?.Product?.price} USD
-            </Text>
+ {(basketItem?.Product?.price || 0) * (quantities[basketItem.id] || 1)} USD
+</Text>
 
             <View>
               <TouchableOpacity
@@ -117,8 +135,30 @@ export default function Basket() {
               </TouchableOpacity>
             </View>
             <View style={styles.box}>
-              <Text style={styles.id}>{basketItem.Product.id}</Text>
-            </View>
+            <TouchableOpacity
+ style={styles.button}
+ onPress={() => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [basketItem.id]: (prevQuantities[basketItem.id] || 0) - 1,
+    }));
+ }}
+>
+ <Text style={styles.buttonm}>-</Text>
+</TouchableOpacity>
+<Text style={{color:"white",fontSize:20,top:10, }}>{quantities[basketItem.id] || 0}</Text>
+<TouchableOpacity
+ onPress={() => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [basketItem.id]: (prevQuantities[basketItem.id] || 0) + 1,
+    }));
+ }}
+>
+ <Text style={styles.button}>+</Text>
+</TouchableOpacity>
+      </View>
+
           </View>
         ))}
       {basketData.length > 0 && (
@@ -200,7 +240,7 @@ const styles = StyleSheet.create({
     left: 190,
   },
 
-  id: {
+  quantity: {
     top: -72,
     color: "black",
     height: 30,
@@ -213,13 +253,15 @@ const styles = StyleSheet.create({
   },
 
   box: {
+    flexDirection:"row",
+    gap:20,
     backgroundcolor: "#ffffff",
     borderradius: 10,
     // boxshadow:" 0px 4px 4px #00000040",
     height: "30",
-    left: 0,
+    left: 180,
     position: "fixed",
-    top: 0,
+    top: -80,
     width: 30,
   },
   checkoutButton: {
@@ -234,4 +276,15 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 16,
   },
+  button: {
+    top:3,
+    // padding: 10,
+    borderRadius: 5,
+    color:"#97d91c",
+    fontSize: 28
+ },
+ buttonm:{
+  color:"#97d91c",
+  fontSize: 28
+ }
 });
