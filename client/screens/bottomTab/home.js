@@ -22,8 +22,8 @@ import CardImg from "../../assets/HomePicture/CoverCard.jpg";
 import QuoteImg from "../../assets/HomePicture/QuoteImg.jpg";
 import CoachCover from "../../assets/HomePicture/coachCover.jpg";
 import GymCover from "../../assets/HomePicture/gymCover.jpg";
-
 import { useNavigation } from "@react-navigation/native";
+
 const Home = () => {
   const navigation = useNavigation();
   return (
