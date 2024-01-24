@@ -39,45 +39,79 @@ const STRIPE_KEY =
 export default function App() {
   return (
     <StripeProvider publishableKey={STRIPE_KEY}>
-    <NavigationContainer>
-      
-      <Stack.Navigator initialRouteName='getStarted'>
-        <Stack.Screen name="tabs" component={BottomTabScreens} options={{
-          headerShown: false
-        }
-        } />
-        <Stack.Screen name="editGymProfile" component={EditGymProfile} options={{
-          headerStyle: {
-            backgroundColor: 'black',
-            shadowColor: "#9AC61C",
-            borderBottomColor: 'black',
-            shadowOffset: {
-              width: 0,
-              height: 6,
-            },
-            shadowOpacity: 0.39,
-            shadowRadius: 8.30,
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="getStarted">
+          <Stack.Screen
+            name="tabs"
+            component={BottomTabScreens}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="editGymProfile"
+            component={EditGymProfile}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
 
-            elevation: 13,
-          },
-          headerTitleAlign: 'center',
-          headerTintColor: '#BEFF03',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          title: 'Edit Profile'
-        }} />
-        <Stack.Screen name='EditUserProfile' component={EditUserProfile} options={{
-          headerStyle: {
-            backgroundColor: 'black',
-            shadowColor: "#9AC61C",
-            borderBottomColor: 'black',
-            shadowOffset: {
-              width: 0,
-              height: 6,
-            },
-            shadowOpacity: 0.39,
-            shadowRadius: 8.30,
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#BEFF03",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              title: "Edit Profile",
+            }}
+          />
+          <Stack.Screen
+            name="EditUserProfile"
+            component={EditUserProfile}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#BEFF03",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              title: "Edit Profile",
+            }}
+          />
+          <Stack.Screen
+            name="EditCoachProfile"
+            component={EditCoachProfile}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
 
                 elevation: 13,
               },
