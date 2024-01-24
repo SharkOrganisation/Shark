@@ -30,6 +30,7 @@ import UserFollowing from "./screens/UserFollowing.js";
 import ChatScreen from "./screens/bottomTab/chatScreen.js";
 import AllCoaches from "./screens/AllCoaches.js";
 import AllGyms from "./screens/AllGyms.js";
+import CoachFollow from "./screens/CoachFollow.js";
 import GymDetails from "./screens/bottomTab/GymDetails.js";
 import JoinUs from "./screens/bottomTab/JoinUs.js";
 const Stack = createNativeStackNavigator();
@@ -38,6 +39,8 @@ const STRIPE_KEY =
 
 export default function App() {
   return (
+     
+   
     <StripeProvider publishableKey={STRIPE_KEY}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="getStarted">
@@ -201,6 +204,31 @@ export default function App() {
             }}
           />
           <Stack.Screen
+            name="CoachFollow"
+            component={CoachFollow}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#BEFF03",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              title: "Profile",
+            }}
+          />
+          <Stack.Screen
             name="Basket"
             component={Basket}
             options={{
@@ -317,7 +345,48 @@ export default function App() {
               headerTintColor: "#97d91c",
             }}
           />
+          <Stack.Screen
+            name="AllCoaches"
+            component={AllCoaches}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#97d91c",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
 
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#97d91c",
+            }}
+          />
+          <Stack.Screen
+            name="AllGyms"
+            component={AllGyms}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#97d91c",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#97d91c",
+            }}
+          />
           <Stack.Screen
             name="GymDetails"
             component={GymDetails}
@@ -346,16 +415,6 @@ export default function App() {
           <Stack.Screen
             name="Checkout"
             component={Checkout}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AllCoaches"
-            component={AllCoaches}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AllGyms"
-            component={AllGyms}
             options={{ headerShown: false }}
           />
           <Stack.Screen

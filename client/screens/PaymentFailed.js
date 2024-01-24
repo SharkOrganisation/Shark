@@ -10,8 +10,7 @@ const PaymentFailed = () => {
   const route=useRoute
   const { totalPrice } = route.params || {};
   return (
-    <LinearGradient
-    colors={['#97d91c', 'black']} 
+   <View
     style={styles.container}
   >
     <View >
@@ -37,7 +36,7 @@ const PaymentFailed = () => {
             <Text style={styles.btnText}>Failed</Text>
           </TouchableOpacity>
     </View>
-    </LinearGradient>
+    </View>
   );
 };
 

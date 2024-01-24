@@ -1,14 +1,12 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import React, { useState } from 'react'
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import FollowerComponent from '../Components/FollowerComponent';
-import FollowingComponent from '../Components/FollowingComponent';
-const Followers = () => {
+import CoachFollowing from '../Components/CoachProfile/CoachFollowing';
+import CoachFollowers from '../Components/CoachProfile/CoachFollowers';
+const CoachFollow = () => {
     const [follwersActive, setFollowersActive] = useState(true)
     const [followingActive, setFollowingActive] = useState(false)
     const [view, setView] = useState("followers")
 
-  
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.navbar}>
@@ -21,7 +19,7 @@ const Followers = () => {
                     <Text
                         style={[styles.navItemText, follwersActive ? { color: "#9AC61C", borderBottomColor: "#9AC61C", borderBottomWidth: 4 } : null]}
                     >
-                        Followers
+                        Following
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -31,31 +29,12 @@ const Followers = () => {
                         setView('following')
                     }}
                 >
-                    <Text style={[styles.navItemText, followingActive ? { color: "#9AC61C", borderBottomColor: "#9AC61C", borderBottomWidth: 4 } : null]}>Following</Text>
+                    <Text style={[styles.navItemText, followingActive ? { color: "#9AC61C", borderBottomColor: "#9AC61C", borderBottomWidth: 4 } : null]}>Followers</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search..."
-          placeholderTextColor={"gray"}
-        />
-        <TouchableOpacity
-          style={{
-            position: "absolute",
-            right: 15,
-            top: 7,
-          }}
-        >
-          <MaterialCommunityIcons
-            name="magnify"
-            size={30}
-            color={"#9AC61C"}
-          />
-        </TouchableOpacity>
-      </View>
-      {view === "followers" && <FollowerComponent  />}
-      {view === "following" && <FollowingComponent   />}
+
+            {view === "followers" && <CoachFollowers/>}
+            {view === "following" && <CoachFollowing/>}
         </SafeAreaView>
     )
 }
@@ -70,7 +49,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
     },
     navbar: {
-        gap:50,
         position: "absolute",
         top: 30,
         borderBottomColor: "white",
@@ -78,6 +56,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         width: "100%",
+        gap: 20,
     },
     navItemText: {
         color: 'white',
@@ -94,6 +73,7 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         backgroundColor: "transparent",
+        color: "white",
         borderColor: "#9AC61C",
         borderWidth: 2,
         paddingHorizontal: 10,
@@ -104,4 +84,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Followers
+export default CoachFollow
