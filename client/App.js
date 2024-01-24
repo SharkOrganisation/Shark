@@ -28,6 +28,8 @@ import Followers from './screens/Followers.js';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import UserFollowing from "./screens/UserFollowing.js"
 import ChatScreen from './screens/bottomTab/chatScreen.js';
+import AllCoaches from './screens/AllCoaches.js';
+import AllGyms from './screens/AllGyms.js';
 
 const Stack = createNativeStackNavigator();
 const STRIPE_KEY ="pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mwr7CLtbVvHMYdzCOnkIQ6qya6yh4dPte536bi00GBMIlpuI"
@@ -247,6 +249,8 @@ export default function App() {
         
         }} />
         <Stack.Screen name='Checkout' component={Checkout} options={{  headerShown: false  }} />
+        <Stack.Screen name='AllCoaches' component={AllCoaches} options={{  headerShown: false  }} />
+        <Stack.Screen name='AllGyms' component={AllGyms} options={{  headerShown: false  }} />
         <Stack.Screen name="CreateProgram" component={CreateProgram} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />

@@ -9,18 +9,35 @@ import {
   Alert,
   TextInput,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import Locations from "react-native-vector-icons/EvilIcons";
+import Search from "react-native-vector-icons/AntDesign";
 
-const AllCoaches = () => {
+const AllGyms = () => {
   const [coaches, setCoaches] = useState([]);
   const [search, setSearch] = useState("");
-  const [filteredCoaches, setFilteredCoaches] = useState([]);
   const [followingStates, setFollowingStates] = useState([]);
+  const [filteredCoaches, setFilteredCoaches] = useState([]);
+  const [showSearchInput, setShowSearchInput] = useState(false);
 
-  const getAllCoaches = async () => {
+  const handleSearchIconClick = () => {
+    setShowSearchInput((prevShowSearchInput) => !prevShowSearchInput);
+  };
+  //   const follow = async () => {
+  //     try {
+  //       await axios.post(
+  //         `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/followingGym/follow/${}/${}`
+  //       );
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  const getAllGyms = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/coach/getAll`
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/gym/getAllGyms`
       );
       setCoaches(response.data);
     } catch (error) {
@@ -29,7 +46,7 @@ const AllCoaches = () => {
   };
 
   useEffect(() => {
-    getAllCoaches();
+    getAllGyms();
   }, []);
 
   const handleSearch = (text) => {
@@ -37,8 +54,7 @@ const AllCoaches = () => {
     const filtered = coaches.filter(
       (coach) =>
         coach.fullname.toUpperCase().includes(text.toUpperCase()) ||
-        coach.speciality.toUpperCase().includes(text.toUpperCase()) ||
-        coach.perSession.toString().toUpperCase().includes(text.toUpperCase())
+        coach.region.toUpperCase().includes(text.toUpperCase())
     );
 
     setFilteredCoaches(filtered);
@@ -48,9 +64,15 @@ const AllCoaches = () => {
     if (search === "") {
       setFilteredCoaches(coaches);
     } else {
-      setFilteredCoaches(filteredCoaches);
+      setFilteredCoaches(
+        coaches.filter(
+          (coach) =>
+            coach.fullname.toUpperCase().includes(search.toUpperCase()) ||
+            coach.region.toUpperCase().includes(search.toUpperCase())
+        )
+      );
     }
-  }, [coaches, filteredCoaches, search]);
+  }, [coaches, search]);
 
   const handleFollowToggle = (index) => {
     const isCurrentlyFollowing = followingStates[index];
@@ -84,16 +106,34 @@ const AllCoaches = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search by name or by speciality or by price..."
-        placeholderTextColor={"gray"}
-        value={search}
-        onChangeText={handleSearch}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        {showSearchInput && (
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search by gym name or by location"
+            placeholderTextColor={"gray"}
+            value={search}
+            onChangeText={handleSearch}
+          />
+        )}
+        <TouchableOpacity onPress={handleSearchIconClick}>
+          <Search name="search1" size={30} top={40} position={"relative"} color={"#9AC61C"} />
+        </TouchableOpacity>
+      </View>
+
       {(search === "" ? coaches : filteredCoaches).length === 0 ? (
-        <Text style={styles.noGymText}>No coach found</Text>
+        <Text style={styles.noGymText}>No gym found !! try again with gym name or by region </Text>
       ) : (
+        // <View>
+        //   <View style={styles.logo}>
+        //     <Image
+        //       source={{
+        //         uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/1d6ac96ecf3ac7fe4d95439a91ba1bd0cb1e5ea6bdebd8f592a73845e134f838",
+        //       }}
+        //       style={styles.image1}
+        //     />
+        //   </View>
+        // </View>
         (search === "" ? coaches : filteredCoaches).map((coach, index) => (
           <View key={coach.id} style={styles.cardContainer}>
             <View style={styles.cardContent}>
@@ -103,14 +143,11 @@ const AllCoaches = () => {
               />
               <View>
                 <Text style={styles.followerName}>{coach.fullname}</Text>
-                <Text style={styles.gmailName}>{coach.email}</Text>
-                <Text style={styles.gmailName}>
-                  speciality:{coach.speciality}
-                </Text>
-                <Text style={styles.gmailName}>
-                  workin in:
-                  {coach.Gym?.fullname ? coach.Gym?.fullname : "no specified"}
-                </Text>
+                <Text style={styles.gmailName}>{coach.Email}</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Locations name="location" size={20}  color={"#9AC61C"} />
+                  <Text style={styles.gmailName}>{coach.location}</Text>
+                </View>
               </View>
             </View>
             <TouchableOpacity
@@ -144,8 +181,30 @@ const styles = StyleSheet.create({
     marginRight: 10,
     height: 40,
     color: "white",
+    position:"relative",
+    width: 300,
     top: 40,
   },
+  noGymText: {
+    color: "#9AC61C",
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 30,
+    marginTop: 120,
+  },
+  //   image1: {
+  //     width: 500,
+  //     // borderColor:"red",
+  //     borderWidth:2,
+  //     aspectRatio: "1.7",
+  //   },
+  //   logo: {
+  //     alignItems: "center",
+  //     marginTop: "15%",
+  //     marginBottom: "9%",
+  //     borderRadius: 200,
+  //   },
+
   cardContainer: {
     width: "100%",
     flexDirection: "row",
@@ -153,7 +212,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomColor: "#9AC61C",
     borderBottomWidth: 10,
-    paddingBottom: 5,
+    paddingBottom: 10,
     borderRadius: 30,
     borderColor: "gray",
     borderWidth: 0.5,
@@ -167,20 +226,21 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   followerPic: {
-    height: 70,
-    width: 70,
-    borderRadius: 100,
+    height: 60,
+    width: 60,
+    borderRadius: 90,
   },
   followerName: {
     color: "white",
-    fontWeight: "400",
+    fontWeight: "bold",
     fontSize: 18,
   },
   gmailName: {
     color: "gray",
-    fontWeight: "400",
+    fontWeight: "200",
     fontSize: 16,
-    width: 155,
+    width: 150,
+    fontWeight: "400",
   },
   unfollowBtn: {
     borderColor: "#9AC61C",
@@ -197,4 +257,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllCoaches;
+export default AllGyms;
