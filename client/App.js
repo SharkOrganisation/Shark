@@ -31,6 +31,8 @@ import ChatScreen from "./screens/bottomTab/chatScreen.js";
 import AllCoaches from "./screens/AllCoaches.js";
 import AllGyms from "./screens/AllGyms.js";
 import CoachFollow from "./screens/CoachFollow.js";
+import GymDetails from "./screens/bottomTab/GymDetails.js";
+import JoinUs from "./screens/bottomTab/JoinUs.js";
 const Stack = createNativeStackNavigator();
 const STRIPE_KEY =
   "pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mwr7CLtbVvHMYdzCOnkIQ6qya6yh4dPte536bi00GBMIlpuI";
@@ -123,6 +125,31 @@ export default function App() {
             }}
           />
           <Stack.Screen
+            name="JoinUs"
+            component={JoinUs}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#BEFF03",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              title: "Membership",
+            }}
+          />
+          <Stack.Screen
             name="follower"
             component={Followers}
             options={{
@@ -186,7 +213,6 @@ export default function App() {
                   width: 0,
                   height: 6,
                 },
-
                 shadowOpacity: 0.39,
                 shadowRadius: 8.3,
 
@@ -357,6 +383,31 @@ export default function App() {
               },
               headerTitleAlign: "center",
               headerTintColor: "#97d91c",
+            }}
+          />
+          <Stack.Screen
+            name="GymDetails"
+            component={GymDetails}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#BEFF03",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              title: "Profile",
             }}
           />
           <Stack.Screen

@@ -47,12 +47,14 @@ export const deleteComments = async (req: Request, res: Response) => {
 };
 
 export const createComments = async (req: Request, res: Response) => {
-  const { content, likes } = req.body;
+  const { content,postId,userId} = req.body;
   try {
     const prod = await prisma.comment.create({
       data: {
         content,
         likes: 0,
+        postId:+postId,
+        userId
       },
     });
     res.json(prod);

@@ -3,32 +3,47 @@ import { View, Text, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, Touc
 import { FIREBASE_AUTH } from '../firebase'
 import {signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native';
+import AlertMessage from '../Components/AlertMessage';
+import { ipAddress } from '../ipConfig';
 
 const Login = ({ route }) => {
-    const { role } = route.params
-    const auth = FIREBASE_AUTH
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const navigation = useNavigation()
+    const { role } = route.params;
+    const auth = FIREBASE_AUTH;
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigation = useNavigation();
+    const [isAlertVisible, setAlertVisible] = useState(false);
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
+    const [gym,setGym] = useState()
+
     const signIn = async () => {
-        
+
+
+
+
         try {
-            const response = await signInWithEmailAndPassword(auth,email, password)
+            const response = await signInWithEmailAndPassword(auth, email, password);
             // console.log(response);
-            alert('user logged in successfully')
+            setAlertTitle('Success');
+            setAlertMessage('User logged in successfully');
+            setAlertVisible(true);
             // navigation.navigate('Allproducts',{role})
-            navigation.navigate('tabs',{role})
+            navigation.navigate('tabs', { role });
         } catch (error) {
-            console.log(error.code )
+            console.log(error.code);
             if (error.code === 'auth/invalid-credential') {
-                Alert.alert('Wrong Credetntials', 'Please Check Your Credentials !');
-            }else if(error.code === 'auth/invalid-email'){
-                Alert.alert('Invalide Email', 'Please Check your email');
+                setAlertTitle('Wrong Credentials');
+                setAlertMessage('Please Check Your Credentials!');
+            } else if (error.code === 'auth/invalid-email') {
+                setAlertTitle('Invalid Email');
+                setAlertMessage('Please Check your email');
             } else {
                 console.log(error.message);
             }
+            setAlertVisible(true);
         }
-    }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -79,6 +94,13 @@ const Login = ({ route }) => {
                 <Text style={{ fontWeight: 'bold' }}>LOGIN</Text>
             </TouchableOpacity>
             <Text style={{ marginTop: '20%', color: "#BEFF03" }} >© GYMSHARK COMMUNITY</Text>
+
+            <AlertMessage
+                modalVisible={isAlertVisible}
+                setModalVisible={setAlertVisible}
+                title={alertTitle}
+                message={alertMessage}
+            />
 
         </SafeAreaView>
     )
