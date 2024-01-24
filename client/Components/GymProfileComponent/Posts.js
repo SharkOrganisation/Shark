@@ -14,31 +14,82 @@ import SaveIcon from "react-native-vector-icons/Fontisto";
 import ShareIcon from "react-native-vector-icons/SimpleLineIcons";
 import CloseIcon from "react-native-vector-icons/AntDesign";
 import SendIcon from "react-native-vector-icons/Ionicons";
-import { ipAddress } from '../../ipConfig.js';
-import axios from 'axios';
+import { ipAddress } from "../../ipConfig.js";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { FIREBASE_AUTH } from "../../firebase.js";
 
 const Posts = ({ data }) => {
+  const currentUser = FIREBASE_AUTH.currentUser;
+  console.log(currentUser,':id')
   const [heartActive, setHeartActive] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [saved,SetSaved]=useState(false)
+  const [likes, setLikes] = useState({});
 
   const getPost = async () => {
     try {
-      const response = await axios.get(`http://${ipAddress}:3000/api/posts/Gymposts/${data.id}`);
+      const response = await axios.get(
+        `http://${ipAddress}:3000/api/posts/Gymposts/${data.id}`
+      );
       setPosts(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (err) {
-      <Text>Try Later</Text>
+      <Text>Try Later</Text>;
     }
+  };
+  
+const savedPost=async(postId)=>{
+  try{
+    await axios.post(`http://${ipAddress}:3000/api/savedPost/save/${postId}/${currentUser.uid}`)
+    console.log('added')
+  }catch(err){
+    console.log(err)
   }
+}
+
+const Unsaved=async(postId)=>{
+  try{
+    await axios.delete(`http://${ipAddress}:3000/api/savedPost/${currentUser.uid}/${postId}`)
+  }catch(err){
+    console.log(err)
+  }
+} 
+const toggleLike = (postId) => {
+  setLikes((prevLikes) => ({
+    ...prevLikes,
+    [postId]: !prevLikes[postId],
+  }));
+};
+const toggleSave = async (postId) => {
+  if (saved[postId]) {
+     try {
+       await Unsaved(postId);
+       SetSaved((prevSave) => ({
+         ...prevSave,
+         [postId]: false,
+       }));
+     } catch (err) {
+       console.error("An error occurred while removing the post", err);
+     }
+  } else {
+     try {
+       await savedPost(postId);
+       SetSaved((prevSave) => ({
+         ...prevSave,
+         [postId]: true,
+       }));
+     } catch (err) {
+       console.error("An error occurred while saving the post", err);
+     }
+  }
+ };
 
   useEffect(() => {
-    getPost()
-
+    getPost();
   }, []);
-
-
+  
   return (
     <View style={styles.container}>
       {posts.map((post) => {
@@ -54,7 +105,11 @@ const Posts = ({ data }) => {
                 />
                 <Text style={styles.profileName}>{data.fullname}</Text>
               </View>
-              <Icon name="options-vertical" size={20} style={{ color: "white" }} />
+              <Icon
+                name="options-vertical"
+                size={20}
+                style={{ color: "white" }}
+                />
             </View>
             <Image
               source={{
@@ -63,22 +118,20 @@ const Posts = ({ data }) => {
               style={styles.postImage}
             />
             <View style={styles.postContent}>
-              <Text style={styles.postText}>
-                {post.content}
-              </Text>
-
+              <Text style={styles.postText}>{post.content}</Text>
             </View>
 
             <View style={styles.iconsContainer}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 18 }}>
-                <HeartIcon
-                  onPress={() => {
-                    setHeartActive(!heartActive);
-                  }}
-                  name="hearto"
-                  size={24}
-                  style={{ color: heartActive ? "#9AC61C" : "white" }}
-                />
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 18 }}
+              >
+<HeartIcon
+              onPress={() => toggleLike(post.id)}
+              name="hearto"
+              size={24}
+              style={{ color: likes[post.id] ? "#9AC61C" : "white" }}
+            />
+
                 <CommentIcon
                   name="comment-o"
                   size={26}
@@ -111,10 +164,8 @@ const Posts = ({ data }) => {
                     </View>
                   </View>
                   <View style={styles.commentsContainer}>
-                    {post.comments.map(comment => {
-                      console.log('====================================');
-                      // console.log(comment);
-                      console.log('====================================');
+                    {post.comments.map((comment) => {
+                      
                       return (
                         <View style={styles.commentContainer}>
                           <View style={styles.commentProfile}>
@@ -139,9 +190,8 @@ const Posts = ({ data }) => {
                             style={{ color: heartActive ? "#9AC61C" : "white" }}
                           />
                         </View>
-                      )
+                      );
                     })}
-
                   </View>
                   <View style={styles.commentInputContainer}>
                     <Image
@@ -167,12 +217,14 @@ const Posts = ({ data }) => {
                     />
                   </View>
                 </Modal>
-                <ShareIcon name="share" size={22} style={{ color: "white" }} />
+                <ShareIcon 
+                name="share" size={22} style={{ color: "white" }} />
               </View>
-              <SaveIcon name="favorite" size={24} style={{ color: "white" }} />
+               <SaveIcon name="bookmark" size={24}     style={{ color: saved[post.id] ? "#9AC61C" : "white" }} onPress={()=>toggleSave(post.id)} />
+              
             </View>
           </View>
-        )
+        );
       })}
     </View>
   );

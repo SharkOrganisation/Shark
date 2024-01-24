@@ -24,12 +24,17 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const addSave = async (req: Request, res: Response): Promise<void> => {
-  const { userId, postId } = req.body;
+  const { userId, postId } = req.params;
   try {
-    let newSave = await prisma.savedPost.create({
-      data: { userId, postId: Number(postId) },
-    });
-    res.status(200).send("Post Saved successfully");
+    let getSave=await prisma.savedPost.findMany({where:{userId:userId,postId:+postId}})
+    if(getSave.length===0){
+      let newSave = await prisma.savedPost.create({
+        data: { userId, postId: +postId },
+      });
+      res.status(200).send("Post Saved successfully");
+    }else{
+      res.status(201).send("this post exist")
+    }
   } catch (err) {
     res.status(400).send(err);
   }

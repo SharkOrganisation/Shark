@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Previous from "react-native-vector-icons/AntDesign";
@@ -22,18 +23,18 @@ import CardImg from "../../assets/HomePicture/CoverCard.jpg";
 import QuoteImg from "../../assets/HomePicture/QuoteImg.jpg";
 import CoachCover from "../../assets/HomePicture/coachCover.jpg";
 import GymCover from "../../assets/HomePicture/gymCover.jpg";
+import { FIREBASE_AUTH } from "../../firebase";
 import { ipAddress } from "../../ipConfig.js";
 import axios from "axios";
 
-import { useNavigation } from "@react-navigation/native";
-const Home = () => {
+const Home = ({ navigation }) => {
   const [allpPoducts, setAllProducts] = useState([]);
   const [allPlans, setAllPlans] = useState([]);
   const [coachs, setCoachs] = useState([]);
   const [gyms, setGyms] = useState([]);
-  const [followGym, setFollowGym] = useState(false);
-  const [followCoach, setFollowCoach] = useState(false);
-
+  const [followGym, setFollowGym] = useState([]);
+  const [followCoach, setFollowCoach] = useState([]);
+  const currentUser = FIREBASE_AUTH.currentUser;
   const getProducts = async () => {
     try {
       const products = await axios.get(
@@ -58,7 +59,6 @@ const Home = () => {
 
   const getCoachs = async () => {
     try {
-
       const allCoachs = await axios.get(
         `http://${ipAddress}:3000/api/coach/getAll`
       );
@@ -79,15 +79,88 @@ const Home = () => {
     }
   };
 
+  const newFollow = async (idGym) => {
+    try {
+      await axios.post(
+        `http://${ipAddress}:3000/api/followingGym/follow/${idGym}/${currentUser.uid}`
+      );
+    } catch {
+      alert("Try Again");
+    }
+  };
+
+  const removeFollow=async(idGym)=>{
+    try{
+        await axios.delete(`http://${ipAddress}:3000/api/followingGym/remove/${idGym}/${currentUser.uid}`)
+    }catch(err){
+        alert("try later")
+    }
+  };
   useEffect(() => {
     getProducts();
     getPlans();
     getCoachs();
     getGyms();
   }, []);
-  console.log();
+  const handleFollowCoach = (index) => {
+    const isCurrentlyFollowing = followCoach[index];
 
-  const navigation = useNavigation();
+    if (isCurrentlyFollowing) {
+      Alert.alert(
+        "Unfollow",
+        "Are you sure you want to unfollow?",
+        [
+          {
+            text: "No",
+            style: "cancel",
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              const updatedFollowingStates = [...followCoach];
+              updatedFollowingStates[index] = !isCurrentlyFollowing;
+              setFollowCoach(updatedFollowingStates);
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      const updatedFollowingStates = [...followCoach];
+      updatedFollowingStates[index] = !isCurrentlyFollowing;
+      setFollowCoach(updatedFollowingStates);
+    }
+  };
+  const handleFollowToggle = (index) => {
+    const isCurrentlyFollowing = followGym[index];
+
+    if (isCurrentlyFollowing) {
+      Alert.alert(
+        "Unfollow",
+        "Are you sure you want to unfollow?",
+        [
+          {
+            text: "No",
+            style: "cancel",
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              const updatedFollowingStates = [...followGym];
+              updatedFollowingStates[index] = !isCurrentlyFollowing;
+              setFollowGym(updatedFollowingStates);
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      const updatedFollowingStates = [...followGym];
+      updatedFollowingStates[index] = !isCurrentlyFollowing;
+      setFollowGym(updatedFollowingStates);
+    }
+  };
+
   return (
     <ScrollView style={styles.homeContainer}>
       <View style={styles.landingPage}>
@@ -211,38 +284,54 @@ const Home = () => {
           </View>
         </View>
 
-        <View  style={{
-            flexDirection: "row",
-            alignItems: "",
-            justifyContent:"space-between",
-            alignItems:"center",
-            margin: 10,
-          }}>
         <View
           style={{
             flexDirection: "row",
-            gap: 5,
+            alignItems: "",
+            justifyContent: "space-between",
             alignItems: "center",
             margin: 10,
           }}
         >
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-            Our Coaches
-          </Text>
-          <CoachIcon
-            name="sports-kabaddi"
-            style={{ color: "#85B202", fontSize: 18, fontWeight: "bold" }}
-          />
-        </View>
-          <TouchableOpacity style={{flexDirection:"row", justifyContent:"center",alignItems:"center"}}>
-            <Text style={{color:"white",textDecorationLine:"underline",textDecorationColor:"#85B202"}}>See All</Text>
-            <Begin name="doubleright" color={"#85B202"}/>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 5,
+              alignItems: "center",
+              margin: 10,
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+              Our Coaches
+            </Text>
+            <CoachIcon
+              name="sports-kabaddi"
+              style={{ color: "#85B202", fontSize: 18, fontWeight: "bold" }}
+            />
+          </View>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={() => navigation.navigate("AllCoaches")}
+          >
+            <Text
+              style={{
+                color: "white",
+                textDecorationLine: "underline",
+                textDecorationColor: "#85B202",
+              }}
+            >
+              See All
+            </Text>
+            <Begin name="doubleright" color={"#85B202"} />
           </TouchableOpacity>
-
         </View>
 
         <ScrollView horizontal style={styles.coachProfileCardsContainer}>
-          {coachs.map((coach) => {
+          {coachs.map((coach, index) => {
             return (
               <View style={styles.profileCard} key={coach.id}>
                 <Image
@@ -274,56 +363,61 @@ const Home = () => {
                     </View>
                   </View>
                 </TouchableOpacity>
-                {!followCoach && (
-                  <TouchableOpacity
-                    style={styles.followBtn}
-                    onPress={() => {
-                      setFollowCoach(true);
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500" }}>FOLLOW +</Text>
-                  </TouchableOpacity>
-                )}
-                {followCoach && (
-                  <TouchableOpacity
-                    style={styles.EditFollowBtn}
-                    onPress={() => {
-                      setFollowCoach(false);
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500" }}>UNFOLLOW </Text>
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                  style={styles.followBtn}
+                  onPress={() => handleFollowCoach(index)}
+                >
+                  <Text style={{ fontWeight: "500" }}>
+                    {followCoach[index] ? "Following" : "FOLLOW +"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             );
           })}
         </ScrollView>
-        <View  style={{
-            flexDirection: "row",
-            alignItems: "",
-            justifyContent:"space-between",
-            alignItems:"center",
-            margin: 10,
-          }}>
         <View
           style={{
             flexDirection: "row",
-            gap: 5,
+            alignItems: "",
+            justifyContent: "space-between",
             alignItems: "center",
             margin: 10,
           }}
         >
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-            Our Gyms
-          </Text>
-          <CoachIcon
-            name="sports-kabaddi"
-            style={{ color: "#85B202", fontSize: 18, fontWeight: "bold" }}
-          />
-        </View>
-        <TouchableOpacity style={{flexDirection:"row", justifyContent:"center",alignItems:"center"}}>
-            <Text style={{color:"white",textDecorationLine:"underline",textDecorationColor:"#85B202"}}>See All</Text>
-            <Begin name="doubleright" color={"#85B202"}/>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 5,
+              alignItems: "center",
+              margin: 10,
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+              Our Gyms
+            </Text>
+            <CoachIcon
+              name="sports-kabaddi"
+              style={{ color: "#85B202", fontSize: 18, fontWeight: "bold" }}
+            />
+          </View>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={() => navigation.navigate("AllGyms")}
+          >
+            <Text
+              style={{
+                color: "white",
+                textDecorationLine: "underline",
+                textDecorationColor: "#85B202",
+              }}
+            >
+              See All
+            </Text>
+            <Begin name="doubleright" color={"#85B202"} />
           </TouchableOpacity>
         </View>
 
@@ -331,7 +425,7 @@ const Home = () => {
           horizontal
           style={[styles.coachProfileCardsContainer, { marginBottom: 100 }]}
         >
-          {gyms.map((gym) => {
+          {gyms.map((gym, index) => {
             return (
               <View style={styles.profileCard} key={gym.id}>
                 <Image
@@ -346,7 +440,12 @@ const Home = () => {
                   }}
                   style={styles.coachProfilePic}
                 />
-                <TouchableOpacity style={styles.coachProfileInfo}>
+                <TouchableOpacity
+                  style={styles.coachProfileInfo}
+                  onPress={() => {
+                    navigation.navigate("GymDetails", { gymId: gym.id });
+                  }}
+                >
                   <Text style={styles.coachName}>{gym.fullname}</Text>
                   <View style={styles.otherInfoContainer}>
                     <View>
@@ -361,26 +460,14 @@ const Home = () => {
                     </View>
                   </View>
                 </TouchableOpacity>
-                {!followGym && (
-                  <TouchableOpacity
-                    style={styles.followBtn}
-                    onPress={() => {
-                      setFollowGym(true);
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500" }}>FOLLOW +</Text>
-                  </TouchableOpacity>
-                )}
-                {followGym && (
-                  <TouchableOpacity
-                    style={styles.EditFollowBtn}
-                    onPress={() => {
-                      setFollowGym(false);
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500" }}>UNFOLLOW</Text>
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                  style={styles.followBtn}
+                  onPress={(() => handleFollowToggle(index))}
+                >
+                  <Text style={{ fontWeight: "500" }}>
+                    {followGym[index] ? "Following" : "FOLLOW +" }
+                  </Text>
+                </TouchableOpacity>
               </View>
             );
           })}
