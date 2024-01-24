@@ -1,44 +1,105 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity,Alert } from "react-native";
+import React, { useEffect, useState } from "react";
 import { ScrollView } from "@gluestack-ui/themed";
 import Check from "react-native-vector-icons/AntDesign";
 import Hand from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase.js";
 import { ipAddress } from "../../ipConfig.js";
-const JoinUs = ({route}) => {
+import { usePaymentSheet, useStripe } from "@stripe/stripe-react-native";
+
+const JoinUs = ({ route }) => {
   const [month, setMonth] = useState(true);
   const [monthly, setMonthly] = useState(false);
   const [yearly, setYearly] = useState(false);
   const [price, setPrice] = useState("80");
   const [membershipDays, setMembershipDays] = useState(30);
   const [memberType, setMemberType] = useState("1 Month");
+  const [loading, setLoading] = useState(false);
   const currentUser = FIREBASE_AUTH.currentUser;
   const { gymId } = route.params;
-console.log(gymId,"gymId");
- 
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
-const newMember = async () => {
-  try {
-    const response = await axios.post(`http://${ipAddress}:3000/api/memberShip/post/`, {
-      type: memberType,
-      price: +price,
-      userId: currentUser.uid,
-      gymId: gymId,
+  const newMember = async () => {
+
+    try {
+      const response = await axios.post(
+        `http://${ipAddress}:3000/api/memberShip/post/`,
+        {
+          type: memberType,
+          price: +price,
+          userId: currentUser.uid,
+          gymId: gymId,
+        }
+      );
+
+      console.log(response.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const fetchPaymentSheetParams = async () => {
+    const response = await fetch(
+      `http://${ipAddress}:3000/api/payment/create-payment-intent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: +price * 100,
+        }),
+      }
+    );
+    const { paymentIntent, ephemeralKey, customer } = await response.json();
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  };
+
+  const initializePaymentSheet = async () => {
+    const { paymentIntent, ephemeralKey, customer, publishableKey } =
+      await fetchPaymentSheetParams();
+
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: "Example, Inc.",
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: "Gymshark",
+      },
     });
+    if (!error) {
+      setLoading(true);
+    }
+  };
 
-    console.log(response.data);
-  } catch (err) {
-    console.error(err.message);
-  }
-};
+  const openPaymentSheet = async () => {
+    const { error } = await presentPaymentSheet();
 
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      newMember();
+      Alert.alert('Success', 'Your order is confirmed!');
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, [price]);
   return (
     <ScrollView style={styles.container}>
       <View
         style={{
           justifyContent: "center",
-          alignSelf: "center",      
+          alignSelf: "center",
           marginTop: "12%",
         }}
       >
@@ -66,7 +127,7 @@ const newMember = async () => {
             setYearly(false);
             setPrice("85");
             setMembershipDays(30);
-            setMemberType("1 Month")
+            setMemberType("1 Month");
           }}
           style={month ? styles.editType : styles.typeTitle}
         >
@@ -81,8 +142,7 @@ const newMember = async () => {
             setYearly(false);
             setPrice("480");
             setMembershipDays(180);
-            setMemberType("6 Months")
-
+            setMemberType("6 Months");
           }}
         >
           <Text style={monthly ? styles.editText : styles.type}>6 Month</Text>
@@ -96,8 +156,7 @@ const newMember = async () => {
             setYearly(true);
             setPrice("890");
             setMembershipDays(365);
-            setMemberType("1 Year")
-
+            setMemberType("1 Year");
           }}
         >
           <Text style={yearly ? styles.editText : styles.type}> 1 Year </Text>
@@ -124,7 +183,13 @@ const newMember = async () => {
           <Check name="checkcircleo" style={styles.CheckIcon} />
           <Text style={styles.textCheck}>Get extra cashback</Text>
         </View>
-        <TouchableOpacity style={styles.joinContainer} onPress={()=>{newMember()}}>
+        <TouchableOpacity
+          style={styles.joinContainer}
+          onPress={() => {
+            openPaymentSheet();
+          }}
+          
+        >
           <Text style={styles.joinText}>BUY FOR {price} $</Text>
         </TouchableOpacity>
         <View style={styles.JoinUs}>

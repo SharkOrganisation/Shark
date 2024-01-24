@@ -42,13 +42,20 @@ export const getoneMemberbyGymId = async (req: Request, res: Response) => {
       where: {
         gymId,
       },
-      include: {
+      select: {
         user: {
           select: {
             fullname: true,
             pfImage: true,
           },
         },
+        Gym:{
+          select:{
+            fullname:true,
+            pfImage:true,
+            location:true,
+          }
+        }
       },
     });
     res.json(member);

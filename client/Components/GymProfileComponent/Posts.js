@@ -21,75 +21,93 @@ import { FIREBASE_AUTH } from "../../firebase.js";
 
 const Posts = ({ data }) => {
   const currentUser = FIREBASE_AUTH.currentUser;
-  console.log(currentUser,':id')
   const [heartActive, setHeartActive] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [saved,SetSaved]=useState(false)
+  const [saved, SetSaved] = useState(false);
   const [likes, setLikes] = useState({});
+  const [commentText, setCommentText] = useState("");
+  const [padrino, setPadrino] = useState(false);
 
   const getPost = async () => {
     try {
       const response = await axios.get(
         `http://${ipAddress}:3000/api/posts/Gymposts/${data.id}`
       );
-      setPosts(response.data);
-      console.log(response.data);
+      setPosts(response.data.reverse());
+      setPadrino(!padrino)
     } catch (err) {
       <Text>Try Later</Text>;
     }
   };
-  
-const savedPost=async(postId)=>{
-  try{
-    await axios.post(`http://${ipAddress}:3000/api/savedPost/save/${postId}/${currentUser.uid}`)
-    console.log('added')
-  }catch(err){
-    console.log(err)
-  }
-}
 
-const Unsaved=async(postId)=>{
-  try{
-    await axios.delete(`http://${ipAddress}:3000/api/savedPost/${currentUser.uid}/${postId}`)
-  }catch(err){
-    console.log(err)
-  }
-} 
-const toggleLike = (postId) => {
-  setLikes((prevLikes) => ({
-    ...prevLikes,
-    [postId]: !prevLikes[postId],
-  }));
-};
-const toggleSave = async (postId) => {
-  if (saved[postId]) {
-     try {
-       await Unsaved(postId);
-       SetSaved((prevSave) => ({
-         ...prevSave,
-         [postId]: false,
-       }));
-     } catch (err) {
-       console.error("An error occurred while removing the post", err);
-     }
-  } else {
-     try {
-       await savedPost(postId);
-       SetSaved((prevSave) => ({
-         ...prevSave,
-         [postId]: true,
-       }));
-     } catch (err) {
-       console.error("An error occurred while saving the post", err);
-     }
-  }
- };
+  const savedPost = async (postId) => {
+    try {
+      await axios.post(
+        `http://${ipAddress}:3000/api/savedPost/save/${postId}/${currentUser.uid}`
+      );
+      console.log("added");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const Unsaved = async (postId) => {
+    try {
+      await axios.delete(
+        `http://${ipAddress}:3000/api/savedPost/${currentUser.uid}/${postId}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const toggleLike = (postId) => {
+    setLikes((prevLikes) => ({
+      ...prevLikes,
+      [postId]: !prevLikes[postId],
+    }));
+  };
+  const toggleSave = async (postId) => {
+    if (saved[postId]) {
+      try {
+        await Unsaved(postId);
+        SetSaved((prevSave) => ({
+          ...prevSave,
+          [postId]: false,
+        }));
+      } catch (err) {
+        console.error("An error occurred while removing the post", err);
+      }
+    } else {
+      try {
+        await savedPost(postId);
+        SetSaved((prevSave) => ({
+          ...prevSave,
+          [postId]: true,
+        }));
+      } catch (err) {
+        console.error("An error occurred while saving the post", err);
+      }
+    }
+  };
+
+  const addComment = async (postId) => {
+    try {
+      await axios.post(`http://${ipAddress}:3000/api/comments/post`, {
+        content: commentText,
+        userId: currentUser.uid,
+        postId,
+      });
+      setPadrino(!padrino);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getPost();
-  }, []);
-  
+  }, [padrino]);
+
   return (
     <View style={styles.container}>
       {posts.map((post) => {
@@ -109,7 +127,7 @@ const toggleSave = async (postId) => {
                 name="options-vertical"
                 size={20}
                 style={{ color: "white" }}
-                />
+              />
             </View>
             <Image
               source={{
@@ -125,12 +143,12 @@ const toggleSave = async (postId) => {
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 18 }}
               >
-<HeartIcon
-              onPress={() => toggleLike(post.id)}
-              name="hearto"
-              size={24}
-              style={{ color: likes[post.id] ? "#9AC61C" : "white" }}
-            />
+                <HeartIcon
+                  onPress={() => toggleLike(post.id)}
+                  name="hearto"
+                  size={24}
+                  style={{ color: likes[post.id] ? "#9AC61C" : "white" }}
+                />
 
                 <CommentIcon
                   name="comment-o"
@@ -165,7 +183,6 @@ const toggleSave = async (postId) => {
                   </View>
                   <View style={styles.commentsContainer}>
                     {post.comments.map((comment) => {
-                      
                       return (
                         <View style={styles.commentContainer}>
                           <View style={styles.commentProfile}>
@@ -204,8 +221,12 @@ const toggleSave = async (postId) => {
                       placeholder="Add a comment"
                       placeholderTextColor={"gray"}
                       style={styles.commentInput}
+                      onChangeText={(text) => setCommentText(text)}
                     />
                     <SendIcon
+                      onPress={() => {
+                        addComment(post.id);
+                      }}
                       name="send"
                       size={24}
                       style={{
@@ -217,11 +238,14 @@ const toggleSave = async (postId) => {
                     />
                   </View>
                 </Modal>
-                <ShareIcon 
-                name="share" size={22} style={{ color: "white" }} />
+                <ShareIcon name="share" size={22} style={{ color: "white" }} />
               </View>
-               <SaveIcon name="bookmark" size={24}     style={{ color: saved[post.id] ? "#9AC61C" : "white" }} onPress={()=>toggleSave(post.id)} />
-              
+              <SaveIcon
+                name="bookmark"
+                size={24}
+                style={{ color: saved[post.id] ? "#9AC61C" : "white" }}
+                onPress={() => toggleSave(post.id)}
+              />
             </View>
           </View>
         );

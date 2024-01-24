@@ -4,6 +4,7 @@ import { FIREBASE_AUTH } from '../firebase'
 import {signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native';
 import AlertMessage from '../Components/AlertMessage';
+import { ipAddress } from '../ipConfig';
 
 const Login = ({ route }) => {
     const { role } = route.params;
@@ -14,8 +15,13 @@ const Login = ({ route }) => {
     const [isAlertVisible, setAlertVisible] = useState(false);
     const [alertTitle, setAlertTitle] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
+    const [gym,setGym] = useState()
 
     const signIn = async () => {
+
+
+
+
         try {
             const response = await signInWithEmailAndPassword(auth, email, password);
             // console.log(response);

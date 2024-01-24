@@ -9,6 +9,7 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Previous from "react-native-vector-icons/AntDesign";
@@ -25,16 +26,35 @@ import CoachCover from "../../assets/HomePicture/coachCover.jpg";
 import GymCover from "../../assets/HomePicture/gymCover.jpg";
 import { FIREBASE_AUTH } from "../../firebase";
 import { ipAddress } from "../../ipConfig.js";
+import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 
 const Home = ({ navigation }) => {
+  // console.log(
+  //   Dimensions.get("screen").height,
+  //   "555555555555555555555555555555555555555"
+  // );
   const [allpPoducts, setAllProducts] = useState([]);
   const [allPlans, setAllPlans] = useState([]);
   const [coachs, setCoachs] = useState([]);
   const [gyms, setGyms] = useState([]);
   const [followGym, setFollowGym] = useState([]);
   const [followCoach, setFollowCoach] = useState([]);
+  const [userData, setUserData] = useState([]);
   const currentUser = FIREBASE_AUTH.currentUser;
+  console.log(currentUser.uid);
+  
+  const getCurrentUserData = async () => {
+    try {
+      const user = await axios.get(
+        `http://${ipAddress}:3000/api/user/getOne/${currentUser.uid}`
+      );
+      setUserData(user.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getProducts = async () => {
     try {
       const products = await axios.get(
@@ -69,10 +89,12 @@ const Home = ({ navigation }) => {
   };
 
   const getGyms = async () => {
+    const region = userData.region || '';
     try {
       const allGyms = await axios.get(
-        `http://${ipAddress}:3000/api/gym/getAllGyms`
+        `http://${ipAddress}:3000/api/gym/getAllGyms?region=${region}`
       );
+
       setGyms(allGyms.data);
     } catch (err) {
       <Text> Try Again </Text>;
@@ -89,19 +111,15 @@ const Home = ({ navigation }) => {
     }
   };
 
-  const removeFollow=async(idGym)=>{
-    try{
-        await axios.delete(`http://${ipAddress}:3000/api/followingGym/remove/${idGym}/${currentUser.uid}`)
-    }catch(err){
-        alert("try later")
+  const removeFollow = async (idGym) => {
+    try {
+      await axios.delete(
+        `http://${ipAddress}:3000/api/followingGym/remove/${idGym}/${currentUser.uid}`
+      );
+    } catch (err) {
+      alert("try later");
     }
   };
-  useEffect(() => {
-    getProducts();
-    getPlans();
-    getCoachs();
-    getGyms();
-  }, []);
   const handleFollowCoach = (index) => {
     const isCurrentlyFollowing = followCoach[index];
 
@@ -161,8 +179,26 @@ const Home = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    getCurrentUserData();
+    getProducts();
+    getPlans();
+    getCoachs();
+    getGyms();
+  }, []);
+
   return (
-    <ScrollView style={styles.homeContainer}>
+    <ScrollView
+      style={styles.homeContainer}
+      onScroll={(e) => {
+        if (
+          e.nativeEvent.contentOffset.y >
+          0.95 * Dimensions.get("screen").height
+        ) {
+          getGyms();
+        }
+      }}
+    >
       <View style={styles.landingPage}>
         <View style={styles.headerContainer}>
           <ImageBackground source={CardImg} style={styles.Headercard}>
@@ -217,7 +253,7 @@ const Home = ({ navigation }) => {
               />
             </Text>
           </View>
-          <ScrollView horizontal style={styles.productsCardsContainer}>
+          <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.productsCardsContainer}>
             {allpPoducts.map((product) => {
               return (
                 <View style={styles.productCard} key={product.id}>
@@ -330,7 +366,7 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <ScrollView horizontal style={styles.coachProfileCardsContainer}>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.coachProfileCardsContainer}>
           {coachs.map((coach, index) => {
             return (
               <View style={styles.profileCard} key={coach.id}>
@@ -393,7 +429,7 @@ const Home = ({ navigation }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-              Our Gyms
+              Gyms Near You
             </Text>
             <CoachIcon
               name="sports-kabaddi"
@@ -421,7 +457,8 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <ScrollView
+        <ScrollView 
+        showsHorizontalScrollIndicator={false}
           horizontal
           style={[styles.coachProfileCardsContainer, { marginBottom: 100 }]}
         >
@@ -462,10 +499,10 @@ const Home = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.followBtn}
-                  onPress={(() => handleFollowToggle(index))}
+                  onPress={() => handleFollowToggle(index)}
                 >
                   <Text style={{ fontWeight: "500" }}>
-                    {followGym[index] ? "Following" : "FOLLOW +" }
+                    {followGym[index] ? "Following" : "FOLLOW +"}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -555,8 +592,8 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   productCard: {
-    width: 150,
-    height: 200,
+    width: 170,
+    height: 250,
     borderWidth: 2,
     borderColor: "white",
     borderRadius: 20,

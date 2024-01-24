@@ -18,7 +18,6 @@ const MembershipUser = () => {
       );
       setUserMemb(membership.data[0]);
     } catch (err) {
-      [];
       console.log(err);
     }
   };
