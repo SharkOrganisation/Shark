@@ -49,7 +49,7 @@ const Coachprofile = () => {
   };
   const [coach, setCoach] = useState([]);
   const coachId = FIREBASE_AUTH.currentUser;
-console.log(coachId.uid,"fffffffffff:fffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  // console.log(coachId.uid,"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
   const getCoachProfile = async () => {
     try {
       const response = await axios.get(
@@ -77,10 +77,16 @@ console.log(coachId.uid,"fffffffffff:fffffffffffffffffffffffffffffffffffffffffff
               style={{
                 flexDirection: "column",
                 alignItems: "flex-end",
-                marginRight: 10,
               }}
             >
-              <LogoutIcon name="log-out" size={30} color="#9AC61C" />
+              <LogoutIcon
+                name="log-out"
+                size={30}
+                top={30}
+                backgroundColor="black"
+                width={30}
+                color="#9AC61C"
+              />
             </View>
           </TouchableOpacity>
         </View>
@@ -92,7 +98,7 @@ console.log(coachId.uid,"fffffffffff:fffffffffffffffffffffffffffffffffffffffffff
           >
             <View style={styles.icon}>
               <Text style={styles.program}>New program</Text>
-              <Icons name="create" style={{ color: "#BEFF03", fontSize: 25 }} />
+              <Icons name="create" style={{ color: "#BEFF03", fontSize: 20 }} />
             </View>
           </TouchableOpacity>
         </View>
@@ -106,11 +112,11 @@ console.log(coachId.uid,"fffffffffff:fffffffffffffffffffffffffffffffffffffffffff
                 }}
               />
               <View style={styles.followInfoContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate("CoachFollow")}>
                   <Text style={styles.FollowText}>Followers</Text>
                   <Text style={styles.follow}>50</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate("CoachFollow")}>
                   <Text style={styles.FollowText}>Following</Text>
                   <Text style={styles.follow}>5000</Text>
                 </TouchableOpacity>
@@ -120,7 +126,7 @@ console.log(coachId.uid,"fffffffffff:fffffffffffffffffffffffffffffffffffffffffff
                 <TouchableOpacity style={styles.editIconContainer}>
                   <EditIcon
                     name="pencil"
-                    size={30}
+                    size={28}
                     style={{ color: "#9AC61C" }}
                     onPress={() => {
                       navigation.navigate("EditCoachProfile", { coach });
@@ -206,24 +212,28 @@ const styles = StyleSheet.create({
   },
   icon: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     alignItems: "center",
-    paddingRight: 250,
+    // paddingRight: 225,
     gap: 5,
+    width: 150,
+    // backgroundColor:"red"
   },
   program: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "400",
     textDecorationColor: "#BEFF03",
     textDecorationLine: "underline",
     color: "#BEFF03",
+    top: -2,
   },
   name: {
     flex: 1,
-    fontWeight: "900",
+    fontWeight: "800",
     letterSpacing: 1,
-    left: "190%",
+    left: "150%",
     color: "white",
+    top: -10,
   },
   profileContainer: {
     flexDirection: "column",
@@ -263,11 +273,15 @@ const styles = StyleSheet.create({
   },
   editIconContainer: {
     // right: "1200%",
-    right: 230,
+    right: 210,
+    top: -12,
   },
   bio: {
     color: "white",
     fontSize: 16,
+    alignItems: "flex-start",
+    right: 110,
+    top: -20,
   },
   followContainer: {
     flexDirection: "row",

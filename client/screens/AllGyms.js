@@ -117,7 +117,7 @@ const AllGyms = () => {
           />
         )}
         <TouchableOpacity onPress={handleSearchIconClick}>
-          <Search name="search1" size={30} top={40} position={"relative"} color={"#9AC61C"} />
+          <Search name="search1" size={30} top={20} position={"relative"} color={"#9AC61C"} />
         </TouchableOpacity>
       </View>
 
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     color: "white",
     position:"relative",
     width: 300,
-    top: 40,
+    top: 20,
   },
   noGymText: {
     color: "#9AC61C",
