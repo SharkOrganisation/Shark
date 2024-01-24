@@ -37,6 +37,8 @@ const STRIPE_KEY ="pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mw
 
 export default function App() {
   return (
+     
+   
     <StripeProvider publishableKey={STRIPE_KEY}>
     <NavigationContainer>
       
@@ -214,7 +216,7 @@ export default function App() {
 
         }} />
         <Stack.Screen name='PaymentSucces' component={PaymentSucces} options={{  headerStyle: {
-            backgroundColor: '#97d91c',
+            backgroundColor: "#9AC61C",
             shadowColor: "#9AC61C",
             borderBottomColor: 'black',
             shadowOffset: {
@@ -232,7 +234,7 @@ export default function App() {
           },
           title:"Payment Succes"}} />
         <Stack.Screen name='PaymentFailed' component={PaymentFailed} options={{ headerStyle: {
-            backgroundColor: '#97d91c',
+            backgroundColor:"#9AC61C",
             shadowColor: '#97d91c',
             borderBottomColor: 'black',
             shadowOffset: {
@@ -265,6 +267,7 @@ export default function App() {
         <Stack.Screen name="Allproducts" component={Allproducts} options={{ headerShown: false }} />
         <Stack.Screen name="resetPassword" component={ResetPassword} options={{ headerShown: false }} />
         <Stack.Screen name='Coachprofile' component={Coachprofile} options={{ headerShown: false }} />
+
         
       </Stack.Navigator>
      
