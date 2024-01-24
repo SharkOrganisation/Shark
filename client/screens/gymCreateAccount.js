@@ -33,7 +33,7 @@ const GymCreateAccount = ({ route }) => {
         region,
         location
       })
-      Alert.alert('Gym added successfully')
+      Alert.alert('Account Created Successfully', 'You need to wait until the admin verifies you.')
 
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {

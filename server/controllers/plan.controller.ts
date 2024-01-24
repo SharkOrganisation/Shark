@@ -1,21 +1,22 @@
 import { PrismaClient } from "@prisma/client";
+import { log } from "console";
 import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
 export const createPlan = async (req: Request, res: Response) => {
-  const {name,price,programId,coachId,dietId} = req.body;
+  const { name, price, programId, coachId, dietId } = req.body;
   try {
     await prisma.plan.create({
       data: {
-        name : name,
-        price : price,
-        programId : programId,
-        coachId :coachId,
-dietId : dietId
+        name: name,
+        price: price,
+        programId: programId,
+        coachId: coachId,
+        dietId: dietId,
       },
     });
-    res.json('success');
+    res.json("success");
   } catch (err) {
     console.error(err);
     res.json(err);
@@ -64,7 +65,7 @@ export const getplanBycoach = async (req: Request, res: Response) => {
   const exercises = await prisma.plan.findMany({
     where: { coachId: req.params.coachId },
     select: {
-      id:true,
+      id: true,
       name: true,
       price: true,
       Diet: {
@@ -110,4 +111,27 @@ export const getplanBycoach = async (req: Request, res: Response) => {
     },
   });
   res.json(exercises);
+};
+
+export const getAllPlans = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const allPlans=await prisma.plan.findMany({select:{
+      id:true,
+      name:true,
+      price:true,
+      Coach:{
+        select:{
+          id:true,
+          fullname:true
+        }
+      }
+    }})
+    res.status(200).json(allPlans)
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err)
+  }
 };

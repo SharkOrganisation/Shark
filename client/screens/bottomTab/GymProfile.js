@@ -11,7 +11,7 @@ import { FIREBASE_AUTH } from '../../firebase'
 import { ipAddress } from '../../ipConfig'
 
 
-const GymProfile = () => {
+const GymProfile = ({route}) => {
     const [postsActive, setPostsActive] = useState(true)
     const [membershipsActive, setMembershipsActive] = useState(false)
     const [savedActive, setSavedActive] = useState(false)
@@ -21,9 +21,6 @@ const GymProfile = () => {
     const isFocused = useIsFocused()
     const currentUser = FIREBASE_AUTH.currentUser
 
-// console.log('====================================');
-// console.log(currentUser);
-// console.log('====================================');
     useEffect(() => {
         axios
             .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
@@ -83,9 +80,7 @@ const GymProfile = () => {
                     </View>
                 </View>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.followBtn}>
-                <Text style={styles.followBtnText}>FOLLOW +</Text>
-            </TouchableOpacity> */}
+        
             <View style={styles.navbar}>
                 <TouchableOpacity onPress={() => {
                     setPostsActive(true)

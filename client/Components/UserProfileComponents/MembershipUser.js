@@ -18,7 +18,6 @@ const MembershipUser = () => {
       );
       setUserMemb(membership.data[0]);
     } catch (err) {
-      [];
       console.log(err);
     }
   };
@@ -57,7 +56,7 @@ const MembershipUser = () => {
           <View style={styles.qrContainer}>
             <View>
               <Text style={styles.membershipDuration}>Expired At:</Text>
-              <Text>15-01-2025</Text>
+              <Text>{new Date(userMemb.expiredAt).toLocaleDateString('en-GB').replace(/\//g, '-')}</Text>
             </View>
 
             <View style={styles.Qr}>
