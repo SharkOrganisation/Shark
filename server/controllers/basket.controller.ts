@@ -80,10 +80,10 @@ export const getOneBasketByCoachId = async (req: Request, res: Response) => {
 export const addToBasket = async (req: Request, res: Response): Promise<void> => {
   const { userId, productId, coachId, gymId } = req.body;
 
+  console.log(req.body);
   try {
-    console.log(req.body);
   
-    const item = await prisma.basket.create({
+    await prisma.basket.create({
       data: {
         productId,
         userId: userId ? String(userId) : null,
@@ -129,9 +129,7 @@ export const deleteBasket = async (req: Request, res: Response) => {
   console.log('Constructed Where Clause:', whereClause);
   
   const deletedBasket = await prisma.basket.deleteMany({
-   where: {
-
-   },
+    where: whereClause,
   });
   
   console.log('Deleted Basket:', deletedBasket);

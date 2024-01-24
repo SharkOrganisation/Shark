@@ -40,7 +40,7 @@ export default function App() {
     <StripeProvider publishableKey={STRIPE_KEY}>
     <NavigationContainer>
       
-      <Stack.Navigator initialRouteName='AllGyms'>
+      <Stack.Navigator initialRouteName='getStarted'>
         <Stack.Screen name="tabs" component={BottomTabScreens} options={{
           headerShown: false
         }

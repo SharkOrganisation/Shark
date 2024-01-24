@@ -87,9 +87,8 @@ export default function Basket() {
       console.log("Deleting basket item with:", role, basketId, userId);
       const lowercasedRole = role.toLowerCase();
       await axios.delete(
-        `http://192.168.1.14:3000/api/basket/delete/${lowercasedRole}/${basketId}/${userId}`
+        `http://${ipAddress}:3000/api/basket/delete/${lowercasedRole}/${basketId}/${userId}`
       );
-      // Wait for the deletion operation to complete before fetching the updated basket
       await getBasketByRole();
     } catch (error) {
       if (error.response) {
@@ -121,7 +120,7 @@ export default function Basket() {
             <View>
               <TouchableOpacity
                 onPress={() =>
-                  deleteBasketItem(role, basketItem.Product.id, idUser)
+                  deleteBasketItem(role, basketItem.productId, idUser)
                 }
               >
                 {console.log(role, basketItem.productId, idUser, "litfs5")}
