@@ -80,10 +80,10 @@ export const getOneBasketByCoachId = async (req: Request, res: Response) => {
 export const addToBasket = async (req: Request, res: Response): Promise<void> => {
   const { userId, productId, coachId, gymId } = req.body;
 
+  console.log(req.body);
   try {
-    console.log(req.body);
   
-    const item = await prisma.basket.create({
+    await prisma.basket.create({
       data: {
         productId,
         userId: userId ? String(userId) : null,
@@ -108,42 +108,46 @@ export const addToBasket = async (req: Request, res: Response): Promise<void> =>
 
 export const deleteBasket = async (req: Request, res: Response) => {
   try {
-    const id = +req.params.id;
-    const role = req.params.role;
-    const idConnected=req.params.idConnected
-    let whereClause: any = {};
-    console.log(role,"=",idConnected,"=",id);
-    
-if (role === 'user') {
- const userId =idConnected;
- whereClause = { ...whereClause, userId, id };
-} else if (role === 'coach') {
- const coachId =idConnected;
- whereClause = { ...whereClause, coachId , id };
-} else if (role === 'gym') {
- const gymId =idConnected;
- whereClause = { ...whereClause, gymId , id };
-} else {
- return res.status(400).json({ error: 'Invalid role' });
-}
-    console.log('Constructed Where Clause:', whereClause);
-
-    const deletedBasket = await prisma.basket.deleteMany({
-      where: whereClause,
-    });
-
-    console.log('Deleted Basket:', deletedBasket);
-
-    if (deletedBasket.count > 0) {
-      res.json({ message: 'Basket deleted successfully' });
-    } else {
-      res.json({ message: 'No matching basket found for deletion' });
-    }
-  } catch (error: any) {
-    console.error('Error deleting basket:', error);
-    res.status(500).json({ error: (error as Error).message });
+  const basketId = +req.params.id;
+  const role = req.params.role;
+  const idConnected=req.params.idConnected
+  let whereClause: any = {};
+  console.log(role,"=",idConnected,"=",basketId);
+  
+  if (role === 'user') {
+   const userId =idConnected;
+   whereClause = { ...whereClause, userId, productId: basketId };
+  } else if (role === 'coach') {
+   const coachId =idConnected;
+   whereClause = { ...whereClause, coachId , productId: basketId };
+  } else if (role === 'gym') {
+   const gymId =idConnected;
+   whereClause = { ...whereClause, gymId , productId: basketId };
+  } else {
+   return res.status(400).json({ error: 'Invalid role' });
   }
-};
+  console.log('Constructed Where Clause:', whereClause);
+  
+  const deletedBasket = await prisma.basket.deleteMany({
+    where: whereClause,
+  });
+  
+  console.log('Deleted Basket:', deletedBasket);
+  
+  if (deletedBasket.count > 0) {
+   res.json({ message: 'Basket deleted successfully' });
+  } else {
+   res.json({ message: 'No matching basket found for deletion' });
+  }
+  } catch (error: any) {
+  console.error('Error deleting basket:', error);
+  res.status(500).json({ error: (error as Error).message });
+  }
+ };
+ 
+ 
+ 
+ 
 
 
   
