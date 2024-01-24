@@ -1,14 +1,197 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+
+import { FIREBASE_AUTH } from "../../firebase.js";
+import { ipAddress } from "../../ipConfig";
+
+import axios from "axios";
 
 const Memberships = () => {
+  const [userMemb, setUserMemb] = useState([]);
+  const user = FIREBASE_AUTH.currentUser;
+  const isFocused = useIsFocused();
+  const getMembership = async () => {
+    try {
+      let membership = await axios.get(
+        `http://${ipAddress}:3000/api/memberShip/getByGym/${user.uid}`
+      );
+      setUserMemb(membership.data);
+      console.log(membership.data[0]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    if (isFocused) {
+      getMembership();
+    }
+  }, [isFocused]);
+
+  // if (!userMemb || !userMemb.Gym || !userMemb.user) {
+  //   return <Text style={{ color: "white" }}>is loading...</Text>;
+  // }
+
   return (
-    <View>
-      <Text style={{color:'white'}}>Memberships</Text>
+    <View style={styles.allcontainer}>
+      {userMemb.map((memb)=>{return(
+      <ImageBackground
+        style={styles.container}
+        source={require("../../assets/MembershipCard/membershipCard.png")}
+        resizeMode="cover"
+      >
+        <View style={styles.LeftContainer}>
+          <View style={styles.gymInfo}>
+            <Text style={styles.gymText}>{memb.Gym.fullname}</Text>
+            <Image
+              style={styles.gymPic}
+              source={{
+                uri: memb.Gym.pfImage || "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg"
+              }}
+            />
+          </View> 
+
+           <Text>{memb.Gym.location}</Text>
+          <Text style={styles.membershipDuration}>Membership Duration:</Text>
+          <Text>{memb.type}</Text>
+
+          <View style={styles.qrContainer}>
+            <View>
+              <Text style={styles.membershipDuration}>Expired At:</Text>
+              <Text>{new Date(memb.expiredAt).toLocaleDateString('en-GB').replace(/\//g, '-')}</Text>
+            </View>
+
+            <View style={styles.Qr}>
+              <Text style={{ fontSize: 8, fontWeight: "700" }}>QR CODE:</Text>
+              <Image
+                style={styles.QrImg}
+                source={{
+                  uri: "https://www.bdc.ca/globalassets/digizuite/40415-bdc-qr-code.jpg?v=498d76",
+                }}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.RightContainer}>
+          <Image
+            style={styles.userPf}
+            source={{
+              uri: `${memb.user.pfImage}`,
+            }}
+          />
+          <View style={styles.userInfo}>
+            <Text style={styles.title}>Name Adherent:</Text>
+            <Text style={styles.name}> {memb.user.fullname}</Text>
+          </View>
+        </View>
+
+      </ImageBackground>
+                )})} 
     </View>
-  )
-}
-
-export default Memberships
-
-const styles = StyleSheet.create({})
+  );
+};
+const styles = StyleSheet.create({
+  allcontainer: {
+    flex: 1,
+    margin: "5%",
+    marginTop: "10%",
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "10%",
+    borderColor: "#9AC61C",
+    borderWidth: 2,
+    flexDirection: "row",
+    gap: "25%",
+    shadowColor: "#9AC61C",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.88,
+    shadowRadius: 8.3,
+    marginBottom:20
+  },
+  LeftContainer: {
+    flexDirection: "column",
+    gap: "10%",
+    marginLeft: "5%",
+    marginRight:"10%"
+  },
+  gymPic: {
+    width: 40,
+    height: 40,
+    marginTop: "3%",
+    objectFit: "fill",
+    borderWidth: 2,
+    borderColor: "#9AC61C",
+    borderRadius: 100,
+  },
+  gymInfo: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "2%",
+  },
+  gymText: {
+    color: "black",
+    fontSize: 20,
+    letterSpacing: 2,
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+    textDecorationColor: "#9AC61C",
+  },
+  membershipDuration: {
+    fontWeight: "600",
+  },
+  qrContainer: {
+    flexDirection: "row",
+    gap: 35,
+  },
+  Qr: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "-6%",
+  },
+  QrImg: {
+    width: 50,
+    height: 50,
+    borderColor: "white",
+    borderWidth: 2,
+    borderColor: "#9AC61C",
+  },
+  RightContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+  },
+  userPf: {
+    width: 110,
+    height: 110,
+    borderColor: "white",
+    borderWidth: 2,
+    borderColor: "#9AC61C",
+    borderRadius: 100,
+    backgroundColor: "white",
+  },
+  userInfo: {
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 4,
+  },
+  title: {
+    color: "white",
+    fontSize: 10,
+    fontWeight: "500",
+  },
+  name: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 11,
+  },
+});
+export default Memberships;

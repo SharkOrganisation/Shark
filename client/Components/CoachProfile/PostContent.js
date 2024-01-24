@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   Image,
+  Share,
   TouchableOpacity,
   ScrollView,
   Modal,
@@ -17,9 +18,9 @@ import SaveIcon from "react-native-vector-icons/Fontisto";
 import ShareIcon from "react-native-vector-icons/SimpleLineIcons";
 import CloseIcon from "react-native-vector-icons/AntDesign";
 import SendIcon from "react-native-vector-icons/Ionicons";
-
 import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase";
+import { Title } from "react-native-paper";
 
 const PostContent = ({ data }) => {
   const [posts, setPosts] = useState([]);
@@ -27,6 +28,7 @@ const PostContent = ({ data }) => {
   const [likedPosts, setLikedPosts] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [heartActiveArray, setHeartActiveArray] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const getPosts = async () => {
     try {
@@ -43,9 +45,9 @@ const PostContent = ({ data }) => {
   const getComments = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/comments/get/1/4`
+        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/comments/get/1/1`
       );
-      console.log("ggggggggggggggggggggggggggggggggggggggg,",response.data);
+      // console.log("ggggggggggggggggggggggggggggggggggggggg,", response.data);
       setComments(response.data);
     } catch (err) {
       console.error(err);
@@ -66,6 +68,31 @@ const PostContent = ({ data }) => {
     updatedHeartActiveArray[index] = !updatedHeartActiveArray[index];
     setHeartActiveArray(updatedHeartActiveArray);
   };
+
+  const onShare = async () => {
+    if (selectedPost) {
+      // console.log(selectedPost, "");
+      try {
+        const result = await Share.share({
+          url: selectedPost.image[0],
+          message: selectedPost.content,
+        });
+
+        // Handle result as needed
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error) {
+        Alert.alert(error.message);
+      }
+    }
+  };
+
   // const postPosts = async (post) => {
   //   const userId = FIREBASE_AUTH.currentUser.uid;
   //   const dataPosts = {
@@ -215,16 +242,22 @@ const PostContent = ({ data }) => {
                   />
                 </View>
               </Modal>
-              <ShareIcon name="share" size={22} style={{ color: "white" }} />
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedPost(post);
+                  onShare();
+                }}
+              >
+                <ShareIcon name="share" size={22} style={{ color: "white" }} />
+              </TouchableOpacity>
             </View>
             <TouchableOpacity>
-
-            <SaveIcon
-              name="favorite"
-              size={22}
-              style={{ color: "white" }}
-              // onPress={() => postPosts(post.id)}
-            />
+              <SaveIcon
+                name="bookmark"
+                size={22}
+                style={{ color: "white" }}
+                // onPress={() => postPosts(post.id)}
+              />
             </TouchableOpacity>
           </View>
         </View>
