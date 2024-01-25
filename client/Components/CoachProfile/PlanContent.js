@@ -112,7 +112,7 @@ const PlanContent = () => {
           <Image
             style={stylesPlan.avatar}
             source={{
-              uri: "https://www.digital-discovery.tn/wp-content/uploads/2023/09/Gattouz0-1200x675.jpg",
+              uri: "https://ih1.redbubble.net/image.4843542460.9498/raf,750x1000,075,t,000000:44f0b734a5.u2.jpg",
             }}
           />
           <View>
@@ -213,6 +213,7 @@ const stylesPlan = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "black",
+    // width: "60%",
     padding: 10,
     marginVertical: 10,
     borderRadius: 6,
