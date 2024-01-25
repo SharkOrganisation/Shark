@@ -7,6 +7,8 @@ const Followers = () => {
     const [follwersActive, setFollowersActive] = useState(true)
     const [followingActive, setFollowingActive] = useState(false)
     const [view, setView] = useState("followers")
+
+  
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.navbar}>
@@ -33,27 +35,27 @@ const Followers = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.searchContainer}>
-                <TextInput
-                    style={styles.searchInput}
-                    placeholder="Search..."
-                    placeholderTextColor={"gray"}
-                />
-                <TouchableOpacity
-                 style={{
-                    position: "absolute",
-                    right:15,
-                    top:7,
-                 }}
-                 >
-                    <MaterialCommunityIcons
-                        name="magnify"
-                        size={30}
-                        color={"#9AC61C"}
-                    />
-                </TouchableOpacity>
-            </View>
-            {view === "followers" && <FollowerComponent/>}
-            {view === "following" && <FollowingComponent/>}
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search..."
+          placeholderTextColor={"gray"}
+        />
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            right: 15,
+            top: 7,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="magnify"
+            size={30}
+            color={"#9AC61C"}
+          />
+        </TouchableOpacity>
+      </View>
+      {view === "followers" && <FollowerComponent  />}
+      {view === "following" && <FollowingComponent   />}
         </SafeAreaView>
     )
 }
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
     },
     navbar: {
+        gap:50,
         position: "absolute",
         top: 30,
         borderBottomColor: "white",

@@ -39,6 +39,8 @@ const STRIPE_KEY =
 
 export default function App() {
   return (
+     
+   
     <StripeProvider publishableKey={STRIPE_KEY}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="getStarted">
