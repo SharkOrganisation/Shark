@@ -49,7 +49,7 @@ const Coachprofile = () => {
   };
   const [coach, setCoach] = useState([]);
   const coachId = FIREBASE_AUTH.currentUser;
-  // console.log(coachId.uid,"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  console.log(coachId.uid,"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
   const getCoachProfile = async () => {
     try {
       const response = await axios.get(
@@ -190,7 +190,7 @@ const Coachprofile = () => {
                       activeTab === "membership" && styles.selectedText,
                     ]}
                   >
-                    Saved Posts
+                    Description
                   </Text>
                 </TouchableOpacity>
               </View>

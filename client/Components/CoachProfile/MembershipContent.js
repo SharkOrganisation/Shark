@@ -2,33 +2,36 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 const MembershipContent = () => {
-  const currentUser = FIREBASE_AUTH.currentUser;
+  const [showDescription, setShowDescription] = useState(false);
 
-  const [saved, setSaved] = useState([]);
-
-  const getSavedPosts = async () => {
-    try {
-      const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/${currentUser.uid}`
-      );
-      // console.log(response.data,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-      setSaved(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+  const toggleDescription = () => {
+    setShowDescription(!showDescription);
   };
+  // const currentUser = FIREBASE_AUTH.currentUser;
 
-  useEffect(() => {
-    // getSavedPosts();
-  }, []);
+  // const [saved, setSaved] = useState([]);
+
+  // const getSavedPosts = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/${currentUser.uid}`
+  //     );
+  //     // console.log(response.data,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+  //     setSaved(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   // getSavedPosts();
+  // }, []);
 
   return (
-    <TouchableOpacity
-      style={styles.membershipContainer}
-      onPress={() => console.log("Membership details clicked")}
-    >
+    <TouchableOpacity style={styles.membershipContainer}>
       <Image
         style={styles.memberImage}
         source={{
@@ -37,8 +40,30 @@ const MembershipContent = () => {
       />
       <View style={styles.textContainer}>
         <Text style={styles.membershipText}>
-          Member since 1920. Active and dedicated fitness enthusiast.
+          Member since 2022. Active and dedicated fitness enthusiast.
         </Text>
+        <TouchableOpacity style={styles.ctaButton} onPress={toggleDescription}>
+          <Ionicons name="arrow-forward-outline" size={24} />
+        </TouchableOpacity>
+        {showDescription && (
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>
+              Embracing the grind is a universal truth for champions. Muhammad
+              Ali's words, "I hated every minute of training, but I said, ‘Don’t
+              quit. Suffer now and live the rest of your life as a champion,’"
+              echo the essence of enduring hardship for future triumph.
+              Aristotle's timeless wisdom emphasizes that excellence is not an
+              isolated act but a habitual endeavor. This philosophy converges
+              with the belief that "The body achieves what the mind believes."
+              Champions thrive on adversity, as seen in the conviction that "The
+              hard days are the best because that’s when champions are made, so
+              if you push through, you can push through anything." Results, a
+              byproduct of effort, underscore the importance of time and work:
+              "If you don’t find the time, if you don’t do the work, you don’t
+              get the results.
+            </Text>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -46,29 +71,18 @@ const MembershipContent = () => {
 
 const styles = StyleSheet.create({
   membershipContainer: {
-    paddingVertical: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "black",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
     padding: 15,
     marginVertical: 10,
-    marginBottom:80 ,
-    borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: "black",
+    borderWidth: 2,
+    borderColor: "white",
   },
   memberImage: {
-    width: 80,
-    height: 80,
+    width: 85,
+    height: 85,
     borderRadius: 40,
     marginRight: 15,
   },
@@ -76,10 +90,29 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   membershipText: {
-    fontSize: 18,
-    color: "#333",
+    fontSize: 16,
     fontWeight: "bold",
     fontStyle: "italic",
+    color: "#9AC61C",
+    lineHeight: 20,
+  },
+  ctaButton: {
+    backgroundColor: "#9AC61C",
+    padding: 10,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  descriptionContainer: {
+    backgroundColor: "#9AC61C",
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: "black",
   },
 });
 
