@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "./screens/welcome";
@@ -39,9 +39,8 @@ const STRIPE_KEY =
   "pk_test_51OZEfiH6PIz9b3JmefGizu6JOqL1NoKap1KNDkrsf0NXyf0Jc7mwr7CLtbVvHMYdzCOnkIQ6qya6yh4dPte536bi00GBMIlpuI";
 
 export default function App() {
+  LogBox.ignoreAllLogs();
   return (
-     
-   
     <StripeProvider publishableKey={STRIPE_KEY}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="getStarted">

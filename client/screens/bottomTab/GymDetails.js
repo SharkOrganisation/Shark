@@ -149,7 +149,7 @@ const GymDetails = ({ route }) => {
             Posts
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             setMembershipsActive(true);
             setPostsActive(false);
@@ -171,8 +171,8 @@ const GymDetails = ({ route }) => {
           >
             Memberships
           </Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
+        </TouchableOpacity> */}
+        <TouchableOpacity
           onPress={() => {
             setSavedActive(true);
             setMembershipsActive(false);
@@ -192,13 +192,13 @@ const GymDetails = ({ route }) => {
                 : null,
             ]}
           >
-            Saved
+            Location
           </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
       {view === "posts" && <Posts data={gymData} />}
-      {view === "memberships" && <Memberships />}
-      {/* {view === "saved" && <Saved />} */}
+      {/* {view === "memberships" && <Memberships />} */}
+      {view === "saved" && <Saved />}
     </ScrollView>
   );
 };

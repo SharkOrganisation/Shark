@@ -18,12 +18,12 @@ const MembershipContent = () => {
       <Image
         style={styles.memberImage}
         source={{
-          uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
+          uri: "https://i.pinimg.com/564x/56/62/7b/56627b6eb4878d804900eec93adcc34c.jpg",
         }}
       />
       <View style={styles.textContainer}>
         <Text style={styles.membershipText}>
-          Member since 2022. Active and dedicated fitness enthusiast.
+          Member Since 2022. Active and dedicated fitness enthusiast.
         </Text>
         <TouchableOpacity style={styles.ctaButton} onPress={toggleDescription}>
           <Ionicons name="arrow-forward-outline" size={24} />
