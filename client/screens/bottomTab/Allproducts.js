@@ -1,18 +1,20 @@
 import { React, useState, useEffect } from "react";
 import {
   FlatList,
-  View,
+  Modal,
   Text,
-  StyleSheet,
-  Image,
   TouchableOpacity,
-  ScrollView,
+  View,
+  Image,
+  StyleSheet,
   Dimensions,
-} from "react-native";
+  PanResponder,
+  Animated,
+  ScrollView,
+} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { ipAddress } from "../../ipConfig";
 import { LinearGradient } from "expo-linear-gradient";
-import { Animated } from "react-native";
 
 export default function Allproducts({ route }) {
   const navigation = useNavigation();
@@ -22,6 +24,11 @@ export default function Allproducts({ route }) {
   const { role } = route?.params || { role: undefined };
   console.log(role, "rrrrrrrrrrrrrrrrrrrrr");
   const [translateX, setTranslateX] = useState(new Animated.Value(0));
+  const [showLargeImage, setShowLargeImage] = useState(false);
+  const [largeImageURL, setLargeImageURL] = useState(null);
+  const { width, height } = Dimensions.get('window');
+
+  
 
   // animated text
   const animateText = () => {
@@ -202,6 +209,10 @@ export default function Allproducts({ route }) {
             <View key={item.id} style={styles.itemContainer}>
               {/*this  navigation for product detail  */}
               <TouchableOpacity
+                onLongPress={() => {
+                  setShowLargeImage(true);
+                  setLargeImageURL(item.images[0]);
+                }}
                 onPress={() => {
                   navigation.navigate("DetailProducts", {
                     productId: item.id,
@@ -212,6 +223,57 @@ export default function Allproducts({ route }) {
               >
                 <Image source={{ uri: item.images[0] }} style={styles.image} />
               </TouchableOpacity>
+              <Modal
+  animationType="slide"
+  transparent={true}
+  visible={showLargeImage}
+  onRequestClose={() => {
+    setShowLargeImage(false);
+    setLargeImageURL(null);
+  }}
+>
+  <TouchableOpacity
+    style={{ flex: 1 }}
+    activeOpacity={1}
+    onPressOut={() => {
+      setShowLargeImage(false);
+      setLargeImageURL(null);
+    }}
+  >
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 2,
+          padding: 10,
+        }}
+        onPress={() => {
+          setShowLargeImage(false);
+          setLargeImageURL(null);
+        }}
+      >
+        <Text style={{ color: 'black', fontSize: 18 }}>Close</Text>
+      </TouchableOpacity>
+
+      <View
+        style={{
+          borderRadius: 10,
+          overflow: 'hidden',
+          backgroundColor: 'transparent', // Ensure the background of this View is transparent
+        }}
+      >
+        <Image
+          source={{ uri: largeImageURL }}
+          style={{ width: '120%', aspectRatio: 1, borderRadius: 8 }}
+          resizeMode="contain"
+        />
+      </View>
+    </View>
+  </TouchableOpacity>
+</Modal>
+
               <View style={styles.infoContainer}>
                 <Text style={styles.name}>{item.name}</Text>
                 <Text style={styles.price}>{item.price} USD</Text>
