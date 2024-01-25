@@ -30,10 +30,6 @@ import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 
 const Home = ({ navigation }) => {
-  // console.log(
-  //   Dimensions.get("screen").height,
-  //   "555555555555555555555555555555555555555"
-  // );
   const [allpPoducts, setAllProducts] = useState([]);
   const [allPlans, setAllPlans] = useState([]);
   const [coachs, setCoachs] = useState([]);
@@ -42,7 +38,7 @@ const Home = ({ navigation }) => {
   const [followCoach, setFollowCoach] = useState([]);
   const [userData, setUserData] = useState([]);
   const currentUser = FIREBASE_AUTH.currentUser;
-  console.log(currentUser.uid);
+  // console.log(currentUser.uid);
   
   const getCurrentUserData = async () => {
     try {
@@ -51,6 +47,7 @@ const Home = ({ navigation }) => {
       );
       setUserData(user.data);
     } catch (error) {
+
       console.log(error);
     }
   };
@@ -190,14 +187,14 @@ const Home = ({ navigation }) => {
   return (
     <ScrollView
       style={styles.homeContainer}
-      onScroll={(e) => {
-        if (
-          e.nativeEvent.contentOffset.y >
-          0.95 * Dimensions.get("screen").height
-        ) {
-          getGyms();
-        }
-      }}
+      // onScroll={(e) => {
+      //   if (
+      //     e.nativeEvent.contentOffset.y >
+      //     0.95 * Dimensions.get("screen").height
+      //   ) {
+      //     getGyms();
+      //   }
+      // }}
     >
       <View style={styles.landingPage}>
         <View style={styles.headerContainer}>
@@ -382,7 +379,9 @@ const Home = ({ navigation }) => {
                   }}
                   style={styles.coachProfilePic}
                 />
-                <TouchableOpacity style={styles.coachProfileInfo}>
+                <TouchableOpacity style={styles.coachProfileInfo}
+                onPress={()=>navigation.navigate("CoachDetails", { coachId: coach.id })}
+                >
                   <Text style={styles.coachName}>{coach.fullname}</Text>
                   <View style={styles.otherInfoContainer}>
                     <View>

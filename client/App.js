@@ -32,6 +32,7 @@ import AllCoaches from "./screens/AllCoaches.js";
 import AllGyms from "./screens/AllGyms.js";
 import CoachFollow from "./screens/CoachFollow.js";
 import GymDetails from "./screens/bottomTab/GymDetails.js";
+import CoachDetails from "./screens/bottomTab/CoachDetails.js";
 import JoinUs from "./screens/bottomTab/JoinUs.js";
 const Stack = createNativeStackNavigator();
 const STRIPE_KEY =
@@ -390,6 +391,31 @@ export default function App() {
           <Stack.Screen
             name="GymDetails"
             component={GymDetails}
+            options={{
+              headerStyle: {
+                backgroundColor: "black",
+                shadowColor: "#9AC61C",
+                borderBottomColor: "black",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.39,
+                shadowRadius: 8.3,
+
+                elevation: 13,
+              },
+              headerTitleAlign: "center",
+              headerTintColor: "#BEFF03",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              title: "Profile",
+            }}
+          />
+          <Stack.Screen
+            name="CoachDetails"
+            component={CoachDetails}
             options={{
               headerStyle: {
                 backgroundColor: "black",
