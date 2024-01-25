@@ -13,8 +13,8 @@ const PaymentSuccess = () => {
   console.log(totalPrice);
 
   return (
-    <LinearGradient
-    colors={['#97d91c', 'black']} 
+    <View
+     
     style={styles.container}
   >
     <View >
@@ -42,7 +42,7 @@ const PaymentSuccess = () => {
           </TouchableOpacity>
         </View>
     </View>
-    </LinearGradient>
+    </View>
   );
 };
 

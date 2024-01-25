@@ -12,36 +12,46 @@ import LogoutIcon from "react-native-vector-icons/Entypo";
 import Posts from "../../Components/GymProfileComponent/Posts";
 import Memberships from "../../Components/GymProfileComponent/Memberships";
 import Saved from "../../Components/GymProfileComponent/Saved";
+import MembershipIcon from "react-native-vector-icons/AntDesign";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase";
 import { ipAddress } from "../../ipConfig";
-import FollowerComponent from "../../Components/FollowerComponent";
-import FollowingComponent from "../../Components/FollowingComponent";
 
-
-const GymProfile = () => {
+const GymDetails = ({ route }) => {
   const [postsActive, setPostsActive] = useState(true);
   const [membershipsActive, setMembershipsActive] = useState(false);
   const [savedActive, setSavedActive] = useState(false);
+  const [followGym, setFollowGym] = useState(false);
   const [view, setView] = useState("posts");
   const [gymData, setGymData] = useState([]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const { gymId } = route.params;
   const currentUser = FIREBASE_AUTH.currentUser;
-  const [followersLength, setFollowersLength] = useState(0);
-  const [followingLength,setFollowingLength]=useState('Loading...');
 
-  const handleFollowersChange = (newFollowersLength) => {
-    setFollowersLength(newFollowersLength);
+  const newFollow = async (idGym) => {
+    try {
+      await axios.post(
+        `http://${ipAddress}:3000/api/followingGym/follow/${idGym}/${currentUser.uid}`
+      );
+    } catch {
+      alert("Try Again");
+    }
   };
-  const handleFollowingChange=(newFollowingLength)=>{
-    setFollowingLength(newFollowingLength)
-  }
+  const removeFollow = async (idGym) => {
+    try {
+      await axios.delete(
+        `http://${ipAddress}:3000/api/followingGym/remove/${idGym}/${currentUser.uid}`
+      );
+    } catch (err) {
+      alert("try later");
+    }
+  };
 
   useEffect(() => {
     axios
-      .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
+      .get(`http://${ipAddress}:3000/api/gym/getOne/${gymId}`)
       .then((response) => {
         setGymData(response.data);
       })
@@ -52,37 +62,17 @@ const GymProfile = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity
-        style={{
-          marginTop: 10,
-          marginRight: 15,
-          position: "absolute",
-          right: 0,
-        }}
-        onPress={() => {
-          navigation.navigate("login", { role: "gym" });
-        }}
-      >
-        <View>
-          <LogoutIcon name="log-out" size={25} color="#9AC61C" />
-        </View>
-      </TouchableOpacity>
       <View style={styles.profileInfo}>
         <Image
           source={{
-            uri: gymData.pfImage,
+            uri:
+              gymData.pfImage ||
+              "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
           }}
           style={styles.pfImage}
         />
         <View style={styles.profileContainer}>
           <Text style={styles.profileName}>{gymData.fullname}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("editGymProfile", { gymData });
-            }}
-          >
-            <Icon name="pencil" style={{ color: "#9AC61C", fontSize: 30 }} />
-          </TouchableOpacity>
         </View>
         <Text style={styles.profileBio}>{gymData.bio}</Text>
       </View>
@@ -93,21 +83,48 @@ const GymProfile = () => {
       >
         <View style={styles.followingAndFollowerContainer}>
           <View style={styles.box}>
-          <FollowerComponent onFollowersChange={handleFollowersChange} />
-
-            <Text style={styles.number}>{followersLength}</Text>
+            <Text style={styles.number}>100K</Text>
             <Text style={styles.text}>FOLLOWERS</Text>
           </View>
           <View style={styles.box}>
-          <FollowingComponent onFollowingChange={handleFollowingChange} />
-            <Text style={styles.number}>{followingLength}</Text>
+            <Text style={styles.number}>90K</Text>
             <Text style={styles.text}>FOLLOWING</Text>
           </View>
         </View>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.followBtn}>
-                <Text style={styles.followBtnText}>FOLLOW +</Text>
-            </TouchableOpacity> */}
+      <View style={{flexDirection:"row",justifyContent:"space-around"}}>
+      {followGym && (
+        <TouchableOpacity
+          style={styles.followBtn}
+          onPress={() => {
+            newFollow(gymData.id);
+            setFollowGym(false);
+          }}
+        >
+          <Text style={styles.followBtnText}>FOLLOW +</Text>
+        </TouchableOpacity>
+      )}
+      {!followGym && (
+        <TouchableOpacity
+          style={styles.followBtn}
+          onPress={() => {
+            setFollowGym(true);
+            removeFollow(gymData.id);
+          }}
+        >
+          <Text style={styles.followBtnText}>UNFOLLOW +</Text>
+        </TouchableOpacity>
+      )}
+       <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("JoinUs",{gymId});
+        }}
+        style={styles.joinContainer}
+      >
+        <Text style={styles.Join}>JOIN US</Text>
+        <MembershipIcon name="idcard" style={{color:"#9AC61C",fontSize:18}}/>
+      </TouchableOpacity>
+        </View>
       <View style={styles.navbar}>
         <TouchableOpacity
           onPress={() => {
@@ -155,7 +172,7 @@ const GymProfile = () => {
             Memberships
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             setSavedActive(true);
             setMembershipsActive(false);
@@ -175,13 +192,13 @@ const GymProfile = () => {
                 : null,
             ]}
           >
-            Location
+            Saved
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {view === "posts" && <Posts data={gymData} />}
       {view === "memberships" && <Memberships />}
-      {view === "saved" && <Saved />}
+      {/* {view === "saved" && <Saved />} */}
     </ScrollView>
   );
 };
@@ -194,6 +211,8 @@ const styles = StyleSheet.create({
   profileInfo: {
     marginTop: "5%",
     alignItems: "center",
+    margin:"1%",
+    gap:4 
   },
   pfImage: {
     width: 120,
@@ -236,6 +255,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
+    
   },
   followBtn: {
     marginTop: "8%",
@@ -265,6 +285,25 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     paddingBottom: 5,
   },
+  joinContainer: {
+    marginTop: "8%",
+    borderColor: "#9AC61C",
+    borderWidth: 1,
+    width: 150,
+    padding: 10,
+    alignSelf: "center",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection:"row",
+    gap:10
+  },
+  Join: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 12,
+    letterSpacing: 2,
+  },
 });
 
-export default GymProfile;
+export default GymDetails;

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { all } from "axios";
 import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
@@ -36,25 +37,33 @@ export const getAllGyms = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const allGyms = await prisma.gym.findMany({
-      select: {
-        id: true,
-        fullname: true,
-        Email: true,
-        pfImage: true,
-        type: true,
-        bio: true,
-        region: true,
-        location: true,
-        verified: true,
-      },
-    });
-    res.status(200).send(allGyms);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send(err);
-  }
+    try {
+    let gyms;
+    const region = req.query.region as string
+
+    if (region) {
+      gyms = await prisma.gym.findMany({ where: { region} });
+    } else {
+      gyms = await prisma.gym.findMany({
+        select: {
+          id: true,
+          fullname: true,
+          Email: true,
+          pfImage: true,
+          type: true,
+          bio: true,
+          region: true,
+          location: true,
+          verified: true,
+        },
+      });
+    }
+
+    res.json(gyms);
+  } catch (error) {
+    console.error('Error fetching gyms:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } 
 };
 
 
@@ -80,5 +89,19 @@ export const unVerifyGym = async (req:Request, res:Response): Promise<void> => {
     res.status(200).json({status: 'Gym Unverified Successfully'})
   } catch (error) {
     res.status(500).json({Error:error})
+
   }
 }
+// export const getGymsByRegion = async (req: Request, res: Response):Promise<void>=>{
+//   const {region} = req.params
+//   try {
+//     const gyms = await prisma.gym.findMany({
+//       where:{
+//         region
+//       }
+//     })
+//     res.status(200).json(gyms)
+//   } catch (error) {
+//     res.status(500).send(error)
+//   }
+// }

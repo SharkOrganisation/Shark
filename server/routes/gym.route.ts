@@ -7,4 +7,6 @@ route.get("/getAllGyms",gymController.getAllGyms)
 route.put('/updateGym/:id',gymController.updateGym)
 route.put("/verifyGym/:id",gymController.verifyGym)
 route.put("/unverifyGym/:id",gymController.unVerifyGym)
+// route.get('/getByRegion/:region',gymController.getGymsByRegion)
+
 export default route
