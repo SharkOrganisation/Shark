@@ -12,35 +12,18 @@ const MembershipContent = () => {
   };
   // const currentUser = FIREBASE_AUTH.currentUser;
 
-  // const [saved, setSaved] = useState([]);
-
-  // const getSavedPosts = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/savedPost/${currentUser.uid}`
-  //     );
-  //     // console.log(response.data,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-  //     setSaved(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // getSavedPosts();
-  // }, []);
 
   return (
     <TouchableOpacity style={styles.membershipContainer}>
       <Image
         style={styles.memberImage}
         source={{
-          uri: "https://i.ytimg.com/vi/EMpZCJL6zwc/maxresdefault.jpg",
+          uri: "https://i.pinimg.com/564x/56/62/7b/56627b6eb4878d804900eec93adcc34c.jpg",
         }}
       />
       <View style={styles.textContainer}>
         <Text style={styles.membershipText}>
-          Member since 2022. Active and dedicated fitness enthusiast.
+          Member Since 2022. Active and dedicated fitness enthusiast.
         </Text>
         <TouchableOpacity style={styles.ctaButton} onPress={toggleDescription}>
           <Ionicons name="arrow-forward-outline" size={24} />

@@ -16,16 +16,18 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import EditIcon from "react-native-vector-icons/EvilIcons";
 import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase";
-import PlanContent from "../../Components/CoachProfile/PlanContent";
+import PlanDetails from "../../Components/CoachProfile/PlanDetails.js"
 import PostContent from "../../Components/CoachProfile/PostContent";
 import MembershipContent from "../../Components/CoachProfile/MembershipContent";
 import { ipAddress } from "../../ipConfig";
 
-const Coachprofile = () => {
+const CoachDetails = ({route}) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [activeTab, setActiveTab] = useState("post");
   const [isFollowing, setIsFollowing] = useState(false);
+  const { coachId } = route.params;
+//   const currentUser = FIREBASE_AUTH.currentUser;
 
   const handleFollowToggle = () => {
     if (isFollowing) {
@@ -49,13 +51,12 @@ const Coachprofile = () => {
     }
   };
   const [coach, setCoach] = useState([]);
-  const coachId = FIREBASE_AUTH.currentUser;
+  const id = FIREBASE_AUTH.currentUser;
   // console.log(coachId.uid,"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
   const getCoachProfile = async () => {
     try {
-      console.log("test");
       const response = await axios.get(
-        `http://${ipAddress}:3000/api/coach/getOne/${coachId.uid}`
+        `http://${ipAddress}:3000/api/coach/getOne/${coachId}`
       );
       setCoach(response.data);
     } catch (err) {
@@ -69,41 +70,8 @@ const Coachprofile = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("login", { role: "coach" });
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "flex-end",
-              }}
-            >
-              <LogoutIcon
-                name="log-out"
-                size={30}
-                top={30}
-                backgroundColor="black"
-                width={30}
-                color="#9AC61C"
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("CreateAllProgram");
-            }}
-          >
-            <View style={styles.icon}>
-              <Text style={styles.program}>New program</Text>
-              <Icons name="create" style={{ color: "#BEFF03", fontSize: 20 }} />
-            </View>
-          </TouchableOpacity>
-        </View>
+
+
         <View style={styles.header}>
           <View style={styles.pageTitle}>
             <View style={styles.profileContainer}>
@@ -114,11 +82,11 @@ const Coachprofile = () => {
                 }}
               />
               <View style={styles.followInfoContainer}>
-                <TouchableOpacity onPress={()=>navigation.navigate("CoachFollow")}>
+                <TouchableOpacity>
                   <Text style={styles.FollowText}>Followers</Text>
                   <Text style={styles.follow}>50</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate("CoachFollow")}>
+                <TouchableOpacity >
                   <Text style={styles.FollowText}>Following</Text>
                   <Text style={styles.follow}>5000</Text>
                 </TouchableOpacity>
@@ -126,14 +94,6 @@ const Coachprofile = () => {
               <View style={styles.nameContainer}>
                 <Text style={styles.name}>{coach.fullname}</Text>
                 <TouchableOpacity style={styles.editIconContainer}>
-                  <EditIcon
-                    name="pencil"
-                    size={28}
-                    style={{ color: "#9AC61C" }}
-                    onPress={() => {
-                      navigation.navigate("EditCoachProfile", { coach });
-                    }}
-                  />
                 </TouchableOpacity>
               </View>
               <Text style={styles.bio}>{coach.bio}</Text>
@@ -144,10 +104,18 @@ const Coachprofile = () => {
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <Text style={styles.FollowText}>PerSession</Text>
-                  <Text style={styles.numberFollower}>{coach.perSession}</Text>
+                  <Text style={styles.numberFollower}>{coach.perSession}$</Text>
                 </TouchableOpacity>
               </View>
               <View>
+                <TouchableOpacity
+                  style={styles.doneBtn}
+                  onPress={handleFollowToggle}
+                >
+                  <Text style={styles.btnText}>
+                    {isFollowing ? "Following" : "Follow +"}
+                  </Text>
+                </TouchableOpacity>
               </View>
               <View style={styles.underline}>
                 <TouchableOpacity onPress={() => setActiveTab("post")}>
@@ -170,27 +138,13 @@ const Coachprofile = () => {
                       activeTab === "likes" && styles.selectedText,
                     ]}
                   >
-                    Plan
+                    Plans
                   </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => setActiveTab("membership")}>
-                  <Text
-                    style={[
-                      styles.member,
-                      {
-                        color: activeTab === "membership" ? "#9AC61C" : "white",
-                      },
-                      activeTab === "membership" && styles.selectedText,
-                    ]}
-                  >
-                    Description
-                  </Text>
-                </TouchableOpacity>
               </View>
               {activeTab === "post" && <PostContent data={coach} />}
-              {activeTab === "likes" && <PlanContent />}
-              {activeTab === "membership" && <MembershipContent />}
+              {activeTab === "likes" && <PlanDetails data={coach}/>}
             </View>
           </View>
         </View>
@@ -281,18 +235,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 60,
     alignItems: "center",
+    justifyContent:"center",
+    alignContent:"center"
   },
   numberFollower: {
     color: "white",
     fontSize: 18,
     fontWeight: "100",
     alignSelf: "center",
+    letterSpacing:2
   },
   FollowText: {
     color: "#E5E4E2",
     letterSpacing: 2,
     fontSize: 15,
     fontWeight: "bold",
+    justifyContent:"center",
+    alignItems:"center"
   },
   doneBtn: {
     backgroundColor: "transparent",
@@ -335,4 +294,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Coachprofile;
+export default CoachDetails;

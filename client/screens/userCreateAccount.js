@@ -8,6 +8,7 @@ import axios from 'axios';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../firebase';
+import { ipAddress } from '../ipConfig';
 
 
 const UserCreateAccount = ({ route }) => {
@@ -63,7 +64,7 @@ const UserCreateAccount = ({ route }) => {
                     name: fullname,
                     avatar: "https://i.pravatar.cc/300"
                 });
-            await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/auth/addUser/${role}`, {
+            await axios.post(`http://${ipAddress}:3000/api/auth/addUser/${role}`, {
                 id: user.uid,
                 fullname,
                 email,

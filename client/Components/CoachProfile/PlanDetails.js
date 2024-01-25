@@ -16,9 +16,10 @@ import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../../firebase";
 import SendBtn from "react-native-vector-icons/Feather";
 import { Ionicons } from "@expo/vector-icons";
+import AlertMessage from "../AlertMessage";
 import { ipAddress } from "../../ipConfig";
 
-const PlanContent = () => {
+const PlanDetails = ({ data }) => {
   const [plans, setPlans] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("");
@@ -26,11 +27,13 @@ const PlanContent = () => {
   const coachId = FIREBASE_AUTH.currentUser;
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isAlertVisible, setAlertVisible] = useState(false);
   const getPlans = async () => {
     try {
       const response = await axios.get(
-        `http://${ipAddress}:3000/api/plan/getByCoach/${coachId.uid}`
+        `http://${ipAddress}:3000/api/plan/getByCoach/${data.id}`
       );
       setPlans(response.data);
     } catch (err) {
@@ -41,27 +44,11 @@ const PlanContent = () => {
   const getUsers = async () => {
     try {
       const response = await axios.get(
-        `http://${ipa}:3000/api/user/getAll`
+        `http://${ipAddress}:3000/api/user/getAll`
       );
       setUsers(response.data);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const postPlanToUsers = async (selectedUser) => {
-    const planData = {
-      status: false,
-      userId: selectedUser.id,
-      planId: selectedPlan.id,
-    };
-    try {
-      await axios.post(
-        `http://${ipAddress}:3000/api/userPlan/sendPlan`,
-        planData
-      );
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -73,38 +60,8 @@ const PlanContent = () => {
   useEffect(() => {
     setFilteredUsers(users);
   }, [users]);
-  const handlePlanPress = (plan) => {
-    setSelectedPlan(plan);
-    setModalVisible(true);
-  };
-  // console.log(plans);
-  const handleSendPlan = (selectedUser) => {
-    // console.log(`Sending plan to user: ${selectedUser.fullname}`);
-    if (!selectedPlan) {
-      console.error("Selected plan is null");
-      return;
-    }
-    setModalVisible(false);
-    Alert.alert(
-      "Plan Sent",
-      `Plan '${selectedPlan.name}' has been sent to ${selectedUser.fullname}`,
-      [
-        {
-          text: "OK",
-          onPress: () => postPlanToUsers(selectedUser),
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-  const handleSearch = (text) => {
-    setSearch(text);
-    const filtered = users.filter((user) =>
-      user.fullname.toUpperCase().includes(text.toUpperCase())
-    );
 
-    setFilteredUsers(filtered);
-  };
+
 
   return (
     <ScrollView>
@@ -113,7 +70,7 @@ const PlanContent = () => {
           <Image
             style={stylesPlan.avatar}
             source={{
-              uri: "https://ih1.redbubble.net/image.4843542460.9498/raf,750x1000,075,t,000000:44f0b734a5.u2.jpg",
+              uri: "https://www.digital-discovery.tn/wp-content/uploads/2023/09/Gattouz0-1200x675.jpg",
             }}
           />
           <View>
@@ -128,21 +85,26 @@ const PlanContent = () => {
             <Text style={stylesPlan.likesText}>
               Diet Name: {plan.Diet.name}
             </Text>
-            <TouchableOpacity onPress={() => handlePlanPress(plan)}>
-              <View style={stylesPlan.sendButtonContainer}>
-                <Text style={stylesPlan.sendButtonText}>Send</Text>
-                <SendBtn
-                  name="send"
-                  style={{ left: 120 }}
-                  size={22}
-                  color="#9AC61C"
-                />
+            <TouchableOpacity
+                onPress={() => {
+                  setAlertTitle("Hey!");
+                  setAlertMessage(
+                    `To Get Acces For This Plan Contact ${data.fullname}`
+                  );
+                  setAlertVisible(true);
+                }}
+    
+            >
+              <View
+                style={stylesPlan.sendButtonContainer}
+              >
+                <Text style={stylesPlan.sendButtonText}>Get Plan</Text>
               </View>
             </TouchableOpacity>
           </View>
         </View>
       ))}
-      <ScrollView>
+      {/* <ScrollView>
         <Modal
           animationType="fade"
           transparent={true}
@@ -204,7 +166,13 @@ const PlanContent = () => {
             </View>
           </ScrollView>
         </Modal>
-      </ScrollView>
+      </ScrollView> */}
+      <AlertMessage
+        modalVisible={isAlertVisible}
+        setModalVisible={setAlertVisible}
+        title={alertTitle}
+        message={alertMessage}
+      />
     </ScrollView>
   );
 };
@@ -214,7 +182,6 @@ const stylesPlan = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "black",
-    // width: "60%",
     padding: 10,
     marginVertical: 10,
     borderRadius: 6,
@@ -242,15 +209,16 @@ const stylesPlan = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
+    marginLeft: "15%",
   },
 
   sendButtonText: {
     color: "#BEFF03",
-    textDecorationLine: "underline",
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: "bold",
     marginRight: 5,
     left: 120,
+    letterSpacing: 0.7,
   },
 });
 
@@ -312,4 +280,4 @@ const stylesModal = StyleSheet.create({
   },
 });
 
-export default PlanContent;
+export default PlanDetails;

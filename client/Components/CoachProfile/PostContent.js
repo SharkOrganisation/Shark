@@ -21,22 +21,27 @@ import SendIcon from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { FIREBASE_AUTH } from "../../firebase";
 import { Title } from "react-native-paper";
+import { ipAddress } from "../../ipConfig.js";
 
 const PostContent = ({ data }) => {
   const [posts, setPosts] = useState([]);
-  const coachId = FIREBASE_AUTH.currentUser;
+  const currentUser = FIREBASE_AUTH.currentUser;
   const [likedPosts, setLikedPosts] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [heartActiveArray, setHeartActiveArray] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [padrino, setPadrino] = useState(false);
+
 
   const getPosts = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/posts/Coachposts/${coachId.uid}`
+        `http://${ipAddress}:3000/api/posts/Coachposts/${data.id}`
       );
 
-      setPosts(response.data);
+      setPosts(response.data.reverse());
+      setPadrino(!padrino)
+
     } catch (err) {
       console.error(err);
     }
@@ -45,19 +50,29 @@ const PostContent = ({ data }) => {
   const getComments = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/comments/get/1/1`
+        `http://${ipAddress}:3000/api/comments/get/1/1`
       );
-      // console.log("ggggggggggggggggggggggggggggggggggggggg,", response.data);
       setComments(response.data);
     } catch (err) {
       console.error(err);
     }
   };
 
+  const savedPost = async (postId) => {
+    try {
+      await axios.post(
+        `http://${ipAddress}:3000/api/savedPost/save/${postId}/${currentUser.uid}`
+      );
+      console.log("added");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getComments();
     getPosts();
-  }, []);
+  }, [padrino]);
 
   const toggleLike = (index) => {
     const updatedLikedPosts = [...likedPosts];
@@ -71,7 +86,6 @@ const PostContent = ({ data }) => {
 
   const onShare = async () => {
     if (selectedPost) {
-      // console.log(selectedPost, "");
       try {
         const result = await Share.share({
           url: selectedPost.image[0],
@@ -275,6 +289,7 @@ const stylesPost = StyleSheet.create({
     backgroundColor: "black",
   },
   postContainer: {
+    marginTop:"-12%",
     flexDirection: "column",
     width: "100%",
     padding: 10,
