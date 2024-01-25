@@ -109,7 +109,6 @@ export default function Basket() {
                 style={styles.cardImage}
               />
             )}
-
             <Text style={styles.cardTitle}>
               {basketItem?.Product?.name?.replace(/['"]+/g, "")}
             </Text>
@@ -178,9 +177,9 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: "black",
     flex: 1,
-    borderRadius: 10,
+    // borderRadius: 10,
     padding: 12,
-    marginBottom: 15,
+    // marginBottom: 15,
   },
   pageTitle: {
     flexDirection: "row",
@@ -209,19 +208,27 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     top: 40,
     width: "40%",
-    height: 120,
+    height: "50%",
     borderRadius: 4,
+    objectFit:"fill"
   },
   cardContent: {
     padding: 5,
+    // width:"20%"
+    // borderColor:"white",
+    // borderWidth:5,
+    marginBottom:-50
   },
   cardTitle: {
-    top: -80,
+    top: -90,
     left: 180,
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
+       // borderColor:"white",
+    // borderWidth:5,
+    width:"50%"
   },
   cardPrice: {
     color: "white",
@@ -256,7 +263,6 @@ const styles = StyleSheet.create({
     gap:20,
     backgroundcolor: "#ffffff",
     borderradius: 10,
-    // boxshadow:" 0px 4px 4px #00000040",
     height: "30",
     left: 180,
     position: "fixed",
@@ -285,5 +291,6 @@ const styles = StyleSheet.create({
  buttonm:{
   color:"#97d91c",
   fontSize: 28
- }
+ },
+
 });

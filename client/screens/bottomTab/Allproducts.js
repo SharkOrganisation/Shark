@@ -98,7 +98,7 @@ export default function Allproducts({ route }) {
             : "Allproducts (" + data.length + ")"}
         </Animated.Text>
 
-        <ScrollView horizontal={true}>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           <View style={{ flexDirection: "row", marginTop: 70 }}>
             <TouchableOpacity
               style={{
@@ -240,12 +240,12 @@ export default function Allproducts({ route }) {
       setLargeImageURL(null);
     }}
   >
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
+          position: 'relative',
+          top: -110,
+          left:190 ,
           zIndex: 2,
           padding: 10,
         }}
@@ -254,14 +254,14 @@ export default function Allproducts({ route }) {
           setLargeImageURL(null);
         }}
       >
-        <Text style={{ color: 'black', fontSize: 18 }}>Close</Text>
+        <Text style={{ color: '#97d91c', fontSize: 22 }}>X</Text>
       </TouchableOpacity>
 
       <View
         style={{
           borderRadius: 10,
           overflow: 'hidden',
-          backgroundColor: 'transparent', // Ensure the background of this View is transparent
+          backgroundColor: 'transparent', 
         }}
       >
         <Image
@@ -300,18 +300,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f8ff",
     paddingHorizontal: 20,
     paddingVertical: 20,
-    margin: 25,
+    margin: 20,
     borderRadius: 10,
-    width: windowWidth / 2 - 50,
-    height: 190,
+    width: windowWidth / 2 - 40,
+    height: 220,
     paddingBottom: 50,
   },
   image: {
-    width: "80%",
+    width: "90%",
     height: "80%",
+    justifyContent:"center",
+    alignSelf:"center",
+    objectFit:"fill"
   },
   infoContainer: {
-    marginTop: 10,
+    // marginTop: 1,
   },
   name: {
     fontSize: 13,

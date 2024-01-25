@@ -92,8 +92,9 @@ return (
 <TouchableHighlight style={styles.addButon} onPress={() => {
   console.log('Adding to basket:', FromAllproduct.id, idUser.uid , role);
   addToBasket();
+  alert(`${FromAllproduct.name} Added Successfully To Your Basket !`)
 }}>
-  <Text style={styles.buttonText}>Add To Basket</Text>
+  <Text style={styles.buttonText} >Add To Basket</Text>
 </TouchableHighlight> 
 
     </SafeAreaView>
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     top:10,
+    objectFit:"fill"
   },
   blackBackground: {
     top:40,

@@ -39,9 +39,6 @@ const GymProfile = () => {
     setFollowingLength(newFollowingLength)
   }
 
-  // console.log('====================================');
-  // console.log(currentUser);
-  // console.log('====================================');
   useEffect(() => {
     axios
       .get(`http://${ipAddress}:3000/api/gym/getOne/${currentUser.uid}`)
@@ -178,7 +175,7 @@ const GymProfile = () => {
                 : null,
             ]}
           >
-            Saved
+            Location
           </Text>
         </TouchableOpacity>
       </View>

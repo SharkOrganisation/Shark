@@ -19,6 +19,7 @@ import { FIREBASE_AUTH } from "../../firebase";
 import PlanContent from "../../Components/CoachProfile/PlanContent";
 import PostContent from "../../Components/CoachProfile/PostContent";
 import MembershipContent from "../../Components/CoachProfile/MembershipContent";
+import { ipAddress } from "../../ipConfig";
 
 const Coachprofile = () => {
   const navigation = useNavigation();
@@ -49,11 +50,12 @@ const Coachprofile = () => {
   };
   const [coach, setCoach] = useState([]);
   const coachId = FIREBASE_AUTH.currentUser;
-  console.log(coachId.uid,"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  // console.log(coachId.uid,"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
   const getCoachProfile = async () => {
     try {
+      console.log("test");
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/coach/getOne/${coachId.uid}`
+        `http://${ipAddress}:3000/api/coach/getOne/${coachId.uid}`
       );
       setCoach(response.data);
     } catch (err) {
@@ -146,14 +148,6 @@ const Coachprofile = () => {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity
-                  style={styles.doneBtn}
-                  onPress={handleFollowToggle}
-                >
-                  <Text style={styles.btnText}>
-                    {isFollowing ? "Following" : "Follow +"}
-                  </Text>
-                </TouchableOpacity>
               </View>
               <View style={styles.underline}>
                 <TouchableOpacity onPress={() => setActiveTab("post")}>

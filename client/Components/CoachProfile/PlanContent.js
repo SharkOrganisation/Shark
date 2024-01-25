@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../../firebase";
 import SendBtn from "react-native-vector-icons/Feather";
 import { Ionicons } from "@expo/vector-icons";
+import { ipAddress } from "../../ipConfig";
 
 const PlanContent = () => {
   const [plans, setPlans] = useState([]);
@@ -29,7 +30,7 @@ const PlanContent = () => {
   const getPlans = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/plan/getByCoach/${coachId.uid}`
+        `http://${ipAddress}:3000/api/plan/getByCoach/${coachId.uid}`
       );
       setPlans(response.data);
     } catch (err) {
@@ -40,7 +41,7 @@ const PlanContent = () => {
   const getUsers = async () => {
     try {
       const response = await axios.get(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/user/getAll`
+        `http://${ipa}:3000/api/user/getAll`
       );
       setUsers(response.data);
     } catch (error) {
@@ -56,7 +57,7 @@ const PlanContent = () => {
     };
     try {
       await axios.post(
-        `http://${process.env.EXPO_PUBLIC_IP_ADRESS}:3000/api/userPlan/sendPlan`,
+        `http://${ipAddress}:3000/api/userPlan/sendPlan`,
         planData
       );
     } catch (err) {

@@ -67,16 +67,41 @@ export const getAllGyms = async (
 };
 
 
-export const getGymsByRegion = async (req: Request, res: Response):Promise<void>=>{
-  const {region} = req.params
+export const verifyGym = async (req:Request, res:Response): Promise<void> => {
+  const gymId = req.params.id;
   try {
-    const gyms = await prisma.gym.findMany({
-      where:{
-        region
-      }
+    await prisma.gym.update({
+      where:{id:gymId},
+      data:{verified:true}
     })
-    res.status(200).json(gyms)
+    res.status(200).json({status: 'Gym Verified Successfully'})
   } catch (error) {
-    res.status(500).send(error)
+    res.status(500).json({Error:error})
   }
 }
+export const unVerifyGym = async (req:Request, res:Response): Promise<void> => {
+  const gymId = req.params.id;
+  try {
+    await prisma.gym.update({
+      where:{id:gymId},
+      data:{verified:false}
+    })
+    res.status(200).json({status: 'Gym Unverified Successfully'})
+  } catch (error) {
+    res.status(500).json({Error:error})
+
+  }
+}
+// export const getGymsByRegion = async (req: Request, res: Response):Promise<void>=>{
+//   const {region} = req.params
+//   try {
+//     const gyms = await prisma.gym.findMany({
+//       where:{
+//         region
+//       }
+//     })
+//     res.status(200).json(gyms)
+//   } catch (error) {
+//     res.status(500).send(error)
+//   }
+// }
