@@ -1,10 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, Text , StyleSheet,Image} from 'react-native'
 import React from 'react'
 
-const SavedUserDetails = () => {
+const SavedUserDetails = ({data}) => {
+  console.log(data);
   return (
     <View>
-      <Text>SavedUserDetails</Text>
+      <Image source={{uri:data.Post.image[0]}}/>
+      <Text style={{color:"white"}}>{data.Post.content}</Text>
     </View>
   )
 }

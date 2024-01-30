@@ -190,7 +190,7 @@ const JoinUs = ({ route }) => {
           }}
           
         >
-          <Text style={styles.joinText}>BUY FOR {price} $</Text>
+          <Text style={styles.joinText}>BUY FOR {price} TND</Text>
         </TouchableOpacity>
         <View style={styles.JoinUs}>
           <Text style={styles.Lasttext}>JOIN US FOR A BETTER EXPERIENCE</Text>

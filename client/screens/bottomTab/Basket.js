@@ -113,7 +113,7 @@ export default function Basket() {
               {basketItem?.Product?.name?.replace(/['"]+/g, "")}
             </Text>
             <Text style={styles.cardPrice}>
- {(basketItem?.Product?.price || 0) * (quantities[basketItem.id] || 1)} USD
+ {(basketItem?.Product?.price || 0) * (quantities[basketItem.id] || 1)} TND
 </Text>
 
             <View>

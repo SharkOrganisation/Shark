@@ -43,6 +43,9 @@ export const getoneMemberbyGymId = async (req: Request, res: Response) => {
         gymId,
       },
       select: {
+        type:true,
+        expiredAt:true,
+        
         user: {
           select: {
             fullname: true,

@@ -42,7 +42,7 @@ const AllCoaches = () => {
       (coach) =>
         coach.fullname.toUpperCase().includes(text.toUpperCase()) ||
         coach.speciality.toUpperCase().includes(text.toUpperCase()) ||
-        coach.Gym.fullname.toUpperCase().includes(text.toUpperCase()) ||
+        // coach.Gym.fullname.toUpperCase().includes(text.toUpperCase()) ||
         coach.perSession.toString().toUpperCase().includes(text.toUpperCase())
     );
 

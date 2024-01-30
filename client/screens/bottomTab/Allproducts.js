@@ -276,7 +276,7 @@ export default function Allproducts({ route }) {
 
               <View style={styles.infoContainer}>
                 <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.price}>{item.price} USD</Text>
+                <Text style={styles.price}>{item.price} TND</Text>
               </View>
               <View style={styles.quantityContainer}>
                 <Text>Stack({item.quantity})</Text>

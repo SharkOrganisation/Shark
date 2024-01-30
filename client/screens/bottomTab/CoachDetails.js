@@ -228,7 +228,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     alignItems: "flex-start",
-    right: 110,
+    right: 50,
+    width:280,
     top: -20,
   },
   followContainer: {

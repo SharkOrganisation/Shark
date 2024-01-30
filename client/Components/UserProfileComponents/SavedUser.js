@@ -1,18 +1,47 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { FIREBASE_AUTH } from "../../firebase.js";
+import { ipAddress } from "../../ipConfig";
+import SavedUserDetails from "./UserProfileDetails/SavedUserDetails.js"
 
 const SavedUser = () => {
-  
+  const [SavedPosts,setSavedPosts]=useState([])
+  const [postDetails,setPostDetails]=useState('onePost')
+  const user = FIREBASE_AUTH.currentUser;
+
+  const getSavedPosts=async()=>{
+    try{
+      const saved=await axios.get(`http://${ipAddress}:3000/api/savedPost/${user.uid}`)
+      setSavedPosts(saved.data)
+    }catch(err){
+      <Text> Try Later </Text>
+    }
+  }
+console.log(SavedPosts);
+  useEffect(()=>{
+      getSavedPosts()
+  },[])
   return (
-      <ScrollView>
-    <View style={styles.savedContainer}>
-      <TouchableOpacity style={styles.savedPosts}>
-      <Image source={{uri:"https://upload.wikimedia.org/wikipedia/commons/c/c8/Lionel_Messi_WC2022.jpg"}} styles={{}} height={110} width={100}/>
-      <Image source={{uri:"https://s.france24.com/media/display/48615024-e4b0-11eb-9773-005056a90284/w:980/p:16x9/1bb7e4c7fba86598de2f5df9df91cc53fbc8e8c6.jpg"}} styles={styles.imgPost}/>
-      <Image source={{uri:"https://s.france24.com/media/display/48615024-e4b0-11eb-9773-005056a90284/w:980/p:16x9/1bb7e4c7fba86598de2f5df9df91cc53fbc8e8c6.jpg"}} styles={styles.imgPost}/>
-      <Image source={{uri:"https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blt12dbddde5342ce4c/648866ff21a8556da61fa167/GOAL_-_Blank_WEB_-_Facebook_-_2023-06-13T135350.847.png?auto=webp&format=pjpg&width=3840&quality=60"}} styles={styles.imgPost}/>
-      </TouchableOpacity>
-    </View>
+      <ScrollView style={styles.savedContainer}>
+{  postDetails=== "onePost" &&  <TouchableOpacity style={styles.Container} onPress={()=>{
+      setPostDetails("Details")
+    }}>
+      {SavedPosts.map((post,index)=>{return( index<2 && 
+      <View style={styles.savedPosts} key={post.Post.id}>
+      <Image source={{uri:post.Post.image[0]}} styles={{}} height={110} width={100}/>
+      </View>
+        )})}
+        {SavedPosts.map(((post,index)=>{return(index>=2&&
+        <View style={styles.savedPosts} key={post.id}>
+      <Image source={{uri:post.Post.image[0]}} styles={{}} height={110} width={100}/>
+        </View>
+          )}))}
+      </TouchableOpacity>}
+      {postDetails==="Details" && SavedPosts.map((post)=>{return (
+        
+        <SavedUserDetails data={post}/>
+      )})}
       </ScrollView>
   )
 }
@@ -21,18 +50,19 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:"black",
   },
-  imgPost:{
-    width:600,
-    height:800,
-    borderColor:"red",
-    borderWidth:10
-    // margin:"10%"
-  },
   savedPosts:{
     flexDirection:"row",
-    borderColor:"white",
-    borderWidth:5,
-    marginTop:"5%"
-  }
+    gap:10,
+    marginTop:"2%",
+    margin:"2%"
+  },
+  Container:{
+    margin:"5%",
+    borderColor:"gray",
+    borderWidth:2,
+    width:"52%",
+    borderRadius:16
+  },
+
 })
 export default SavedUser

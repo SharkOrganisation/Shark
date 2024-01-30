@@ -6,18 +6,33 @@ const prisma = new PrismaClient();
 export const getPost = async (req: Request, res: Response): Promise<void> => {
   const { iduser } = req.params;
   try {
-    let saved = await prisma.user.findUnique({
-      where: { id: iduser },
-      include: {
-        savedPosts: {
-          include: {
-            Post: true,
+    let saved = await prisma.savedPost.findMany({
+      where: { userId: iduser },
+      select: {
+          Post:{
+            select:{
+              id:true,
+              content:true,
+              image:true,
+              Gym:{
+                select:{
+                  fullname:true,
+                  pfImage:true
+                }
+              },
+              Coach:{
+                select:{
+                  fullname:true,
+                  pfImage:true
+                }
+              }
+            }
           },
-        },
+
       },
     });
-    const post = saved?.savedPosts.map((save) => save.Post) || [];
-    res.status(200).send(post);
+    // const post = saved?.savedPosts.map((save) => save.Post) || [];
+    res.status(200).send(saved);
   } catch (err) {
     res.status(400).send(err);
   }

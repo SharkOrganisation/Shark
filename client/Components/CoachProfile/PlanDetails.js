@@ -70,7 +70,7 @@ const PlanDetails = ({ data }) => {
           <Image
             style={stylesPlan.avatar}
             source={{
-              uri: "https://www.digital-discovery.tn/wp-content/uploads/2023/09/Gattouz0-1200x675.jpg",
+              uri: "https://images-ext-2.discordapp.net/external/lUFRf3f51k-Ls33b-Rt38OfVGsVd9xL5rfebmTLDa1o/https/ih1.redbubble.net/image.4843542460.9498/raf%2C750x1000%2C075%2Ct%2C000000%3A44f0b734a5.u2.jpg?format=webp&width=496&height=662",
             }}
           />
           <View>
