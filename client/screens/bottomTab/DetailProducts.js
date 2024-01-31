@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
+import AlertMessage from "../../Components/AlertMessage.js"
 import{ FIREBASE_AUTH}  from "../../firebase";
 import {ipAddress} from '../../ipConfig'
 
@@ -19,7 +20,9 @@ export default function DetailProducts () {
   const route=useRoute()
   const FromAllproduct=route.params.product
   const role = route.params?.role
- 
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   console.log(role,":roleeeeeeeeeeee")
 
@@ -92,11 +95,20 @@ return (
 <TouchableHighlight style={styles.addButon} onPress={() => {
   console.log('Adding to basket:', FromAllproduct.id, idUser.uid , role);
   addToBasket();
-  alert(`${FromAllproduct.name} Added Successfully To Your Basket !`)
+  // alert(`${FromAllproduct.name} Added Successfully To Your Basket !`)
+  setAlertTitle('Thanks');
+  setAlertMessage(`${FromAllproduct.name} Added Successfully`);
+  setAlertVisible(true);
 }}>
   <Text style={styles.buttonText} >Add To Basket</Text>
 </TouchableHighlight> 
 
+<AlertMessage
+                modalVisible={isAlertVisible}
+                setModalVisible={setAlertVisible}
+                title={alertTitle}
+                message={alertMessage}
+            />
     </SafeAreaView>
 
   );
