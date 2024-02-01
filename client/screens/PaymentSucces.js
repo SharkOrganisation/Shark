@@ -29,7 +29,7 @@ const PaymentSuccess = () => {
        
           <FontAwesome name="check-circle" size={150} style={styles.icon} />
       
-        <Text style={styles.priceText}>{totalPrice}USD</Text>
+        <Text style={styles.priceText}>{totalPrice}TND</Text>
       </View>
       <View style={styles.longDescriptionContainer}>
         <Text style={styles.longDescriptionText}>

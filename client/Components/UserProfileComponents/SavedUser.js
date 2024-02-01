@@ -40,12 +40,12 @@ const SavedUser = () => {
     return pairs.map((pair, index) => (
       <View key={index} style={styles.imageRowContainer}>
         {pair.map((post, index) => (
-          <TouchableOpacity key={index} style={styles.imageContainer}>
+          <View key={index} style={styles.imageContainer}>
             <Image
               style={styles.imgStyle}
               source={{ uri: post.Post.image[0] }}
             />
-          </TouchableOpacity>
+          </View>
         ))}
       </View>
     ));

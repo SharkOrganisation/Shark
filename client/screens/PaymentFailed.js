@@ -16,7 +16,6 @@ const PaymentFailed = () => {
     <View >
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>Payment Failed</Text>
-        {/* <Text style={styles.subtitleText}>Wael</Text> */}
         <Text style={styles.descriptionText}>
           please check your information
         </Text>

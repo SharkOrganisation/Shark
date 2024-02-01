@@ -128,7 +128,7 @@ export default function Checkout() {
         <Text style={styles.total}>Total</Text>
         <Text style={{ color: "#cccccc", top: 174, fontSize: 30, left: 260 }}>
           {" "}
-          {totalPrice} Usd
+          {totalPrice} TND
         </Text>
       </View>
 
